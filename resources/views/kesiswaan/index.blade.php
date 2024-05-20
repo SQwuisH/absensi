@@ -1,51 +1,4 @@
-<!DOCTYPE html>
-
-<html
-  lang="en"
-  class="light-style layout-menu-fixed layout-compact"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="c:/laragon/www/layout_abas//assets/"
-  data-template="vertical-menu-template-free">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-      <title>Admin | Aplikasi Absensi Sebelas</title>
-
-    <meta name="description" content="" />
-
-    <!-- icon -->
-    <link rel="icon" type="image/x-icon" href="c:/laragon/www/layout_abas/asset/img/6.png" />
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet" />
-
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/vendor/fonts/boxicons.css" />
-
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/css/demo.css" />
-
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="c:/laragon/www/layout_abas//assets/vendor/libs/apex-charts/apex-charts.css" />
-
-    <!-- Page CSS -->
-
-    <!-- Helpers -->
-    <script src="c:/laragon/www/layout_abas//assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="c:/laragon/www/layout_abas//assets/js/config.js"></script>
-  </head>
+@extends('layouts.layoutAdmin')
 
   <body>
     <!-- Layout wrapper -->
@@ -69,7 +22,7 @@
           <div class="menu-inner-shadow"></div>
 
           <ul class="menu-inner py-1">
-           
+
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Dashboard</span>
             </li>
@@ -84,7 +37,7 @@
             <li class="menu-header small text-uppercase">
               <span class="menu-header-text">Apps &amp; Pages</span>
             </li>
-            
+
             <!-- Pages -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -104,7 +57,7 @@
                 </li>
               </ul>
             </li>
-            
+
             <li class="menu-item">
               <a href="laporan.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
@@ -729,28 +682,5 @@
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
-
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
-
-    <script src="c:/laragon/www/layout_abas//assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="c:/laragon/www/layout_abas//assets/vendor/libs/popper/popper.js"></script>
-    <script src="c:/laragon/www/layout_abas//assets/vendor/js/bootstrap.js"></script>
-    <script src="c:/laragon/www/layout_abas//assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="c:/laragon/www/layout_abas//assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="c:/laragon/www/layout_abas//assets/vendor/libs/apex-charts/apexcharts.js"></script>
-
-    <!-- Main JS -->
-    <script src="c:/laragon/www/layout_abas//assets/js/main.js"></script>
-
-    <!-- Page JS -->
-    <script src="c:/laragon/www/layout_abas//assets/js/dashboards-analytics.js"></script>
-
-    <!-- Place this tag in your head or just before your close body tag. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
   </body>
 </html>
