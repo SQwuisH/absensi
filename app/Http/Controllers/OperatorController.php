@@ -21,6 +21,16 @@ class OperatorController extends Controller
         return view('operator.kelas');
     }
 
+    public function koordinat()
+    {
+        return view('operator.koordinat');
+    }
+
+    public function absen()
+    {
+        return view('operator.absen');
+    }
+
     public function jurusan()
     {
         return view('operator.jurusan');

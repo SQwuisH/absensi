@@ -52,6 +52,10 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function ()
 
     Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
 
+    Route::get('/kelolakoordinat', [App\Http\Controllers\OperatorController::class, 'koordinat'])->name('koordinat');
+
+    Route::get('/kelolawaktuabsen', [App\Http\Controllers\OperatorController::class, 'absen'])->name('absen');
+
     Route::get('/kelolajurusan', [App\Http\Controllers\OperatorController::class, 'jurusan'])->name('jurusan');
 });
 

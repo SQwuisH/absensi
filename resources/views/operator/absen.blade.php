@@ -80,14 +80,14 @@
                     <span class="menu-header-text">Presensi</span>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item ">
                     <a href="kelolakoordinat" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-map"></i>
                         <div data-i18n="Basic">Titik Koordinat</div>
                     </a>
                 </li>
 
-                <li class="menu-item">
+                <li class="menu-item active">
                     <a href="kelolawaktuabsen" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-time"></i>
                         <div data-i18n="Basic">Waktu Absen</div>
@@ -107,7 +107,7 @@
                     </a>
                 </li>
 
-                <li class="menu-item active">
+                <li class="menu-item">
                     <a href="kelolakelas" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                         <div data-i18n="Basic">Kelas</div>
@@ -154,7 +154,7 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
-                <h1 class="m-1">Kelola Kelas</h1>
+                <h1 class="m-1">Kelola Waktu Absen</h1>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">

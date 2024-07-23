@@ -5,7 +5,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Login | Aplikasi Absensi Sebelas</title>
+    <title>Operator | Aplikasi Absensi Sebelas</title>
 
     <meta name="description" content="" />
 
@@ -77,7 +77,26 @@
                 </li>
 
                 <li class="menu-header small text-uppercase">
-                  <span class="menu-header-text">Apps &amp; Pages</span>
+                    <span class="menu-header-text">Presensi</span>
+                </li>
+
+                <li class="menu-item">
+                    <a href="kelolakoordinat" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-map"></i>
+                        <div data-i18n="Basic">Titik Koordinat</div>
+                    </a>
+                </li>
+
+                <li class="menu-item">
+                    <a href="kelolawaktuabsen" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-time"></i>
+                        <div data-i18n="Basic">Waktu Absen</div>
+                    </a>
+                </li>
+
+
+                <li class="menu-header small text-uppercase">
+                  <span class="menu-header-text">Data Kelas </span>
                 </li>
 
                 <!-- Pages -->
