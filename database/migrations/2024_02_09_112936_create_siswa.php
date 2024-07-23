@@ -18,12 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->unsignedInteger('id_kelas');
+            $table->unsignedInteger('id_kelas')->nullable();
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
 
             $table->string('nama');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
-            $table->string('nik')->unique();
             $table->string('nisn')->unique();
         });
     }

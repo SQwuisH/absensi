@@ -14,7 +14,6 @@ class guru extends Model
         'nama',
         'jenis_kelamin',
         'NIP',
-        'NIK',
     ];
 
     public function user()

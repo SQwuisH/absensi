@@ -13,14 +13,62 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('beranda', function () {
-    return view('kesiswaan.index');
+
+//login page
+Route::group(['middleware' => 'guest'], function ()
+{
+    Route::get('/login', [App\Http\Controllers\login::class, 'index'])->name('login');
+    Route::post('/postlogin', [App\Http\Controllers\login::class, 'postlogin'])->name('postlogin');
+});
+
+
+Route::get('/', function () {
+    if (auth()->check()) {
+        $role = auth()->user()->role;
+
+        if ($role == 'operator') {
+            return redirect('operator');
+        } elseif ($role == 'siswa') {
+            return redirect('siswa');
+        } elseif ($role == 'wali') {
+            return redirect('wali');
+        }
+    }
+    return redirect('login');
+});
+
+
+
+
+//OPERATOR
+Route::group(['middleware' => ['auth', 'roles:operator']], function ()
+{
+    Route::get('/operator', [App\Http\Controllers\OperatorController::class, 'index'])->name('operator');
+
+    Route::get('/kelolawalikelas', [App\Http\Controllers\OperatorController::class, 'wali'])->name('wali');
+
+    Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
+
+    Route::get('/kelolajurusan', [App\Http\Controllers\OperatorController::class, 'jurusan'])->name('jurusan');
+});
+
+//KESISWAAN
+Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function ()
+{
+    Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
+});
+
+//WALI KELAS
+Route::group(['middleware' => ['auth', 'roles:wali']], function ()
+{
+    Route::get('/wali', [App\Http\Controllers\WaliController::class, 'index'])->name('wali');
+});
+
+//SISWA
+Route::group(['middleware' => ['auth', 'roles:siswa']], function ()
+{
+    Route::get('/siswa', [App\Http\Controllers\SiswaController::class, 'index'])->name('siswa');
 });

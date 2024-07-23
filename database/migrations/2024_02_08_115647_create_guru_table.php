@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('nama');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nip')->unique();
-            $table->string('nik')->unique();
         });
     }
 
