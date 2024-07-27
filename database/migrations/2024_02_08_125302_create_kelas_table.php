@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedInteger('id_jurusan');
             $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans');
 
-            $table->string('nuptk');
-            $table->foreign('nuptk')->references('nuptk')->on('walis');
+            $table->string('nuptk')->nullable();
+            $table->foreign('nuptk')->references('nuptk')->on('walis')->onUpdate('cascade')->onDelete('set null');
 
             $table->integer('nomor_kelas');
             $table->integer('tingkat');

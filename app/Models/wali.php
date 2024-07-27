@@ -11,19 +11,24 @@ class wali extends Model
 
     protected $fillable = [
         'nuptk',
-        'id_user',
+        'id',
         'jenis_kelamin',
         'nip',
     ];
 
     public function user()
     {
-        return $this->belongsTo(user::class, 'id');
+        return $this->hasOne(user::class, 'id');
     }
 
     public function kelas()
     {
-        return $this->hasOne(kelas::class, 'NUPTK');
+        return $this->hasOne(kelas::class, 'nuptk', 'nuptk');
+    }
+
+    public function jurusan()
+    {
+        return $this->hasOneThrough(jurusan::class, kelas::class, 'nuptk', 'id_jurusan', 'nuptk', 'id_jurusan');
     }
 }
 

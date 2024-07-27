@@ -11,18 +11,18 @@ class kelas extends Model
 
     protected $fillable = [
         'id_jurusan',
-        'NUPTK',
+        'nuptk',
         'nomor_kelas',
         'tingkat',
     ];
 
     public function jurusan()
     {
-        return $this->hasOne(jurusan::class, 'id_jurusan');
+        return $this->hasOne(jurusan::class, 'id_jurusan', 'id_jurusan');
     }
 
     public function wali()
     {
-        return $this->belongsTo(wali::class, 'NUPTK');
+        return $this->hasOne(wali::class, 'nuptk', 'nuptk');
     }
 }

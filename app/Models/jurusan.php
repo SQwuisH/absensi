@@ -17,4 +17,9 @@ class jurusan extends Model
     {
         return $this->belongsTo(kelas::class ,'id_jurusan');
     }
+
+    public function jurusan()
+    {
+        return $this->hasOneThrough(wali::class, kelas::class, 'id_jurusan', 'nutpk', 'id_jurusan', 'nutpk');
+    }
 }

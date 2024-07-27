@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function ()
     Route::get('/kelolawalikelas', [App\Http\Controllers\OperatorController::class, 'wali'])->name('wali');
     Route::post('/tambahwalikelas', [App\Http\Controllers\OperatorController::class, 'tambahwali'])->name('tambahwali');
     Route::post('/editwalikelas', [App\Http\Controllers\OperatorController::class, 'editwali'])->name('editwali');
+    Route::delete('/hapuswalikelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuswali'])->name('hapus');
 
     Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
 

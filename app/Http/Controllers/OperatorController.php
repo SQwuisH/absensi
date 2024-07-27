@@ -17,7 +17,8 @@ class OperatorController extends Controller
 
     public function wali()
     {
-        $walikelas = db::table('users')->join('walis', 'id', '=', 'id_user')->join('kelas', 'walis.nuptk', '=', 'kelas.nuptk')->join('jurusans', 'kelas.id_jurusan', '=', 'jurusans.id_jurusan')->get();
+        $walikelas = wali::with('user', 'kelas', 'jurusan')->get();
+
         return view('operator.wali', compact('walikelas'));
     }
 
@@ -34,7 +35,7 @@ class OperatorController extends Controller
 
             wali::insert([
                 'nuptk' => $request->nuptk,
-                'id_user' => $user->id,
+                'id' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -49,7 +50,7 @@ class OperatorController extends Controller
 
             wali::insert([
                 'nuptk' => $request->nuptk,
-                'id_user' => $user->id,
+                'id' => $user->id,
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'nip' => $request->nip,
             ]);
@@ -58,9 +59,35 @@ class OperatorController extends Controller
         return redirect()->back();
     }
 
-    public function editwali()
+    public function editwali(Request $r)
     {
-        return view('operator.wali', compact('walikelas'));
+        //DB wali
+        DB::table('walis')->where('id', $r->id)->update([
+            'nuptk' => $r->nuptk,
+            'jenis_kelamin' => $r->jenis_kelamin,
+            'nip' => $r->nip,
+        ]);
+
+
+        //DB user
+        DB::table('users')->where('id', $r->id)->update([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => password_hash($r->password, PASSWORD_DEFAULT),
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function hapuswali($id)
+    {
+        $w = wali::find($id);
+        $w->delete();
+
+        $w = user::find($id);
+        $w->delete();
+
+        return redirect()->back();
     }
 
     public function kelas()
@@ -80,6 +107,8 @@ class OperatorController extends Controller
 
     public function jurusan()
     {
+
+
         return view('operator.jurusan');
     }
 }

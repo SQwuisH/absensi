@@ -170,7 +170,7 @@
                 <div class="container container-p-y">
                     <div class="card">
                         <div class="card-header d-flex">
-                            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+                            <input class="form-control" list="datalistOptions" id="search" placeholder="Type to search...">
                             <div class="col-5"></div>
                             <div class="btn-group" role="group" aria-label="Basic example">
 
@@ -242,7 +242,7 @@
 
 
                         <div class="table-responsive text-nowrap">
-                          <table class="table">
+                          <table class="table" id="tabel">
                             <thead>
                               <tr>
                                 <th>NUPTK</th>
@@ -258,9 +258,14 @@
                                 <td>
                                   <span class="fw-medium">@php echo($w->nuptk); @endphp</span>
                                 </td>
-                                <td>@php echo($w->name); @endphp</td>
+                                <td>@php echo($w->user->name); @endphp</td>
                                 <td>
-                                    @php echo($w->tingkat); echo(' '); echo($w->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
+                                    @if ($w->kelas)
+                                        @php echo($w->kelas->tingkat); echo(' '); echo($w->jurusan->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
+                                    @else
+                                    Tanpa Kelas
+                                    @endif
+
                                 </td>
                                 <td>
                                   <div class="dropdown">
@@ -269,35 +274,12 @@
                                     </button>
                                     <div class="dropdown-menu">
                                       <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{$w->id}}"><i class="bx bx-edit-alt me-2"></i> Edit</button>
-                                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#hapus"><i class="bx bx-trash me-2"></i> Hapus</button>
+                                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#hapus{{$w->id}}"><i class="bx bx-trash me-2"></i> Hapus</button>
                                     </div>
                                   </div>
                                 </td>
-                                @include('operator.editwali')
+                                @include('operator.editHapusWali')
                               </tr>
-
-
-
-
-                              {{-- Hapus --}}
-                              <div class="modal fade" id="hapus" tabindex="-1" style="display: none;" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h5 class="modal-title" id="modalCenterTitle">Hapus Data</h5>
-                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">Peringatan Data Akan Dihapus Secara Permanen!</div>
-                                    <div class="modal-footer">
-                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                                        Batalkan
-                                      </button>
-                                      <button type="button" class="btn btn-danger">Hapus</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
                             @endforeach
                             </tbody>
                           </table>
@@ -370,5 +352,6 @@
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script src= {{ asset('assets/tabel.js') }} ></script>
 </body>
 </html>

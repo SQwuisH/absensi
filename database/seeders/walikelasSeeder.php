@@ -15,19 +15,19 @@ class WaliKelasSeeder extends Seeder
     {
         wali::insert([
             'nuptk' => '1234567890123456',
-            'id_user' => 5,
+            'id' => 5,
             'nip' => '198005052022011001',
         ]);
 
         wali::insert([
             'nuptk' => '2345678901234567',
-            'id_user' => 6,
+            'id' => 6,
             'nip' => '198107062022021002',
         ]);
 
         wali::insert([
             'nuptk' => '3456789012345678',
-            'id_user' => 7,
+            'id' => 7,
             'nip' => '198209072022031003',
         ]);
     }
