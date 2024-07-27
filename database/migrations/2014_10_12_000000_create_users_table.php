@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->default(password_hash("12345678", PASSWORD_DEFAULT));
             $table->string('foto')->nullable();
             $table->enum('role', ['siswa', 'kesiswaan', 'wali', 'operator']);
             $table->rememberToken();

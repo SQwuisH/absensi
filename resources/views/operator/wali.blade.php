@@ -40,8 +40,6 @@
     <script src= {{ asset('assets/t1/js/config.js') }}></script>
   </head>
 
-  <body>
-    @yield('title')
     <body>
         <!-- Layout wrapper -->
         <div class="layout-wrapper layout-content-navbar">
@@ -154,7 +152,7 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
-                <h1 class="m-1">Kelola Wali Kelas</h1>
+                <h4 class="m-1">Kelola Wali Kelas</h4>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -169,6 +167,143 @@
             <div class="content-wrapper">
               <!-- Content -->
 
+                <div class="container container-p-y">
+                    <div class="card">
+                        <div class="card-header d-flex">
+                            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Type to search...">
+                            <div class="col-5"></div>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
+                                <button type="button" class="btn btn-outline-secondary"><i class="bx bx-export"></i> Ekspor</button>
+                                <button type="button" class="btn btn-outline-secondary"><i class="bx bx-import"></i> Impor</button>
+                            </div>
+                        </div>
+
+                        {{-- Tambah --}}
+
+                        <div class="modal fade" id="tambah" tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel1">Tambah Wali Kelas</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+
+                                <form action="/tambahwalikelas" method="post">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <label for="nameBasic" class="form-label">Nama</label>
+                                            <input name="name" type="text" id="nameBasic" class="form-control" placeholder="Masukkan Nama" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-3">
+                                            <label for="nameBasic" class="form-label">password</label>
+                                            <input name="password" type="text" id="nameBasic" class="form-control" placeholder="Default Password '12345678'">
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <div class="col mb-3">
+                                        <label for="nameBasic" class="form-label">NUPTK</label>
+                                        <input name="nuptk" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NUPTK" required>
+                                    </div>
+                                    <div class="col mb-3">
+                                        <label for="nameBasic" class="form-label">NIP</label>
+                                        <input name="nip" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NIP" required>
+                                    </div>
+                                </div>
+                                  <div class="row">
+                                    <div class="col mb-3">
+                                      <label for="emailBasic" class="form-label">Email</label>
+                                      <input name="email" type="email" id="emailBasic" class="form-control" placeholder="xxxx@xxx.xx" required>
+                                    </div>
+                                    <div class="col mb-3">
+                                      <label for="jk" class="form-label">Jenis Kelamin</label>
+                                      <select name="jenis_kelamin" id="jk" class="form-select form-control">
+                                        <option selected hidden>Pilih</option>
+                                        <option value="1">laki laki</option>
+                                        <option value="2">perempuan</option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                  </div>
+                              </div>
+
+                            </form>
+                            </div>
+                        </div>
+
+
+                        <div class="table-responsive text-nowrap">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>NUPTK</th>
+                                <th>Nama</th>
+                                <th>Kelas</th>
+                                <th>Aksi</th>
+                              </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0">
+
+                            @foreach ($walikelas as $w)
+                              <tr>
+                                <td>
+                                  <span class="fw-medium">@php echo($w->nuptk); @endphp</span>
+                                </td>
+                                <td>@php echo($w->name); @endphp</td>
+                                <td>
+                                    @php echo($w->tingkat); echo(' '); echo($w->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
+                                </td>
+                                <td>
+                                  <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                      <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit{{$w->id}}"><i class="bx bx-edit-alt me-2"></i> Edit</button>
+                                      <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#hapus"><i class="bx bx-trash me-2"></i> Hapus</button>
+                                    </div>
+                                  </div>
+                                </td>
+                                @include('operator.editwali')
+                              </tr>
+
+
+
+
+                              {{-- Hapus --}}
+                              <div class="modal fade" id="hapus" tabindex="-1" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="modalCenterTitle">Hapus Data</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">Peringatan Data Akan Dihapus Secara Permanen!</div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                        Batalkan
+                                      </button>
+                                      <button type="button" class="btn btn-danger">Hapus</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            @endforeach
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                </div>
 
               <!-- / Content -->
 

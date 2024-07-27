@@ -154,7 +154,7 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
-                <h1 class="m-1">Kelola Kelas</h1>
+                <h4 class="m-1">Kelola Kelas</h4>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">

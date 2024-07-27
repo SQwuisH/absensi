@@ -154,7 +154,7 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
-                <h1 class="m-1">Kelola Waktu Absen</h1>
+                <h4 class="m-1">Kelola Waktu Absen</h4>
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">

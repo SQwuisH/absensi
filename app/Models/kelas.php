@@ -21,8 +21,8 @@ class kelas extends Model
         return $this->hasOne(jurusan::class, 'id_jurusan');
     }
 
-    public function guru()
+    public function wali()
     {
-        return $this->belongsTo(guru::class, 'NUPTK');
+        return $this->belongsTo(wali::class, 'NUPTK');
     }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('id_jurusan')->references('id_jurusan')->on('jurusans');
 
             $table->string('nuptk');
-            $table->foreign('nuptk')->references('nuptk')->on('gurus');
+            $table->foreign('nuptk')->references('nuptk')->on('walis');
 
             $table->integer('nomor_kelas');
             $table->integer('tingkat');

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->unsignedInteger('id_kelas')->nullable();
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
 
-            $table->string('nama');
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nisn')->unique();
         });
