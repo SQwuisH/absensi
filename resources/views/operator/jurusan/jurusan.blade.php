@@ -2,6 +2,7 @@
     data-template="vertical-menu-template-free">
 
 <head>
+    <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
@@ -66,7 +67,7 @@
 
                     <div class="menu-inner-shadow"></div>
 
-                    <ul class="menu-inner py-1">
+                    <ul class="menu-inner py-1 overflow-auto">
 
                         <li class="menu-header small text-uppercase">
                             <span class="menu-header-text">Dashboard</span>
@@ -83,7 +84,7 @@
                             <span class="menu-header-text">Presensi</span>
                         </li>
 
-                        <li class="menu-item active">
+                        <li class="menu-item">
                             <a href="kelolakoordinat" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-map"></i>
                                 <div data-i18n="Basic">Titik Koordinat</div>
@@ -122,14 +123,15 @@
                             </ul>
                         </li>
 
-                        <li class="menu-item">
+
+                        <li class="menu-item ">
                             <a href="kelolakelas" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                                 <div data-i18n="Basic">Kelas</div>
                             </a>
                         </li>
 
-                        <li class="menu-item">
+                        <li class="menu-item active">
                             <a href="kelolajurusan" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                                 <i class='book-bookmark'></i>
@@ -168,7 +170,7 @@
 
                         <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                             <!-- Search -->
-                            <h4 class="m-1">Kelola Titik Koordinat</h4>
+                            <h4 class="m-1">Kelola Jurusan</h4>
                             <!-- /Search -->
 
                             <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -182,75 +184,135 @@
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
                         <!-- Content -->
+
+                        <!-- Content -->
+
                         <div class="container container-p-y">
                             <div class="card">
-                                <input type="hidden" id="lokasi">
-                                <div class="card-body">
-                                    <div id="map" style="height: 260px"></div>
-                                    <form method="POST" action="editkoordinat">
-                                    @csrf
-                                        <div class="row">
-                                            <div class="col">
-                                                <label for="k" class="col-form-label">Titik Koordinat</label>
-                                                <input name="k" type="text" id="k" class="form-control" value= "{{ $koordinat->titik_koordinat }}">
-                                            </div>
-
-                                            <div class="col">
-                                                <label for="r" class="col-form-label">radius</label>
-                                                <input name="r" type="text" id="k" class="form-control" value= {{ $koordinat->radius}}>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Simpan</button>
-                                        </div>
-                                    </form>
+                                <div class="card-header d-flex">
+                                    <input class="form-control" list="datalistOptions" id="search"
+                                        placeholder="Type to search...">
+                                    <div class="col-5"></div>
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
                                 </div>
 
+                                {{-- Tambah --}}
+
+                                <div class="modal fade" id="tambah" tabindex="-1" style="display: none;"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel1">Tambah Jurusan</h5>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="modal"aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/tambahjurusan" method="post">
+                                                    @csrf
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <label for="nameBasic" class="form-label">Nama
+                                                                Jurusan</label>
+                                                            <input name="nama_jurusan" type="text"
+                                                                id="nameBasic"class="form-control"
+                                                                placeholder="Masukkan Nama Jurusan" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">Tambah</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive text-nowrap">
+                                    <table class="table" id="tabel">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Jurusan</th>
+                                                <th class="text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-border-bottom-0">
+
+                                            @foreach ($jurusan as $w)
+                                                <tr>
+                                                    <td>
+                                                        <span class="fw-medium">@php echo($w->nama_jurusan); @endphp</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="dropdown">
+                                                            <button type="button"
+                                                                class="btn p-0 dropdown-toggle hide-arrow"
+                                                                data-bs-toggle="dropdown">
+                                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                <button class="dropdown-item" data-bs-toggle="modal"
+                                                                    data-bs-target="#edit{{ $w->id_jurusan }}"><i
+                                                                        class="bx bx-edit-alt me-2"></i> Edit</button>
+                                                                <button class="dropdown-item" data-bs-toggle="modal"
+                                                                    data-bs-target="#hapus{{ $w->id_jurusan }}"><i
+                                                                        class="bx bx-trash me-2"></i> Hapus</button>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    @include('operator.jurusan.editHapusjurusan')
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- / Content -->
-
-                        <!-- Footer -->
-                        <footer class="content-footer footer bg-footer-theme">
-                            <div
-                                class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                                <div class="mb-2 mb-md-0">
-                                    ©
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>
-                                    , made with ❤️ by
-                                    <a href="https://themeselection.com" target="_blank"
-                                        class="footer-link fw-medium">ThemeSelection</a>
-                                </div>
-                                <div class="d-none d-lg-inline-block">
-                                    <a href="https://themeselection.com/license/" class="footer-link me-4"
-                                        target="_blank">License</a>
-                                    <a href="https://themeselection.com/" target="_blank"
-                                        class="footer-link me-4">More
-                                        Themes</a>
-
-                                    <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                                        target="_blank" class="footer-link me-4">Documentation</a>
-
-                                    <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                                        target="_blank" class="footer-link">Support</a>
-                                </div>
-                            </div>
-                        </footer>
-                        <!-- / Footer -->
-
-                        <div class="content-backdrop fade"></div>
                     </div>
-                    <!-- Content wrapper -->
-                </div>
-                <!-- / Layout page -->
-            </div>
 
-            <!-- Overlay -->
-            <div class="layout-overlay layout-menu-toggle"></div>
+                    <!-- / Content -->
+
+                    <!-- / Content -->
+
+                    <!-- Footer -->
+                    <footer class="content-footer footer bg-footer-theme">
+                        <div
+                            class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                            <div class="mb-2 mb-md-0">
+                                ©
+                                <script>
+                                    document.write(new Date().getFullYear());
+                                </script>
+                                , made with ❤️ by
+                                <a href="https://themeselection.com" target="_blank"
+                                    class="footer-link fw-medium">ThemeSelection</a>
+                            </div>
+                            <div class="d-none d-lg-inline-block">
+                                <a href="https://themeselection.com/license/" class="footer-link me-4"
+                                    target="_blank">License</a>
+                                <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More
+                                    Themes</a>
+
+                                <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
+                                    target="_blank" class="footer-link me-4">Documentation</a>
+
+                                <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                                    target="_blank" class="footer-link">Support</a>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- / Footer -->
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
+            </div>
+            <!-- / Layout page -->
+        </div>
+
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
         </div>
         <!-- / Layout wrapper -->
 
@@ -267,41 +329,7 @@
 
         <!-- Main JS -->
         <script src={{ asset('assets/t1/js/main.js') }}></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-        <script>
-
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
-
-
-function successCallback(position) {
-
-    var lokasi_sekolah = "{{ $koordinat->titik_koordinat }}";
-    var lok = lokasi_sekolah.split(",");
-    var lat_sekolah = lok[0];
-    var long_sekolah = lok[1];
-    var map = L.map('map').setView([lat_sekolah, long_sekolah], 16);
-    var radius = "{{ $koordinat->radius }}";
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var marker = L.marker([lat_sekolah, long_sekolah]).addTo(map);
-    var circle = L.circle([lat_sekolah, long_sekolah], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: radius
-    }).addTo(map);
-}
-
-function errorCallback(params) {
-
-}
-
-        </script>
+        <script src={{ asset('assets/tabel.js') }}></script>
 
         <!-- Page JS -->
 

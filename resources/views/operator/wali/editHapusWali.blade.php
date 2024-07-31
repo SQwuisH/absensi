@@ -43,7 +43,7 @@
             <div class="col mb-3">
               <label for="jk" class="form-label">Jenis Kelamin</label>
               <select name="jenis_kelamin" id="jk" class="form-select form-control" required>
-                <option value="{{$w->jenis_kelamin}}" hidden>Pilih</option>
+                <option value="{{$w->jenis_kelamin}}" hidden>{{$w->jenis_kelamin}}</option>
                 <option value="1">laki laki</option>
                 <option value="2">perempuan</option>
               </select>
@@ -59,7 +59,8 @@
 </form>
 
 {{-- Hapus --}}
-<form action="{{ route('hapus', ['id' => $w->id]) }}" method="post">
+
+<form action="{{ route('hapuswali', ['id' => $w->id]) }}" method="post">
 @csrf
 @method('delete')
     <div class="modal fade" id="hapus{{$w->id}}" tabindex="-1" style="display: none;" aria-hidden="true">

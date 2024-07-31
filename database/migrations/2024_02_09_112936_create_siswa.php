@@ -15,11 +15,11 @@ return new class extends Migration
         {
             $table->string('nis')->primary();
 
-            $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->unsignedBigInteger('id');
+            $table->foreign('id')->references('id')->on('users');
 
             $table->unsignedInteger('id_kelas')->nullable();
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('set null');
 
             $table->enum('jenis_kelamin', ['laki laki', 'perempuan']);
             $table->string('nisn')->unique();

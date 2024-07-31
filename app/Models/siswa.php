@@ -9,8 +9,10 @@ class siswa extends Model
 {
     use HasFactory;
 
+    public $primaryKey  = 'nis';
     protected $fillable = [
-        'id_user',
+        'nis',
+        'id',
         'id_kelas',
         'nama',
         'jenis_kelamin',
@@ -19,7 +21,7 @@ class siswa extends Model
 
     public function user()
     {
-        return $this->belongsTo(user::class, 'id');
+        return $this->hasOne(user::class, 'id', 'id');
     }
 
     public function kelas()
@@ -30,5 +32,11 @@ class siswa extends Model
     public function absensi()
     {
         return $this->hasMany(absensi::class, 'NIS');
+    }
+
+
+    public function jurusan()
+    {
+        return $this->hasOneThrough(jurusan::class, kelas::class, 'id_kelas', 'id_jurusan', 'id_kelas', 'id_jurusan');
     }
 }

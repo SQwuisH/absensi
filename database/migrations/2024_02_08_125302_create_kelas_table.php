@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nuptk')->nullable();
             $table->foreign('nuptk')->references('nuptk')->on('walis')->onUpdate('cascade')->onDelete('set null');
 
-            $table->integer('nomor_kelas');
+            $table->integer('nomor_kelas')->nullable();
             $table->integer('tingkat');
         });
     }

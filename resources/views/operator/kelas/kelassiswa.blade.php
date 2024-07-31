@@ -68,7 +68,7 @@
                 </li>
 
                 <li class="menu-item ">
-                  <a href="operator" class="menu-link">
+                  <a href="/operator" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-home-circle"></i>
                     <div data-i18n="Basic">Dashboard</div>
                   </a>
@@ -79,14 +79,14 @@
                 </li>
 
                 <li class="menu-item">
-                    <a href="kelolakoordinat" class="menu-link">
+                    <a href="/kelolakoordinat" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-map"></i>
                         <div data-i18n="Basic">Titik Koordinat</div>
                     </a>
                 </li>
 
                 <li class="menu-item">
-                    <a href="kelolawaktuabsen" class="menu-link">
+                    <a href="/kelolawaktuabsen" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-time"></i>
                         <div data-i18n="Basic">Waktu Absen</div>
                     </a>
@@ -98,22 +98,34 @@
                 </li>
 
                 <!-- Pages -->
-                <li class="menu-item active">
-                    <a href="kelolawalikelas" class="menu-link">
+                <li class="menu-item" style="">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-user"></i>
-                        <div data-i18n="Basic">Wali Kelas</div>
+                        <div data-i18n="Dashboards">Wali Kelas & Kesiswaan</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item ">
+                            <a href="kelolawalikelas" class="menu-link">
+                                <div data-i18n="Basic">Wali Kelas</div>
+                            </a>
+                        </li>
+                        <li class="menu-item ">
+                            <a href="kelolakesiswaan" class="menu-link">
+                                <div data-i18n="Basic">Kesiswaan</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="menu-item">
-                    <a href="kelolakelas" class="menu-link">
+                    <a href="/kelolakelas" class="menu-link">
                         <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                         <div data-i18n="Basic">Kelas</div>
                     </a>
                 </li>
 
                 <li class="menu-item">
-                  <a href="kelolajurusan" class="menu-link">
+                  <a href="/kelolajurusan" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                     <i class='book-bookmark'></i>
                     <div data-i18n="laporan">Jurusan</div>
@@ -152,7 +164,14 @@
 
               <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                 <!-- Search -->
-                <h4 class="m-1">Kelola Wali Kelas</h4>
+                <a href= {{ route('kelas') }} class="btn rounded btn-outline-danger"><i class='bx bx-chevron-left'></i></a>
+                <h4 class="m-1">
+                    Kelola Kelas /
+                    @foreach ($siswa as $w)
+                        @php echo($w->kelas->tingkat); echo(' '); echo($w->jurusan->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
+                    @endforeach
+                </h4>
+
                 <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -175,7 +194,6 @@
                             <div class="btn-group" role="group" aria-label="Basic example">
 
                                 <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
-                                <button type="button" class="btn btn-outline-secondary"><i class="bx bx-export"></i> Ekspor</button>
                                 <button type="button" class="btn btn-outline-secondary"><i class="bx bx-import"></i> Impor</button>
                             </div>
                         </div>
@@ -186,14 +204,15 @@
                             <div class="modal-dialog" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel1">Tambah Wali Kelas</h5>
+                                  <h5 class="modal-title" id="exampleModalLabel1">Tambah Siswa</h5>
                                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
 
 
-                                <form action="/tambahwalikelas" method="post">
+                                <form action="/kelolakelas/tambahsiswa" method="post">
                                     @csrf
+                                    <input type="text" name="id_kelas" hidden value={{ $id }}>
                                     <div class="row">
                                         <div class="col mb-3">
                                             <label for="nameBasic" class="form-label">Nama</label>
@@ -208,12 +227,12 @@
                                     </div>
                                 <div class="row">
                                     <div class="col mb-3">
-                                        <label for="nameBasic" class="form-label">NUPTK</label>
-                                        <input name="nuptk" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NUPTK" required>
+                                        <label for="nameBasic" class="form-label">nis</label>
+                                        <input name="nis" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NIS" required>
                                     </div>
                                     <div class="col mb-3">
-                                        <label for="nameBasic" class="form-label">NIP</label>
-                                        <input name="nip" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NIP" required>
+                                        <label for="nameBasic" class="form-label">NISN</label>
+                                        <input name="nisn" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NISN" required>
                                     </div>
                                 </div>
                                   <div class="row">
@@ -242,30 +261,25 @@
 
 
                         <div class="table-responsive text-nowrap">
-                          <table class="table" id="tabel">
+                          <table class="table " id="tabel">
                             <thead>
                               <tr>
-                                <th>NUPTK</th>
+                                <th>Nis</th>
                                 <th>Nama</th>
-                                <th>Kelas</th>
+                                <th>Jenis Kelamin</th>
                                 <th>Aksi</th>
                               </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
 
-                            @foreach ($walikelas as $w)
+                            @foreach ($siswa as $w)
                               <tr>
                                 <td>
-                                  <span class="fw-medium">@php echo($w->nuptk); @endphp</span>
+                                  <span class="fw-medium">@php echo('00'); echo($w->nis); @endphp</span>
                                 </td>
                                 <td>@php echo($w->user->name); @endphp</td>
                                 <td>
-                                    @if ($w->kelas)
-                                        @php echo($w->kelas->tingkat); echo(' '); echo($w->jurusan->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
-                                    @else
-                                    Tanpa Kelas
-                                    @endif
-
+                                    {{ $w->jenis_kelamin }}
                                 </td>
                                 <td>
                                   <div class="dropdown">
@@ -278,7 +292,7 @@
                                     </div>
                                   </div>
                                 </td>
-                                @include('operator.editHapusWali')
+                                @include('operator.kelas.editHapusSiswa')
                               </tr>
                             @endforeach
                             </tbody>

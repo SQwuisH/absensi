@@ -17,12 +17,6 @@ return new class extends Migration
             $table->string('nis');
             $table->foreign('nis')->references('nis')->on('siswas');
 
-            $table->unsignedInteger('id_koordinat_sekolah');
-            $table->foreign('id_koordinat_sekolah')->references('id_koordinat_sekolah')->on('koordinat_sekolahs');
-
-            $table->unsignedInteger('id_waktu_absen');
-            $table->foreign('id_waktu_absen')->references('id_waktu_absen')->on('waktu_absens');
-
             $table->enum('status', ['sakit', 'hadir', 'izin'])->default('hadir');
             $table->string('bukti');
             $table->string('keterangan')->nullable();

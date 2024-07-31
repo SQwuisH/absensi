@@ -100,11 +100,23 @@
                 </li>
 
                 <!-- Pages -->
-                <li class="menu-item">
-                    <a href="kelolawalikelas" class="menu-link">
+                <li class="menu-item" style="">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
                         <i class="menu-icon tf-icons bx bx-user"></i>
-                        <div data-i18n="Basic">Wali Kelas</div>
+                        <div data-i18n="Dashboards">Wali Kelas & Kesiswaan</div>
                     </a>
+                    <ul class="menu-sub">
+                        <li class="menu-item ">
+                            <a href="kelolawalikelas" class="menu-link">
+                                <div data-i18n="Basic">Wali Kelas</div>
+                            </a>
+                        </li>
+                        <li class="menu-item ">
+                            <a href="kelolakesiswaan" class="menu-link">
+                                <div data-i18n="Basic">Kesiswaan</div>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="menu-item">
