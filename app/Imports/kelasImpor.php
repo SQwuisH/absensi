@@ -20,13 +20,12 @@ class kelasImpor implements ToCollection, WithHeadingRow
     {
         foreach($collection as $c)
         {
-            $jurusan = jurusan::where('nama_jurusan', $c['nama_jurusan'])->first();
+            $jurusan = jurusan::where('id_jurusan', $c['id_jurusan'])->first();
             $j_id = $jurusan ? $jurusan->id_jurusan : null;
 
             if($j_id)
             {
                 $kelas = kelas::where('nomor_kelas', $c['nomor_kelas'])->where('id_jurusan', $j_id)->first();
-
 
                 if(!$kelas)
                 {
@@ -36,8 +35,6 @@ class kelasImpor implements ToCollection, WithHeadingRow
                         'nomor_kelas' => $c['nomor_kelas']
                     ]);
                 }
-
-
 
                 $user = User::where('email', $c['email'])->first();
                 if($user)
@@ -69,8 +66,9 @@ class kelasImpor implements ToCollection, WithHeadingRow
                 {
                     siswa::insert([
                         'nis' => $c['nis'],
-                        'id' => $user->id,
+                        'id_user' => $user->id,
                         'id_kelas' => $kelas->id_kelas,
+                        'nik' => $c['nik'],
                         'jenis_kelamin' => $c['jenis_kelamin'],
                         'nisn' => $c['nisn']
                     ]);

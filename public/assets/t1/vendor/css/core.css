@@ -7223,12 +7223,28 @@ label.btn {
   border-color: #71dd37;
   box-shadow: 0 0.125rem 0.25rem 0 rgba(113, 221, 55, 0.4);
 }
+
 .btn-success:hover {
   color: #fff !important;
   background-color: #66c732 !important;
   border-color: #66c732 !important;
   transform: translateY(-1px) !important;
 }
+
+.btn-absen {
+    color: #fff;
+    background-color: hsl(174, 63%, 40%);
+    border-color: hsl(174, 63%, 40%);
+    box-shadow: 0 0.125rem 0.25rem 0 hsl(174, 63%, 40%);
+}
+
+.btn-absen:hover {
+    color: #fff !important;
+    background-color: hsl(174, 70%, 50%) !important;
+    border-color: hsl(174, 70%, 50%) !important;
+    transform: translateY(-1px) !important;
+}
+
 .btn-check:focus + .btn-success, .btn-success:focus, .btn-success.focus {
   color: #fff;
   background-color: #66c732;

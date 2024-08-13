@@ -29,7 +29,7 @@
                     <select name="id_jurusan" id="jurusan" class="form-select">
                         @foreach ($kelas as $k)
 
-                        <option value= {{ $k->id_kelas}}> @php echo($k->tingkat); echo(' '); echo($k->jurusan->nama_jurusan); echo(' '); echo($k->nomor_kelas); @endphp </option>
+                        <option value= {{ $k->id_kelas}}> @php echo($k->tingkat); echo(' '); echo(strtoupper($k->id_jurusan)); echo(' '); echo($k->nomor_kelas); @endphp </option>
 
                         @endforeach
                     </select>
@@ -69,7 +69,7 @@
 </form>
 
 {{-- Hapus --}}
-<form action="{{ route('hapussiswa', ['id' => $w->id]) }}" method="post">
+<form action="{{ route('hapussiswa', ['id' => $w->id_user]) }}" method="post">
 @csrf
 @method('delete')
     <div class="modal fade" id="hapus{{$w->id}}" tabindex="-1" style="display: none;" aria-hidden="true">

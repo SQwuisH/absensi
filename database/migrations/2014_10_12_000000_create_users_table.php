@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default(password_hash("12345678", PASSWORD_DEFAULT));
             $table->string('foto')->nullable();
-            $table->enum('role', ['siswa', 'kesiswaan', 'wali', 'operator']);
+            $table->enum('role', ['siswa', 'kesiswaan', 'wali', 'operator', 'wali siswa']);
             $table->rememberToken();
             $table->timestamps();
         });

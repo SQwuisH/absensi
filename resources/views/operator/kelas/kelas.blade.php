@@ -231,7 +231,7 @@
                                                                 class="form-select">
                                                                 @foreach ($jurusan as $w)
                                                                     <option value={{ $w->id_jurusan }}>
-                                                                        {{ $w->nama_jurusan }} </option>
+                                                                        {{ $w->id_jurusan }} </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -326,7 +326,7 @@
                                                         <span class="fw-medium"> @php
                                                             echo $w->tingkat;
                                                             echo ' ';
-                                                            echo $w->jurusan->nama_jurusan;
+                                                            echo strtoupper($w->id_jurusan);
                                                             echo ' ';
                                                             echo $w->nomor_kelas;
                                                         @endphp</span>

@@ -9,16 +9,17 @@ class wali extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = [
         'nuptk',
-        'id',
+        'id_user',
         'jenis_kelamin',
         'nip',
     ];
 
     public function user()
     {
-        return $this->hasOne(user::class, 'id');
+        return $this->hasOne(user::class, 'id', 'id_user');
     }
 
     public function kelas()

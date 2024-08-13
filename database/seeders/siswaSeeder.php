@@ -15,26 +15,29 @@ class SiswaSeeder extends Seeder
     {
         Siswa::insert([
             'nis' => '0061748352',
-            'id' => 2,
+            'id_user' => 2,
             'id_kelas' => 1,
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678901',
+            'nik' => '2345678901234567',
         ]);
 
         Siswa::insert([
             'nis' => '0062894371',
-            'id' => 3,
+            'id_user' => 3,
             'id_kelas' => 2,
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678902',
+            'nik' => '3456789012345678',
         ]);
 
         Siswa::insert([
             'nis' => '0069584720',
-            'id' => 4,
+            'id_user' => 4,
             'id_kelas' => 3,
             'jenis_kelamin' => 'perempuan',
             'nisn' => '0045678903',
+            'nik' => '1234567890123456',
         ]);
 
     }

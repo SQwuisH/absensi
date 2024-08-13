@@ -83,5 +83,32 @@ class users extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        User::create([
+            'name' => 'walisiswa1',
+            'email' => 'walisiswa1@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'wali siswa',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'walisiswa2',
+            'email' => 'walisiswa2@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'wali siswa',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'walisiswa3',
+            'email' => 'walisiswa3@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'wali siswa',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

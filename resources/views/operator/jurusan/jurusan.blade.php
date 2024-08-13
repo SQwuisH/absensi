@@ -188,6 +188,18 @@
                         <!-- Content -->
 
                         <div class="container container-p-y">
+                            @if (Session::get('success'))
+                                <div class="alert alert-success alert-dismissible hide" role="alert">
+                                    {{ Session::get('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @elseif (Session::get('warning'))
+                                <div class="alert alert-warning alert-dismissible" role="alert">
+                                    {{ Session::get('warning') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             <div class="card">
                                 <div class="card-header d-flex">
                                     <input class="form-control" list="datalistOptions" id="search"
@@ -213,6 +225,13 @@
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col mb-3">
+                                                            <label for="nameBasic" class="form-label">ID
+                                                                Jurusan</label>
+                                                            <input name="id_jurusan" type="text"
+                                                                id="nameBasic"class="form-control"
+                                                                placeholder="Masukkan ID Jurusan" required>
+                                                        </div>
+                                                        <div class="col mb-3">
                                                             <label for="nameBasic" class="form-label">Nama
                                                                 Jurusan</label>
                                                             <input name="nama_jurusan" type="text"
@@ -229,10 +248,13 @@
                                     </div>
                                 </div>
 
+
+
                                 <div class="table-responsive text-nowrap">
                                     <table class="table" id="tabel">
                                         <thead>
                                             <tr>
+                                                <th>ID Jurusan</th>
                                                 <th>Nama Jurusan</th>
                                                 <th class="text-center">Aksi</th>
                                             </tr>
@@ -241,6 +263,9 @@
 
                                             @foreach ($jurusan as $w)
                                                 <tr>
+                                                    <td>
+                                                        <span class="fw-medium">@php echo($w->id_jurusan); @endphp</span>
+                                                    </td>
                                                     <td>
                                                         <span class="fw-medium">@php echo($w->nama_jurusan); @endphp</span>
                                                     </td>

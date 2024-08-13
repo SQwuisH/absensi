@@ -182,6 +182,19 @@
                     <!-- Content -->
 
                     <div class="container container-p-y">
+                        @if (Session::get('success'))
+                            <div class="alert alert-success alert-dismissible hide" role="alert">
+                                {{ Session::get('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @elseif (Session::get('warning'))
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                {{ Session::get('warning') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="card">
                             <div class="card-header d-flex">
                                 <input class="form-control" list="datalistOptions" id="search"
@@ -208,16 +221,19 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                               <p>Gunakan <a href={{ route('exportwali') }}><i><u>Format Ini</u></i></a> Untuk Impor Data!</p>
+                                                <p>Gunakan <a href={{ route('exportwali') }}><i><u>Format
+                                                                Ini</u></i></a> Untuk Impor Data!</p>
                                             </div>
 
-                                            <form action= "/kelolawalikelas/import" method="POST" enctype="multipart/form-data" >
-                                            @csrf
-                                            <div class="row">
-                                                <div class="col">
-                                                    <input name="file" type="file" class="form-control" required>
+                                            <form action= "/kelolawalikelas/import" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input name="file" type="file" class="form-control"
+                                                            required>
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </div>
 
 
@@ -327,7 +343,7 @@
                                                         @php
                                                             echo $w->kelas->tingkat;
                                                             echo ' ';
-                                                            echo $w->jurusan->nama_jurusan;
+                                                            echo $w->jurusan->id_jurusan;
                                                             echo ' ';
                                                             echo $w->nomor_kelas;
                                                         @endphp
@@ -345,10 +361,10 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $w->id }}"><i
+                                                                data-bs-target="#edit{{ $w->id_user }}"><i
                                                                     class="bx bx-edit-alt me-2"></i> Edit</button>
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#hapus{{ $w->id }}"><i
+                                                                data-bs-target="#hapus{{ $w->id_user }}"><i
                                                                     class="bx bx-trash me-2"></i> Hapus</button>
                                                         </div>
                                                     </div>

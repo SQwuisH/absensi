@@ -1,8 +1,8 @@
 {{-- edit --}}
 <form action="/editwalikelas" method="post" enctype="multipart/form-data">
     @csrf
-<input type="text" name="id" hidden value="{{$w->id}}">
-<div class="modal fade" id="edit{{$w->id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+<input type="text" name="id" hidden value="{{$w->id_user}}">
+<div class="modal fade" id="edit{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -60,10 +60,10 @@
 
 {{-- Hapus --}}
 
-<form action="{{ route('hapuswali', ['id' => $w->id]) }}" method="post">
+<form action="{{ route('hapuswali', ['id' => $w->id_user]) }}" method="post">
 @csrf
 @method('delete')
-    <div class="modal fade" id="hapus{{$w->id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal fade" id="hapus{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">

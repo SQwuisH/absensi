@@ -10,7 +10,7 @@ class absensi extends Model
     use HasFactory;
 
     protected $fillable = [
-        'NIS',
+        'nis',
         'id_koordinat_sekolah',
         'id_waktu_absen',
         'status',
@@ -18,12 +18,15 @@ class absensi extends Model
         'date',
         'jam_masuk',
         'jam_pulang',
-        'titik_koordinat',
+        'titik_koordinat_masuk',
+        'titik_koordinat_pulang',
     ];
 
-    public function absensi()
+    public $timestamps = false;
+
+    public function siswa()
     {
-        return $this->belongsTo(siswa::class, 'id_siswa');
+        return $this->belongsTo(siswa::class, 'nis', 'nis');
     }
 
     public function koordinat()

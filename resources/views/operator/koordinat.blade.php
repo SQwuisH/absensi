@@ -188,16 +188,18 @@
                                 <div class="card-body">
                                     <div id="map" style="height: 260px"></div>
                                     <form method="POST" action="editkoordinat">
-                                    @csrf
+                                        @csrf
                                         <div class="row">
                                             <div class="col">
                                                 <label for="k" class="col-form-label">Titik Koordinat</label>
-                                                <input name="k" type="text" id="k" class="form-control" value= "{{ $koordinat->titik_koordinat }}">
+                                                <input name="k" type="text" id="k"
+                                                    class="form-control" value= "{{ $koordinat->titik_koordinat }}">
                                             </div>
 
                                             <div class="col">
                                                 <label for="r" class="col-form-label">radius</label>
-                                                <input name="r" type="text" id="k" class="form-control" value= {{ $koordinat->radius}}>
+                                                <input name="r" type="text" id="k"
+                                                    class="form-control" value={{ $koordinat->radius }}>
                                             </div>
                                         </div>
 
@@ -267,40 +269,40 @@
 
         <!-- Main JS -->
         <script src={{ asset('assets/t1/js/main.js') }}></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
         <script>
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            }
 
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
-}
 
+            function successCallback(position) {
 
-function successCallback(position) {
+                var lokasi_sekolah = "{{ $koordinat->titik_koordinat }}";
+                var lok = lokasi_sekolah.split(",");
+                var lat_sekolah = lok[0];
+                var long_sekolah = lok[1];
+                var map = L.map('map').setView([lat_sekolah, long_sekolah], 17);
+                var radius = "{{ $koordinat->radius }}";
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                var marker = L.marker([lat_sekolah, long_sekolah]).addTo(map);
+                var circle = L.circle([lat_sekolah, long_sekolah], {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.5,
+                    radius: radius
+                }).addTo(map);
+            }
 
-    var lokasi_sekolah = "{{ $koordinat->titik_koordinat }}";
-    var lok = lokasi_sekolah.split(",");
-    var lat_sekolah = lok[0];
-    var long_sekolah = lok[1];
-    var map = L.map('map').setView([lat_sekolah, long_sekolah], 16);
-    var radius = "{{ $koordinat->radius }}";
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
-    var marker = L.marker([lat_sekolah, long_sekolah]).addTo(map);
-    var circle = L.circle([lat_sekolah, long_sekolah], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: radius
-    }).addTo(map);
-}
+            function errorCallback(params) {
 
-function errorCallback(params) {
-
-}
-
+            }
         </script>
 
         <!-- Page JS -->

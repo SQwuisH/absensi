@@ -168,7 +168,7 @@
                 <h4 class="m-1">
                     Kelola Kelas /
                     @foreach ($siswa as $w)
-                        @php echo($w->kelas->tingkat); echo(' '); echo($w->jurusan->nama_jurusan); echo(' '); echo($w->nomor_kelas); @endphp
+                        @php echo($w->kelas->tingkat); echo(' '); echo(strtoupper($w->kelas->id_jurusan)); echo(' '); echo($w->kelas->nomor_kelas); @endphp
                     @endforeach
                 </h4>
 

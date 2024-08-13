@@ -12,7 +12,7 @@ class siswa extends Model
     public $primaryKey  = 'nis';
     protected $fillable = [
         'nis',
-        'id',
+        'id_user',
         'id_kelas',
         'nama',
         'jenis_kelamin',
@@ -21,7 +21,7 @@ class siswa extends Model
 
     public function user()
     {
-        return $this->hasOne(user::class, 'id', 'id');
+        return $this->hasOne(user::class, 'id', 'id_user');
     }
 
     public function kelas()
@@ -29,9 +29,9 @@ class siswa extends Model
         return $this->belongsTo(kelas::class, 'id_kelas');
     }
 
-    public function absensi()
+    public function siswa()
     {
-        return $this->hasMany(absensi::class, 'NIS');
+        return $this->hasMany(absensi::class, 'nis', 'nis');
     }
 
 

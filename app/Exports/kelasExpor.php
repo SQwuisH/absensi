@@ -12,8 +12,8 @@ class kelasExpor implements FromArray
     public function array() : array
     {
         return ([
-            ['tingkat', 'nama jurusan', 'nomor kelas', 'nis','nisn', 'nama', 'email', 'jenis_kelamin'],
-            ['10/11/12', '', '', '', '', '', '', 'laki laki/perempuan']
+            ['tingkat', 'nama jurusan', 'nomor kelas', 'nis','nisn', 'nik', 'nama', 'email', 'jenis_kelamin'],
+            ['10/11/12', '', '', '', '', '', '', '', 'laki laki/perempuan']
         ]);
     }
 }

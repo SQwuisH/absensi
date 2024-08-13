@@ -10,7 +10,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nameBasic" class="form-label">ID Jurusan</label>
+                            <input name="id_jurusan" type="text" id="nameBasic" class="form-control"
+                                value=" @php echo($w->id_jurusan); @endphp " required>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nameBasic" class="form-label">Nama Jurusan</label>

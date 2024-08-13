@@ -15,8 +15,11 @@ return new class extends Migration
         {
             $table->string('nis')->primary();
 
-            $table->unsignedBigInteger('id');
-            $table->foreign('id')->references('id')->on('users');
+            $table->unsignedBigInteger('id_user');
+            $table->foreign('id_user')->references('id')->on('users');
+
+            $table->string('nik');
+            $table->foreign('nik')->references('nik')->on('wali_siswas');
 
             $table->unsignedInteger('id_kelas')->nullable();
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('set null');

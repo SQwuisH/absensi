@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- PWA  -->
+    <meta name="theme-color" content="#6777ef" />
+    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
@@ -13,8 +18,33 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+
     <link rel="stylesheet" href={{ asset('assets/t2/css/styles.css') }}>
-    <link rel="stylesheet" href={{ asset('assets/t1/vendor/fonts/boxicons.css') }}>
+    <link rel="stylesheet" href={{ asset('assets/t1/vendor/fonts/boxicons.css') }} />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/core.css') }} class="template-customizer-core-css" />
+    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/theme-default.css') }}
+        class="template-customizer-theme-css" />
+    <link rel="stylesheet" href={{ asset('assets/t1/css/demo.css') }} />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }} />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/pages/page-auth.css') }} />
+
+    <!-- Helpers -->
+    <script src={{ asset('assets/t1/vendor/js/helpers.js') }}></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src={{ asset('assets/t1/js/config.js') }}></script>
 
     <!-- icon -->
     <link rel="icon" type="image/x-icon" href={{ asset('assets/t2/img/6.png') }} />
@@ -50,12 +80,11 @@
 
                     <li class="nav__item" style="color: #222b2a;">
                         <div class="btn-group" id="dropdown-icon-demo">
-                            <a  class="dropdown nav__link" data-bs-toggle="dropdown"
-                                aria-expanded="false">
+                            <a class="dropdown nav__link" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bx bx-user me-1 nav__icon"></i>
                                 <span class="nav__name"> Profil <i class="bx bx-chevron-down me-1"></i> </span>
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" >
+                            <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                     <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
@@ -64,9 +93,12 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a href="{{ route('logout') }}"  onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="dropdown-item d-flex align-items-center">
+                                    <a href="{{ route('logout') }}"
+                                        onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                                        class="dropdown-item d-flex align-items-center">
                                         <i class="bx bx-log-out scaleX-n1-rtl"></i> Logout
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            class="d-none">
                                             @csrf
                                         </form>
                                     </a>
@@ -81,107 +113,265 @@
         </nav>
     </header>
 
-    <main>
-        <!--=============== HOME ===============-->
-        <div class="container flex-grow-1 container-p-y" style="margin-top: 60px;">
+    <!--=============== HOME ===============-->
+    <div class="content-wrapper">
+        <div class="container flex-grow-1 container-p-y">
+            <div class="d-block d-sm-none" style="min-height: 25px"></div>
+            <div class="d-none d-sm-block d-md-none" style="min-height: 30px"></div>
+            <div class="d-none d-md-block d-lg-none" style="min-height: 50px"></div>
+            <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
+            <div class="d-none d-xl-block" style="min-height: 60px"></div>
+
+            <div class="modal fade" id="izinSakitModal" tabindex="-1" style="display: none;" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Laporan Izin Atau Sakit</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row d-flex justify-content-center text-centered">
+                                <div class="col mb-3 d-flex justify-content-center text-centered">
+                                    <a href="/izin-sakit/1" class="btn btn-outline-warning">
+                                        <i class='bx bx-edit'></i>&nbsp; Izin
+                                    </a>
+                                </div>
+                                <div class="col mb-3 d-flex justify-content-center text-centered">
+                                    <a href="/izin-sakit/2" class="btn btn-outline-warning" style="min-height: 75px; min-width:75px">
+                                        <i class='bx bx-injection'></i>&nbsp; Sakit
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row mb-2">
-                <div class="card" >
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Halo, {{ auth::user()->name}} !
-                        </h4>
+                <div class="col d-none d-lg-block">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                Halo, {{ Auth::user()->name }} !
+                            </h4>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="row mb-2 text-center">
-                <div class="card col m-1">
-                    <div class="card-header">
-                        <h6 class="card-title">
-                            Jadwal Absen Masuk
-                        </h6>
-                    </div>
-                    <div class="card-body">
 
+                <div class="col d-none d-lg-block">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="card-title">
+                                Jadwal Absen Masuk
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            @php
+                                echo $waktu->mulai_absen;
+                                echo ' - ';
+                                echo $waktu->batas_absen;
+                            @endphp
+                        </div>
                     </div>
                 </div>
-                <div class="card col m-1" >
-                    <div class="card-header">
-                        <h6 class="card-title">
-                            jadwal Absen Pulang
-                        </h6>
-                    </div>
-                    <div class="card-body">
 
+                <div class="col d-none d-lg-block">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6 class="card-title">
+                                jadwal Absen Pulang
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            @php
+                                echo $waktu->mulai_pulang;
+                                echo ' - ';
+                                echo $waktu->batas_pulang;
+                            @endphp
+                        </div>
                     </div>
                 </div>
-                <div class="card col m-1" >
-                    <div class="card-header">
-                        <h6 class="card-title">
-                            Jarak
-                        </h6>
-                    </div>
-                    <div class="card-body">
 
+
+                <div class="col d-none d-lg-block">
+                    <div class="card mb-4" style="max-height: 125px">
+                        <div class="card-header">
+                            <h6 class="card-title">
+                                Jarak
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <p id="distance"></p>
+                        </div>
                     </div>
                 </div>
-                <div class="card col m-1" >
-                    <div class="card-header">
-                        <h6 class="card-title">
-                            Tanggal
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        @php
-                            echo date('D, d-m-y');
-                        @endphp
+
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-header ">
+                            <h6 class="card-title d-none d-lg-block">
+                                Tanggal
+                            </h6>
+                            <h4 class="card-title d-lg-none ">
+                                Tanggal
+                            </h4>
+                        </div>
+
+                        <div class="card-body">
+                            @php
+                                setlocale(LC_ALL, 'IND');
+                                echo strftime('%A, %e %B %G');
+                            @endphp
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div class="row mb-2 text-center">
-                <div class="card col m-1" >
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Jam
-                        </h4>
-                    </div>
-                    <div class="card-body">
-                        @php
-                            echo now();
-                        @endphp
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                Jam
+                            </h4>
+                        </div>
+                        <div class="card-body d-flex justify-content-center text-center">
+                            <div class="row" style="width: 200px">
+                                <h2 class="col" id="j"></h2>
+                                <h2 class="col">:</h2>
+                                <h2 class="col" id="m"></h2>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-                <div class="card col m-1" >
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Keterangan Kehadiran
-                        </h4>
-                    </div>
-                    <div class="card-body">
 
-                    </div>
+                {{-- STATUS --}}
+                {{-- BELUM ABSEN --}}
+                @if ($statusabsen == 'belum absen')
+                    {{-- TERLAMBAT --}}
+                    @if (date('H:i:s') < $waktu->batas_absen)
+                        <div class="col">
+                            <div class="card mb-4 border border-warning">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        Status
+                                    </h4>
+                                </div>
+                                <div class="card-body d-flex justify-content-center text-center">
+                                    <h2 class="bg-label-warning">{{ $statusabsen }}</h2>
+
+                                </div>
+                            </div>
+                        </div>
+                        {{-- BELUM ABSEN --}}
+                    @else
+                        <div class="col">
+                            <div class="card mb-4 border border-danger">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        Status
+                                    </h4>
+                                </div>
+                                <div class="card-body d-flex justify-content-center text-center ">
+                                    <h2 class="bg-label-danger"> Terlambat </h2>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    {{-- HADIR --}}
+                @elseif ($statusabsen == 'hadir' || $statusabsen == 'terlambat')
+                    {{-- BELUM ABSEN PULANG --}}
+                    @if (date('H:i:s') > $waktu->mulai_pulang)
+                        <div class="col">
+                            <div class="card mb-4 border border-warning">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        Status
+                                    </h4>
+                                </div>
+                                <div class="card-body d-flex justify-content-center text-center ">
+                                    <h2 class="bg-label-warning">Belum Absen Pulang</h2>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- BELUM WAKTU PULANG --}}
+                    @elseif($statusabsen == 'terlambat')
+                        <div class="col">
+                            <div class="card mb-4 border border-warning">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        Status
+                                    </h4>
+                                </div>
+                                <div class="card-body d-flex justify-content-center text-center ">
+                                    <h2 class="bg-label-warning">{{ $statusabsen }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- BELUM WAKTU PULANG --}}
+                    @else
+                        <div class="col">
+                            <div class="card mb-4 border border-success">
+                                <div class="card-header">
+                                    <h4 class="card-title">
+                                        Status
+                                    </h4>
+                                </div>
+                                <div class="card-body d-flex justify-content-center text-center ">
+                                    <h2 class="bg-label-success">{{ $statusabsen }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+
+                @endif
+            </div>
+
+
+
+            @if ($statusabsen == 'belum absen')
+                <div class="row mb-2 text-center">
+                    <a href="{{ route('absen') }}" id="presensi" class="btn btn-absen">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                Absen
+                            </h4>
+                        </div>
+                    </a>
                 </div>
-            </div>
-
-            <div class="row mb-2 text-center">
-                <a href="#" class="card col m-1" >
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Absen
-                        </h4>
+            @elseif($statusabsen == 'hadir' || $statusabsen == 'terlambat')
+                @if (now() < $waktu->mulai_pulang)
+                    <div class="row mb-2 text-center">
+                        <a href="{{ route('absen') }}" id="presensi" class="btn btn-absen">
+                            <div class="card-header">
+                                <h4 class="card-title">
+                                    Pulang
+                                </h4>
+                            </div>
+                        </a>
                     </div>
-                </a>
-            </div>
+                @endif
+
+            @endif
+
 
             <div class="row mb-2 text-center">
-                <a href="#" class="card col m-1" >
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                    data-bs-target="#izinSakitModal">
                     <div class="card-header">
                         <h4 class="card-title">
                             Izin atau Sakit
                         </h4>
                     </div>
-                </a>
+                </button>
             </div>
 
             <div style="height: 50px">
@@ -191,10 +381,53 @@
             </div>
 
         </div>
-    </main>
+
+    </div>
 
 
     <!--=============== MAIN JS ===============-->
+    <script src={{ asset('assets/waktu.js') }}></script>
+    <script>
+        function jarak() {
+            var lokasi = document.getElementById('lokasi');
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            }
+
+            // Output the server values to verify
+            var lokasi_sekolah = "{{ $lokasi->titik_koordinat }}";
+            var radius = parseFloat("{{ $lokasi->radius }}");
+            console.log('lokasi_sekolah:', lokasi_sekolah);
+            console.log('radius:', radius);
+
+            function successCallback(position) {
+                console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
+                var lat_user = position.coords.latitude;
+                var long_user = position.coords.longitude;
+
+                // Example coordinates for testing
+                var lok = lokasi_sekolah.split(",");
+                var lat_sekolah = lok[0];
+                var long_sekolah = lok[1];
+
+                var userLatLng = L.latLng(lat_user, long_user);
+                var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
+
+                var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
+                var distanceInKm = (distance / 1000).toFixed(2);
+
+                document.getElementById('distance').innerText = distance + ' m';
+                if (distance > radius) document.getElementById('presensi').classList.add('disabled');
+
+            }
+
+            function errorCallback(error) {
+                console.error("Error retrieving location:", error);
+            }
+        }
+        setInterval(jarak, 500);
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
@@ -210,6 +443,36 @@
 
     {{-- SCRIPTS --}}
 
+    <script src="{{ asset('/sw.js') }}"></script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            // Register a service worker hosted at the root of the
+            // site using the default scope.
+            navigator.serviceWorker.register("/sw.js").then(
+                (registration) => {
+                    console.log("Service worker registration succeeded:", registration);
+                },
+                (error) => {
+                    console.error(`Service worker registration failed: ${error}`);
+                },
+            );
+        } else {
+            console.error("Service workers are not supported.");
+        }
+    </script>
+    <script src={{ asset('assets/t1/vendor/libs/jquery/jquery.js') }}></script>
+    <script src={{ asset('assets/t1/vendor/libs/popper/popper.js') }}></script>
+    <script src={{ asset('assets/t1/vendor/js/bootstrap.js') }}></script>
+    <script src={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>
+    <script src={{ asset('assets/t1/vendor/js/menu.js') }}></script>
+
+    <script src={{ asset('assets/t1/js/main.js') }}></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>

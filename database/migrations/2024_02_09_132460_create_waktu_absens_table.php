@@ -17,6 +17,7 @@ return new class extends Migration
             $table->time('batas_absen');
             $table->time('mulai_pulang');
             $table->time('batas_pulang');
+            $table->time('toleransi');
         });
     }
 

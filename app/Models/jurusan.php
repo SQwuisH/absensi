@@ -9,16 +9,22 @@ class jurusan extends Model
 {
     use HasFactory;
 
+    public $primaryKey  = 'id_jurusan';
+    public $incrementing = false;
+    public $timestamps = false;
+    protected $keytype = 'string';
+
     protected $fillable = [
+        'id_jurusan',
         'nama_jurusan',
     ];
 
-    public function kelas()
+    public function jurusan()
     {
-        return $this->belongsTo(kelas::class ,'id_jurusan');
+        return $this->hasMany(kelas::class,'id_jurusan', 'id_jurusan');
     }
 
-    public function jurusan()
+    public function walijurusan()
     {
         return $this->hasOneThrough(wali::class, kelas::class, 'id_jurusan', 'nutpk', 'id_jurusan', 'nutpk');
     }

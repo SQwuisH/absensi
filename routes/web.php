@@ -100,5 +100,9 @@ Route::group(['middleware' => ['auth', 'roles:wali']], function ()
 //SISWA
 Route::group(['middleware' => ['auth', 'roles:siswa']], function ()
 {
-    Route::resource('siswa', App\Http\Controllers\siswaController::class);
+    Route::get('/siswa', [App\Http\Controllers\SiswaController::class, 'index'])->name('siswa');
+    Route::get('/siswa/absen', [App\Http\Controllers\SiswaController::class, 'absen'])->name('absen');
+    Route::post('/absen', [App\Http\Controllers\SiswaController::class, 'kirimabsen'])->name('kirimabsen');
+    Route::get('/izin-sakit/{opt}', [App\Http\Controllers\SiswaController::class, 'izinSakit'])->name('izinSakit');
+    Route::get('/izin-sakit', [App\Http\Controllers\SiswaController::class, 'krmizinSakit'])->name('krmizinSakit');
 });

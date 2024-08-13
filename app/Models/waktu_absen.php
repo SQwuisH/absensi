@@ -14,6 +14,7 @@ class waktu_absen extends Model
         'batas_absen',
         'mulai_pulang',
         'batas_pulang',
+        'toleransi'
     ];
 
     public function waktu_absen()
