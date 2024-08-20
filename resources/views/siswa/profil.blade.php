@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    @laravelPWA
+
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
@@ -113,8 +115,21 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
-            <form action="">
+            @if (Session::get('success'))
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif (Session::get('error'))
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    {{ Session::get('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
+            <form action={{ route('editprofil') }} method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="id" value={{ $siswa->id }}>
                 <div class="row mb-2">
                     <div class="col">
                         <div class="card">
@@ -132,14 +147,9 @@
                                             <span class="d-none d-sm-block">Upload new photo</span>
                                             <i class="bx bx-upload d-block d-sm-none"></i>
                                             <input type="file" id="upload" class="account-file-input"
-                                                hidden="" accept="image/png, image/jpeg, image/jpg">
+                                                hidden="" name="foto" accept="image/png, image/jpeg, image/jpg">
                                         </label>
-                                        <button type="button"
-                                            class="btn btn-outline-secondary account-image-reset mb-4">
-                                            <i class="bx bx-reset d-block d-sm-none"></i>
-                                            <span class="d-none d-sm-block">Reset</span>
-                                        </button>
-                                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                        <p class="text-muted mb-0">Allowed JPG, GIF or PNG.</p>
                                     </div>
                                 </div>
                             </div>
@@ -157,11 +167,12 @@
                                         <label for="NIS" class="form-label">NIS</label>
                                         <input class="form-control" type="text" id="NIS"
                                             value="00{{ $siswa->siswa->nis }}" disabled>
+                                        <input type="hidden" name="nis" value="00{{ $siswa->siswa->nis }}">
                                     </div>
 
                                     <div class="mb-3 col-md-6">
                                         <label for="Email" class="form-label">Email</label>
-                                        <input class="form-control" type="Email" id="Email" name="Email"
+                                        <input class="form-control" type="Email" id="Email" name="email"
                                             value="{{ $siswa->email }}">
                                     </div>
                                 </div>
@@ -169,19 +180,19 @@
                                     <div class="mb-3 col-md-6">
                                         <label for="password" class="form-label">ganti password</label>
                                         <input class="form-control" type="password" id="password" name="password"
-                                           placeholder="masukkan password baru">
+                                            placeholder="masukkan password baru">
                                     </div>
 
                                     <div class="mb-3 col-md-6">
                                         <label for="kpassword" class="form-label">konfirmasi password</label>
                                         <input class="form-control" type="password" id="kpassword" name="kPassword"
-                                           placeholder="masukkan password baru">
+                                            placeholder="masukkan password baru">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <div class="mt-2">
                                         <button type="submit" class="btn btn-absen me-2">Save changes</button>
-                                      </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

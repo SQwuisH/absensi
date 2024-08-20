@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\absensi;
 use App\Models\koordinat_sekolah;
 use App\Models\siswa;
+use App\Models\User;
 use App\Models\waktu_absen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -203,13 +204,65 @@ class SiswaController extends Controller
 
     public function editprofil(Request $r)
     {
+        $r->validate([
+            'foto' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+        ]);
+
+        //password
+        if ($r->password != $r->kPassword) {
+            return redirect()->back()->with('failed', 'Password Berbeda');
+        }
+        $count = strlen($r->password);
+        if ($count > 0) {
+            $p = User::where('id', $r->id)->update([
+                'password' => password_hash($r->password, PASSWORD_DEFAULT)
+            ]);
+        }
+
+        //foto
+        if ($r->hasFile('foto'))
+        {
+            $foto = $r->file('foto');
+
+            $folderPath = "public/user_avatar/";
+
+            $extension = $foto->getClientOriginalExtension();
+            $fileName = $r->nis . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+
+            User::where('id', $r->id)->update([
+                'foto' => $fileName
+            ]);
+        }
+
+        // email
+        $simpan = User::where('id', $r->id)->update([
+            'email' => $r->email,
+        ]);
+
+        //redirecting
+        if ($simpan) {
+            return redirect()->back()->with('success', 'Data Berhasil di Update');
+        } else {
+            return redirect()->back()->with('failed', 'Data Gagal di Update');
+        }
+    }
+
+    public function resetfoto(Request $r)
+    {
+        dd($r->all());
+        user::where('id', $r->id)->update([
+            'foto' => 'user_default.png'
+        ]);
 
         return redirect()->back()->with('success', 'Data Berhasil di Update');
     }
 
     public function laporan()
     {
-        
+
 
         return view('siswa.laporan');
     }

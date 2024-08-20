@@ -7,6 +7,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\WaliController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +21,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Auth::routes();
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 //login page
 Route::group(['middleware' => 'guest'], function ()
 {
-    Route::get('/login', [LoginController::class, 'index'])->name('login');
-    Route::post('/postlogin', [LoginController::class, 'postlogin'])->name('postlogin');
+    Route::get('/login', [App\Http\Controllers\login::class, 'index'])->name('login');
+    Route::post('/postlogin', [App\Http\Controllers\login::class, 'postlogin'])->name('postlogin');
 });
 
 
@@ -52,65 +52,66 @@ Route::get('/', function () {
 //OPERATOR
 Route::group(['middleware' => ['auth', 'roles:operator']], function ()
 {
-    Route::get('/operator', [OperatorController::class, 'index'])->name('operator');
+    Route::get('/operator', [App\Http\Controllers\OperatorController::class, 'index'])->name('operator');
 
-    Route::get('/kelolakesiswaan', [OperatorController::class, 'kesiswaan'])->name('kesiswaan');
-    Route::post('/tambahkesiswaan', [OperatorController::class, 'tambahkesiswaan'])->name('tambahkesiswaan');
-    Route::post('/editkesiswaan', [OperatorController::class, 'editkesiswaan'])->name('editkesiswaan');
-    Route::delete('/hapuskesiswaan{id}', [OperatorController::class, 'hapuskesiswaan'])->name('hapuskesiswaan');
+    Route::get('/kelolakesiswaan', [App\Http\Controllers\OperatorController::class, 'kesiswaan'])->name('kesiswaan');
+    Route::post('/tambahkesiswaan', [App\Http\Controllers\OperatorController::class, 'tambahkesiswaan'])->name('tambahkesiswaan');
+    Route::post('/editkesiswaan', [App\Http\Controllers\OperatorController::class, 'editkesiswaan'])->name('editkesiswaan');
+    Route::delete('/hapuskesiswaan{id}', [App\Http\Controllers\OperatorController::class, 'hapuskesiswaan'])->name('hapuskesiswaan');
 
-    Route::get('/kelolawalikelas', [OperatorController::class, 'wali'])->name('wali');
-    Route::post('/tambahwalikelas', [OperatorController::class, 'tambahwali'])->name('tambahwali');
-    Route::post('/editwalikelas', [OperatorController::class, 'editwali'])->name('editwali');
-    Route::delete('/hapuswalikelas/{id}', [OperatorController::class, 'hapuswali'])->name('hapuswali');
-    Route::get('/kelolawalikelas/export', [OperatorController::class, 'exportwali'])->name('exportwali');
-    Route::post('/kelolawalikelas/import', [OperatorController::class, 'importwali'])->name('imporwali');
+    Route::get('/kelolawalikelas', [App\Http\Controllers\OperatorController::class, 'wali'])->name('wali');
+    Route::post('/tambahwalikelas', [App\Http\Controllers\OperatorController::class, 'tambahwali'])->name('tambahwali');
+    Route::post('/editwalikelas', [App\Http\Controllers\OperatorController::class, 'editwali'])->name('editwali');
+    Route::delete('/hapuswalikelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuswali'])->name('hapuswali');
+    Route::get('/kelolawalikelas/export', [App\Http\Controllers\OperatorController::class, 'exportwali'])->name('exportwali');
+    Route::post('/kelolawalikelas/import', [App\Http\Controllers\OperatorController::class, 'importwali'])->name('imporwali');
 
-    Route::get('/kelolakelas', [OperatorController::class, 'kelas'])->name('kelas');
-    Route::get('/kelolakelas/export', [OperatorController::class, 'exportkelas'])->name('exportkelas');
-    Route::post('/kelolakelas/import', [OperatorController::class, 'importkelas'])->name('importkelas');
-    route::get('/back', [OperatorController::class, 'back'])->name('back');
-        Route::get('/kelolakelas/{id}/siswa', [OperatorController::class, 'siswa'])->name('kelassiswa');
-        Route::post('/kelolakelas/tambahsiswa', [OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
-        Route::post('/kelolakelas/editsiswa', [OperatorController::class, 'editSiswa'])->name('editSiswa');
-        Route::delete('/kelolakelas/hapussiswa{id}', [OperatorController::class, 'hapusSiswa'])->name('hapussiswa');
+    Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
+    Route::get('/kelolakelas/export', [App\Http\Controllers\OperatorController::class, 'exportkelas'])->name('exportkelas');
+    Route::post('/kelolakelas/import', [App\Http\Controllers\OperatorController::class, 'importkelas'])->name('importkelas');
+    route::get('/back', [App\Http\Controllers\OperatorController::class, 'back'])->name('back');
+        Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('kelassiswa');
+        Route::post('/kelolakelas/tambahsiswa', [App\Http\Controllers\OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
+        Route::post('/kelolakelas/editsiswa', [App\Http\Controllers\OperatorController::class, 'editSiswa'])->name('editSiswa');
+        Route::delete('/kelolakelas/hapussiswa{id}', [App\Http\Controllers\OperatorController::class, 'hapusSiswa'])->name('hapussiswa');
 
-    Route::post('/tambahkelas', [OperatorController::class, 'tambahkelas'])->name('tambahkelas');
-    Route::post('/editkelas', [OperatorController::class, 'editkelas'])->name('editkelas');
-    Route::delete('/hapuskelas/{id}', [OperatorController::class, 'hapuskelas'])->name('hapuskelas');
+    Route::post('/tambahkelas', [App\Http\Controllers\OperatorController::class, 'tambahkelas'])->name('tambahkelas');
+    Route::post('/editkelas', [App\Http\Controllers\OperatorController::class, 'editkelas'])->name('editkelas');
+    Route::delete('/hapuskelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuskelas'])->name('hapuskelas');
 
-    Route::get('/kelolakoordinat', [OperatorController::class, 'koordinat'])->name('koordinat');
-    Route::post('/editkoordinat', [OperatorController::class, 'editkoordinat'])->name('editkoordinat');
+    Route::get('/kelolakoordinat', [App\Http\Controllers\OperatorController::class, 'koordinat'])->name('koordinat');
+    Route::post('/editkoordinat', [App\Http\Controllers\OperatorController::class, 'editkoordinat'])->name('editkoordinat');
 
-    Route::get('/kelolawaktuabsen', [OperatorController::class, 'waktu'])->name('absen');
-    route::post('/editwaktuabsen', [OperatorController::class, 'editwaktu'])->name('editabsen');
+    Route::get('/kelolawaktuabsen', [App\Http\Controllers\OperatorController::class, 'waktu'])->name('absen');
+    route::post('/editwaktuabsen', [App\Http\Controllers\OperatorController::class, 'editwaktu'])->name('editabsen');
 
-    Route::get('/kelolajurusan', [OperatorController::class, 'jurusan'])->name('jurusan');
-    Route::post('/tambahjurusan', [OperatorController::class, 'tambahjurusan'])->name('tambahjurusan');
-    Route::post('/editjurusan', [OperatorController::class, 'editjurusan'])->name('editjurusan');
-    Route::delete('/hapusjurusan/{id}', [OperatorController::class, 'hapusjurusan'])->name('hapusjurusan');
+    Route::get('/kelolajurusan', [App\Http\Controllers\OperatorController::class, 'jurusan'])->name('jurusan');
+    Route::post('/tambahjurusan', [App\Http\Controllers\OperatorController::class, 'tambahjurusan'])->name('tambahjurusan');
+    Route::post('/editjurusan', [App\Http\Controllers\OperatorController::class, 'editjurusan'])->name('editjurusan');
+    Route::delete('/hapusjurusan/{id}', [App\Http\Controllers\OperatorController::class, 'hapusjurusan'])->name('hapusjurusan');
 });
 
 //KESISWAAN
 Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function ()
 {
-    Route::get('/kesiswaan', [KesiswaanController::class, 'index'])->name('kesiswaan');
+    Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
 });
 
 //WALI KELAS
 Route::group(['middleware' => ['auth', 'roles:wali']], function ()
 {
-    Route::get('/wali', [WaliController::class, 'index'])->name('wali');
+    Route::get('/wali', [App\Http\Controllers\WaliController::class, 'index'])->name('wali');
 });
 
 //SISWA
 Route::group(['middleware' => ['auth', 'roles:siswa']], function ()
 {
-    Route::get('/siswa', [SiswaController::class, 'index'])->name('siswa');
-    Route::get('/siswa/absen', [SiswaController::class, 'absen'])->name('absen');
-    Route::post('/absen', [SiswaController::class, 'kirimabsen'])->name('kirimabsen');
-    Route::get('/pengajuan/{opt}', [SiswaController::class, 'izinSakit'])->name('izinSakit');
-    Route::post('/pengajuan', [SiswaController::class, 'krmizinSakit'])->name('krmizinSakit');
-    Route::get('/siswa/profil', [SiswaController::class, 'profil'])->name('sProfil');
-    Route::get('/siswa/laporan', [SiswaController::class, 'laporan'])->name('sLaporan');
+    Route::get('/siswa', [App\Http\Controllers\siswaController::class, 'index'])->name('siswa');
+    Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('absen');
+    Route::post('/absen', [App\Http\Controllers\siswaController::class, 'kirimabsen'])->name('kirimabsen');
+    Route::get('/pengajuan/{opt}', [App\Http\Controllers\siswaController::class, 'izinSakit'])->name('izinSakit');
+    Route::post('/pengajuan', [App\Http\Controllers\siswaController::class, 'krmizinSakit'])->name('krmizinSakit');
+    Route::get('/siswa/profil', [App\Http\Controllers\siswaController::class, 'profil'])->name('sProfil');
+    Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('editprofil');
+    Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('sLaporan');
 });
