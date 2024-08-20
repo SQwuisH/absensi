@@ -10,5 +10,8 @@ function clock() {
 
     document.getElementById("j").innerHTML = jam.pad(2);
     document.getElementById("m").innerHTML = menit.pad(2);
+
+    document.getElementById("jj").innerHTML = jam.pad(2);
+    document.getElementById("mm").innerHTML = menit.pad(2);
 }
 setInterval(clock, 10);

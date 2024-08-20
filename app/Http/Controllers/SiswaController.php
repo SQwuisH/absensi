@@ -24,7 +24,7 @@ class SiswaController extends Controller
         $absenmasuk = false;
         $absenpulang = false;
 
-        $statusAbsen = $cekabsen ? $cekabsen->status : 'belum absen';
+        $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presensi';
 
         $lokasi = koordinat_sekolah::first();
 
@@ -62,8 +62,7 @@ class SiswaController extends Controller
         $siswa = siswa::where('id_user', $user->id)->first();
         $waktu = waktu_absen::first();
         $status = 'hadir';
-        if (date('H:i:s') > $waktu->batas_masuk)
-        {
+        if (date('H:i:s') > $waktu->batas_masuk) {
             $status = 'terlambat';
         }
         $date = date("Y-m-d");
@@ -155,6 +154,63 @@ class SiswaController extends Controller
 
     public function krmizinSakit(Request $r)
     {
-        return redirect()->back()->with('success');
+        $r->validate([
+            'foto_masuk' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
+            'keterangan' => 'required|string|max:255',
+            'opt' => 'required|string',
+        ]);
+
+        if ($r->hasFile('foto_masuk')) {
+            $siswa = siswa::where('id_user', auth::user()->id)->first();
+            $date =  date("Y-m-d");
+            $nis = $siswa->nis;
+            $status = $r->opt;
+            $jam = date("H:i:s");
+
+            $foto = $r->file('foto_masuk');
+
+            $folderPath = "public/uploads/absensi/";
+
+            $extension = $foto->getClientOriginalExtension();
+            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
+            $file = $folderPath . $fileName;
+
+
+            $simpan = absensi::insert([
+                'nis' => "00" . $siswa->nis,
+                'status' => $r->opt,
+                'foto_masuk' => $fileName,
+                'keterangan' => $r->keterangan . " : " . $jam,
+                'date' => $date,
+
+            ]);
+
+            if ($simpan) {
+                Storage::put($file, file_get_contents($foto));
+                return redirect()->route('siswa')->with('success');
+            } else {
+                return redirect()->back()->with('error');
+            }
+        }
+    }
+
+    public function profil()
+    {
+        $siswa = auth::user();
+
+        return view('siswa.profil', compact('siswa'));
+    }
+
+    public function editprofil(Request $r)
+    {
+
+        return redirect()->back()->with('success', 'Data Berhasil di Update');
+    }
+
+    public function laporan()
+    {
+        
+
+        return view('siswa.laporan');
     }
 }

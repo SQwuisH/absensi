@@ -11,10 +11,9 @@ class absensi extends Model
 
     protected $fillable = [
         'nis',
-        'id_koordinat_sekolah',
-        'id_waktu_absen',
         'status',
-        'bukti',
+        'foto_masuk',
+        'foto_pulang',
         'date',
         'jam_masuk',
         'jam_pulang',

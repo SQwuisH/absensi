@@ -193,7 +193,8 @@
                                         <button type="button" class="btn btn-outline-secondary"
                                             data-bs-toggle="modal" data-bs-target="#tambah"><i
                                                 class="bx bxs-file-plus"></i> Tambah</button>
-                                        <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#impor"><i
+                                        <button type="button" class="btn btn-outline-secondary"
+                                            data-bs-toggle="modal" data-bs-target="#impor"><i
                                                 class="bx bx-import"></i> Impor</button>
                                     </div>
 

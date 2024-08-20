@@ -120,12 +120,12 @@
 
             <div class="row">
                 <!-- Basic Badges -->
-                <div class="col-lg">
+                <div class="col">
                     <div class="card mb-4">
                         <h5 class="card-header">Foto</h5>
                         <div class="card-body">
                             <div class="row d-flex justify-content-center">
-                                <div style="overflow: hidden; width: 450px; height: 300px; position: relative;"
+                                <div style="overflow: hidden; position: relative;"
                                     class="mb-3">
                                     <div style="width: 100%; height: 100%; overflow:hidden">
                                         <div style="width: 100%; height: 100%; object-fit:cover" id="webcamCapture">
@@ -152,13 +152,13 @@
                 </div>
 
                 <!-- Label Badges -->
-                <div class="col-lg">
+                <div class="col">
                     <div class="card mb-4">
                         <h5 class="card-header">Titik Koordinat</h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
-                                    <div style="min-height: 400px" id="map"></div>
+                                    <div style="min-height: 10cm; min-width:10cm" id="map"></div>
                                 </div>
                             </div>
                         </div>

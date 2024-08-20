@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- PWA  -->
-    <meta name="theme-color" content="#6777ef" />
-    <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
-    <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    @laravelPWA
 
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
@@ -72,7 +69,7 @@
                     </li>
 
                     <li class="nav__item">
-                        <a href="#" class="nav__link">
+                        <a href="{{ route('sLaporan')}}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
                             <span class="nav__name">Laporan Absensi</span>
                         </a>
@@ -86,7 +83,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"><i
+                                    <a href="{{ route('sProfil')}}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
                                 </li>
                                 <li>
@@ -133,12 +130,13 @@
                         <div class="modal-body">
                             <div class="row d-flex justify-content-center text-centered">
                                 <div class="col mb-3 d-flex justify-content-center text-centered">
-                                    <a href="/izin-sakit/1" class="btn btn-outline-warning">
+                                    <a href="/pengajuan/izin" class="btn btn-outline-warning">
                                         <i class='bx bx-edit'></i>&nbsp; Izin
                                     </a>
                                 </div>
                                 <div class="col mb-3 d-flex justify-content-center text-centered">
-                                    <a href="/izin-sakit/2" class="btn btn-outline-warning" style="min-height: 75px; min-width:75px">
+                                    <a href="/pengajuan/sakit" class="btn btn-outline-warning"
+                                        style="min-height: 75px; min-width:75px">
                                         <i class='bx bx-injection'></i>&nbsp; Sakit
                                     </a>
                                 </div>
@@ -217,16 +215,29 @@
                             <h6 class="card-title d-none d-lg-block">
                                 Tanggal
                             </h6>
-                            <h4 class="card-title d-lg-none ">
-                                Tanggal
-                            </h4>
+                            <div class="text-center d-lg-none">
+                                @php
+                                    setlocale(LC_ALL, 'IND');
+                                    echo strftime('%A, %e %B %G');
+                                @endphp
+                            </div>
+
                         </div>
 
                         <div class="card-body">
-                            @php
-                                setlocale(LC_ALL, 'IND');
-                                echo strftime('%A, %e %B %G');
-                            @endphp
+                            <div class="text-center d-none d-lg-block">
+                                @php
+                                    setlocale(LC_ALL, 'IND');
+                                    echo strftime('%A, %e %B %G');
+                                @endphp
+                            </div>
+                            <div class="card-title d-flex justify-content-center text-center d-lg-none">
+                                <div class="row" style="width: 200px">
+                                    <h1 class="col" id="jj"></h1>
+                                    <h1 class="col">:</h1>
+                                    <h1 class="col" id="mm"></h1>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -237,142 +248,31 @@
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h4 class="card-title">
+                            <h4 class="card-title d-none d-lg-block">
                                 Jam
                             </h4>
-                        </div>
-                        <div class="card-body d-flex justify-content-center text-center">
-                            <div class="row" style="width: 200px">
-                                <h2 class="col" id="j"></h2>
-                                <h2 class="col">:</h2>
-                                <h2 class="col" id="m"></h2>
-                            </div>
 
-                        </div>
-                    </div>
-                </div>
-
-                {{-- STATUS --}}
-                {{-- BELUM ABSEN --}}
-                @if ($statusabsen == 'belum absen')
-                    {{-- TERLAMBAT --}}
-                    @if (date('H:i:s') < $waktu->batas_absen)
-                        <div class="col">
-                            <div class="card mb-4 border border-warning">
-                                <div class="card-header">
-                                    <h4 class="card-title">
-                                        Status
-                                    </h4>
-                                </div>
-                                <div class="card-body d-flex justify-content-center text-center">
-                                    <h2 class="bg-label-warning">{{ $statusabsen }}</h2>
-
-                                </div>
-                            </div>
-                        </div>
-                        {{-- BELUM ABSEN --}}
-                    @else
-                        <div class="col">
-                            <div class="card mb-4 border border-danger">
-                                <div class="card-header">
-                                    <h4 class="card-title">
-                                        Status
-                                    </h4>
-                                </div>
-                                <div class="card-body d-flex justify-content-center text-center ">
-                                    <h2 class="bg-label-danger"> Terlambat </h2>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                    {{-- HADIR --}}
-                @elseif ($statusabsen == 'hadir' || $statusabsen == 'terlambat')
-                    {{-- BELUM ABSEN PULANG --}}
-                    @if (date('H:i:s') > $waktu->mulai_pulang)
-                        <div class="col">
-                            <div class="card mb-4 border border-warning">
-                                <div class="card-header">
-                                    <h4 class="card-title">
-                                        Status
-                                    </h4>
-                                </div>
-                                <div class="card-body d-flex justify-content-center text-center ">
-                                    <h2 class="bg-label-warning">Belum Absen Pulang</h2>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- BELUM WAKTU PULANG --}}
-                    @elseif($statusabsen == 'terlambat')
-                        <div class="col">
-                            <div class="card mb-4 border border-warning">
-                                <div class="card-header">
-                                    <h4 class="card-title">
-                                        Status
-                                    </h4>
-                                </div>
-                                <div class="card-body d-flex justify-content-center text-center ">
-                                    <h2 class="bg-label-warning">{{ $statusabsen }}</h2>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- BELUM WAKTU PULANG --}}
-                    @else
-                        <div class="col">
-                            <div class="card mb-4 border border-success">
-                                <div class="card-header">
-                                    <h4 class="card-title">
-                                        Status
-                                    </h4>
-                                </div>
-                                <div class="card-body d-flex justify-content-center text-center ">
-                                    <h2 class="bg-label-success">{{ $statusabsen }}</h2>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-
-
-                @endif
-            </div>
-
-
-
-            @if ($statusabsen == 'belum absen')
-                <div class="row mb-2 text-center">
-                    <a href="{{ route('absen') }}" id="presensi" class="btn btn-absen">
-                        <div class="card-header">
-                            <h4 class="card-title">
-                                Absen
+                            <h4 class="card-title d-lg-none">
+                                Jarak
                             </h4>
                         </div>
-                    </a>
-                </div>
-            @elseif($statusabsen == 'hadir' || $statusabsen == 'terlambat')
-                @if (now() < $waktu->mulai_pulang)
-                    <div class="row mb-2 text-center">
-                        <a href="{{ route('absen') }}" id="presensi" class="btn btn-absen">
-                            <div class="card-header">
-                                <h4 class="card-title">
-                                    Pulang
-                                </h4>
+                        <div class="card-body">
+                            <div class="d-none d-lg-block">
+                                <div class="d-flex justify-content-center text-center">
+                                    <div class="row" style="width: 200px">
+                                        <h1 class="col" id="j"></h1>
+                                        <h1 class="col">:</h1>
+                                        <h1 class="col" id="m"></h1>
+                                    </div>
+                                </div>
                             </div>
-                        </a>
+                            <p class="d-lg-none" id="d"></p>
+                        </div>
                     </div>
-                @endif
-
-            @endif
-
-
-            <div class="row mb-2 text-center">
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                    data-bs-target="#izinSakitModal">
-                    <div class="card-header">
-                        <h4 class="card-title">
-                            Izin atau Sakit
-                        </h4>
-                    </div>
-                </button>
+                </div>
+                @include('siswa.keteranganstatus')
             </div>
+            @include('siswa.tombolabsen')
 
             <div style="height: 50px">
                 <br>
@@ -382,97 +282,83 @@
 
         </div>
 
-    </div>
 
+        <!--=============== MAIN JS ===============-->
+        <script src={{ asset('assets/waktu.js') }}></script>
+        <script>
+            function jarak() {
+                var lokasi = document.getElementById('lokasi');
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                }
 
-    <!--=============== MAIN JS ===============-->
-    <script src={{ asset('assets/waktu.js') }}></script>
-    <script>
-        function jarak() {
-            var lokasi = document.getElementById('lokasi');
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                // Output the server values to verify
+                var lokasi_sekolah = "{{ $lokasi->titik_koordinat }}";
+                var radius = parseFloat("{{ $lokasi->radius }}");
+                console.log('lokasi_sekolah:', lokasi_sekolah);
+                console.log('radius:', radius);
+
+                function successCallback(position) {
+                    console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
+                    var lat_user = position.coords.latitude;
+                    var long_user = position.coords.longitude;
+
+                    // Example coordinates for testing
+                    var lok = lokasi_sekolah.split(",");
+                    var lat_sekolah = lok[0];
+                    var long_sekolah = lok[1];
+
+                    var userLatLng = L.latLng(lat_user, long_user);
+                    var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
+
+                    var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
+                    var distanceInKm = (distance / 1000).toFixed(2);
+
+                    document.getElementById('distance').innerText = distance + ' m';
+                    document.getElementById('d').innerText = distance + ' m';
+                    if (distance > radius) document.getElementById('presensi').classList.add('disabled');
+                    if (distance > radius) document.getElementById('presensi').classList.add('disabled');
+
+                }
+
+                function errorCallback(error) {
+                    console.error("Error retrieving location:", error);
+                }
             }
+            setInterval(jarak, 100);
+        </script>
 
-            // Output the server values to verify
-            var lokasi_sekolah = "{{ $lokasi->titik_koordinat }}";
-            var radius = parseFloat("{{ $lokasi->radius }}");
-            console.log('lokasi_sekolah:', lokasi_sekolah);
-            console.log('radius:', radius);
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+        </script>
 
-            function successCallback(position) {
-                console.log('User coordinates:', position.coords.latitude, position.coords.longitude);
-                var lat_user = position.coords.latitude;
-                var long_user = position.coords.longitude;
+        <script src={{ asset('assets/t2/js/main.js') }}></script>
+        <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/core.css') }}
+            class="template-customizer-core-css" />
+        <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/theme-default.css') }}
+            class="template-customizer-theme-css" />
+        <link rel="stylesheet" href={{ asset('assets/t1/css/demo.css') }} />
 
-                // Example coordinates for testing
-                var lok = lokasi_sekolah.split(",");
-                var lat_sekolah = lok[0];
-                var long_sekolah = lok[1];
-
-                var userLatLng = L.latLng(lat_user, long_user);
-                var schoolLatLng = L.latLng(lat_sekolah, long_sekolah);
-
-                var distance = userLatLng.distanceTo(schoolLatLng).toFixed(0);
-                var distanceInKm = (distance / 1000).toFixed(2);
-
-                document.getElementById('distance').innerText = distance + ' m';
-                if (distance > radius) document.getElementById('presensi').classList.add('disabled');
-
-            }
-
-            function errorCallback(error) {
-                console.error("Error retrieving location:", error);
-            }
-        }
-        setInterval(jarak, 500);
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
-
-    <script src={{ asset('assets/t2/js/main.js') }}></script>
-    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/core.css') }} class="template-customizer-core-css" />
-    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/theme-default.css') }}
-        class="template-customizer-theme-css" />
-    <link rel="stylesheet" href={{ asset('assets/t1/css/demo.css') }} />
-
-    <script src={{ asset('assets/t1/js/main.js') }}></script>
+        <script src={{ asset('assets/t1/js/main.js') }}></script>
 
 
-    {{-- SCRIPTS --}}
+        {{-- SCRIPTS --}}
 
-    <script src="{{ asset('/sw.js') }}"></script>
-    <script>
-        if ("serviceWorker" in navigator) {
-            // Register a service worker hosted at the root of the
-            // site using the default scope.
-            navigator.serviceWorker.register("/sw.js").then(
-                (registration) => {
-                    console.log("Service worker registration succeeded:", registration);
-                },
-                (error) => {
-                    console.error(`Service worker registration failed: ${error}`);
-                },
-            );
-        } else {
-            console.error("Service workers are not supported.");
-        }
-    </script>
-    <script src={{ asset('assets/t1/vendor/libs/jquery/jquery.js') }}></script>
-    <script src={{ asset('assets/t1/vendor/libs/popper/popper.js') }}></script>
-    <script src={{ asset('assets/t1/vendor/js/bootstrap.js') }}></script>
-    <script src={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>
-    <script src={{ asset('assets/t1/vendor/js/menu.js') }}></script>
+        <script src="{{ asset('/sw.js') }}"></script>
 
-    <script src={{ asset('assets/t1/js/main.js') }}></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
-    </script>
+        <script src={{ asset('assets/t1/vendor/libs/jquery/jquery.js') }}></script>
+        <script src={{ asset('assets/t1/vendor/libs/popper/popper.js') }}></script>
+        <script src={{ asset('assets/t1/vendor/js/bootstrap.js') }}></script>
+        <script src={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>
+        <script src={{ asset('assets/t1/vendor/js/menu.js') }}></script>
+
+        <script src={{ asset('assets/t1/js/main.js') }}></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+            integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+            integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+        </script>
 </body>
 
 </html>

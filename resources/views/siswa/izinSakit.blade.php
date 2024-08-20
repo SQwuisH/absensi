@@ -122,8 +122,9 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
-            <form action="{{ route('krmizinSakit') }}" method="POST">
+            <form action="{{ route('krmizinSakit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="opt" value="{{ $opt }}">
                 <div class="row">
                     <div class="card">
                         <div class="card-header">
@@ -131,26 +132,23 @@
                                 <h4>
                                     <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
                                             class='bx bx-chevron-left'></i></a>
-                                    @if ($opt == 1)
-                                        Laporan Izin
-                                    @else
-                                        Laporan Sakit
-                                    @endif
+                                    Pengajuan {{ $opt }}
                                 </h4>
                             </div>
                         </div>
 
                         <div class="card-body">
                             <div class="mb-3">
-                                <label for="formFile" class="form-label">File</label>
-                                <input class="form-control" type="file" id="formFile">
+                                <label for="foto" class="form-label">Pilih Foto</label>
+                                <input required id="foto" class="form-control" type="file" name="foto_masuk" accept="image/png, image/jpeg, image/jpg">
                             </div>
                             <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Keterangan </label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" style="height: 75px;"></textarea>
+                                <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>
+                                <textarea required class="form-control" id="exampleFormControlTextarea1" name="keterangan" rows="3"
+                                    style="height: 75px;"></textarea>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <button type="submit" class="btn btn-primary">Kirim</button>
                             </div>
                         </div>
 
