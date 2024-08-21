@@ -69,7 +69,7 @@
                     </li>
 
                     <li class="nav__item">
-                        <a href="{{ route('sLaporan')}}" class="nav__link">
+                        <a href="{{ route('sLaporan') }}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
                             <span class="nav__name">Laporan Absensi</span>
                         </a>
@@ -83,7 +83,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('sProfil')}}" class="dropdown-item d-flex align-items-center"><i
+                                    <a href="{{ route('sProfil') }}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
                                 </li>
                                 <li>
@@ -144,6 +144,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="row">
+                @if (Session('success'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        {{ Session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    </div>
+                @endif
             </div>
 
             <div class="row mb-2">
@@ -274,11 +284,9 @@
             </div>
             @include('siswa.tombolabsen')
 
-            <div style="height: 50px">
-                <br>
-                <br>
-                <i class='bx bx-copyright'></i> Aplikasi Absensi Sebelas, 2024
-            </div>
+
+            <i class='bx bx-copyright'></i> Aplikasi Absensi Sebelas, 2024
+
 
         </div>
 

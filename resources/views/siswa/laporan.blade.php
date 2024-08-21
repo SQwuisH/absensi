@@ -119,7 +119,17 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
-
+            @if (Session::get('success'))
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    {{ Session::get('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @elseif (Session::get('error'))
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    {{ Session::get('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
         </div>
     </div>
 

@@ -115,28 +115,31 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
-            @if (Session::get('success'))
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    {{ Session::get('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @elseif (Session::get('error'))
-                <div class="alert alert-warning alert-dismissible" role="alert">
-                    {{ Session::get('error') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
+
 
             <form action={{ route('editprofil') }} method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value={{ $siswa->id }}>
+                <h4 class="card-title mb-2">
+                    <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                            class='bx bx-chevron-left'></i></a>
+                    Profil
+                </h4>
+                @if (Session('success'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        {{ Session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @elseif(Session('failed'))
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        {{ Session('failed') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="row mb-2">
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">
-                                    Profil
-                                </h4>
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-item-start gap-4">
@@ -147,7 +150,8 @@
                                             <span class="d-none d-sm-block">Upload new photo</span>
                                             <i class="bx bx-upload d-block d-sm-none"></i>
                                             <input type="file" id="upload" class="account-file-input"
-                                                hidden="" name="foto" accept="image/png, image/jpeg, image/jpg">
+                                                hidden="" name="foto"
+                                                accept="image/png, image/jpeg, image/jpg">
                                         </label>
                                         <p class="text-muted mb-0">Allowed JPG, GIF or PNG.</p>
                                     </div>

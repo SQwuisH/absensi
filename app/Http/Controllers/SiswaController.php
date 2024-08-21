@@ -188,7 +188,7 @@ class SiswaController extends Controller
 
             if ($simpan) {
                 Storage::put($file, file_get_contents($foto));
-                return redirect()->route('siswa')->with('success');
+                return redirect()->route('siswa')->with('success', 'Pengajuan ' . $status . ' Telah Disimpan');
             } else {
                 return redirect()->back()->with('error');
             }
@@ -204,10 +204,9 @@ class SiswaController extends Controller
 
     public function editprofil(Request $r)
     {
-        $r->validate([
-            'foto' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
-        ]);
-
+        $f=false;
+        $P=false;
+        
         //password
         if ($r->password != $r->kPassword) {
             return redirect()->back()->with('failed', 'Password Berbeda');
@@ -232,32 +231,22 @@ class SiswaController extends Controller
 
             Storage::put($file, file_get_contents($foto));
 
-            User::where('id', $r->id)->update([
+            $f= User::where('id', $r->id)->update([
                 'foto' => $fileName
             ]);
         }
 
         // email
-        $simpan = User::where('id', $r->id)->update([
+        $u = User::where('id', $r->id)->update([
             'email' => $r->email,
         ]);
 
         //redirecting
-        if ($simpan) {
-            return redirect()->back()->with('success', 'Data Berhasil di Update');
+        if ($u || $f || $p) {
+            return redirect()->back()->with('success', "Data Berhasil di Update");
         } else {
-            return redirect()->back()->with('failed', 'Data Gagal di Update');
+            return redirect()->back()->with('failed', "Data Gagal di Update");
         }
-    }
-
-    public function resetfoto(Request $r)
-    {
-        dd($r->all());
-        user::where('id', $r->id)->update([
-            'foto' => 'user_default.png'
-        ]);
-
-        return redirect()->back()->with('success', 'Data Berhasil di Update');
     }
 
     public function laporan()
