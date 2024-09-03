@@ -60,7 +60,7 @@
 
 {{-- Hapus --}}
 
-<form action="{{ route('hapuswali', ['id' => $w->id_user]) }}" method="post">
+<form action="{{ route('hapuswalikelas', ['id' => $w->id_user]) }}" method="post">
 @csrf
 @method('delete')
     <div class="modal fade" id="hapus{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">

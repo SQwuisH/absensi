@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('nis')->references('nis')->on('siswas');
 
             $table->enum('status', ['sakit', 'hadir', 'izin', 'alfa', 'terlambat', 'TAP'])->default('alfa');
-            $table->string('foto_masuk');
+            $table->string('foto_masuk')->nullable();
             $table->string('foto_pulang')->nullable();
             $table->string('keterangan')->nullable();
             $table->date('date')->nullable();

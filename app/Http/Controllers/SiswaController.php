@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\absensi;
 use App\Models\koordinat_sekolah;
 use App\Models\siswa;
@@ -63,11 +64,14 @@ class SiswaController extends Controller
         $siswa = siswa::where('id_user', $user->id)->first();
         $waktu = waktu_absen::first();
         $status = 'hadir';
-        if (date('H:i:s') > $waktu->batas_masuk) {
-            $status = 'terlambat';
-        }
+        $ket = null;
         $date = date("Y-m-d");
         $jam = date("H:i:s");
+
+        if (date('H:i:s') > $waktu->batas_masuk) {
+            $status = 'terlambat';
+            $ket = '';
+        }
 
         $lokasiSiswa = $request->lokasi;
         $lokasiuser = explode(",", $lokasiSiswa);
@@ -117,6 +121,7 @@ class SiswaController extends Controller
                     'nis' => "00$siswa->nis",
                     'status' => $status,
                     'date' => $date,
+                    'keterangan' => $ket,
                     'jam_masuk' => $jam,
                     'titik_koordinat_masuk' => $lokasiSiswa,
                     'foto_masuk' => $fileName,
@@ -188,7 +193,7 @@ class SiswaController extends Controller
 
             if ($simpan) {
                 Storage::put($file, file_get_contents($foto));
-                return redirect()->route('siswa')->with('success', 'Pengajuan ' . $status . ' Telah Disimpan');
+                return redirect()->route('siswa')->with('success', 'Pengajuan ' . $status . ' Berhasil Disimpan');
             } else {
                 return redirect()->back()->with('error');
             }
@@ -204,23 +209,22 @@ class SiswaController extends Controller
 
     public function editprofil(Request $r)
     {
-        $f=false;
-        $P=false;
-        
+        $f = false;
+        $P = false;
+
         //password
-        if ($r->password != $r->kPassword) {
-            return redirect()->back()->with('failed', 'Password Berbeda');
-        }
         $count = strlen($r->password);
         if ($count > 0) {
             $p = User::where('id', $r->id)->update([
                 'password' => password_hash($r->password, PASSWORD_DEFAULT)
             ]);
         }
+        if ($r->password != $r->kPassword) {
+            return redirect()->back()->with('failed', 'Password Berbeda');
+        }
 
         //foto
-        if ($r->hasFile('foto'))
-        {
+        if ($r->hasFile('foto')) {
             $foto = $r->file('foto');
 
             $folderPath = "public/user_avatar/";
@@ -231,7 +235,7 @@ class SiswaController extends Controller
 
             Storage::put($file, file_get_contents($foto));
 
-            $f= User::where('id', $r->id)->update([
+            $f = User::where('id', $r->id)->update([
                 'foto' => $fileName
             ]);
         }
@@ -249,10 +253,47 @@ class SiswaController extends Controller
         }
     }
 
-    public function laporan()
+    public function laporan(request $request)
     {
+        $siswa = siswa::where('id_user', auth::user()->id)->first();
 
+        $query = absensi::query()->orderBy('date','desc');
+        if(isset($request->category) && $request->category != null)
+        {
+            $query->whereIn('status', $request->category);
+        } $absensi = $query->paginate(15);
 
-        return view('siswa.laporan');
+        $ab = absensi::where('nis', $siswa->nis)->get();
+
+        $user = Auth::user();
+        $nis = $user->siswa->nis;
+        $hariini = date("Y-m-d");
+
+        $totalAbsensi = $ab->count();
+
+        $totalKeterlambatan = $ab->where('status', 'Terlambat')->sum('keterangan');
+
+        $jumlah = [
+            'hadir' => $ab->where('status', 'hadir')->count(),
+            'sakit' => $ab->whereIn('status', 'sakit')->count(),
+            'izin' => $ab->whereIn('status', 'izin')->count(),
+            'terlambat' => $ab->where('status', 'terlambat')->count(),
+            'alfa' => $ab->where('status', 'alfa')->count(),
+            'tap' => $ab->where('status', 'TAP')->count(),
+        ];
+
+        $persentase = [
+            'hadir' => $totalAbsensi > 0 ? round(($jumlah['hadir'] / $totalAbsensi) * 100, 1) : 0,
+            'sakit' => $totalAbsensi > 0 ? round(($jumlah['sakit'] / $totalAbsensi) * 100, 1) : 0,
+            'izin' => $totalAbsensi > 0 ? round(($jumlah['izin'] / $totalAbsensi) * 100, 1) : 0,
+            'terlambat' => $totalAbsensi > 0 ? round(($jumlah['terlambat'] / $totalAbsensi) * 100, 1) : 0,
+            'alfa' => $totalAbsensi > 0 ? round(($jumlah['alfa'] / $totalAbsensi) * 100, 1) : 0,
+            'tap' => $totalAbsensi > 0 ? round(($jumlah['tap'] / $totalAbsensi) * 100, 1) : 0,
+        ];
+
+        $results = response()->json($ab);
+        return view('siswa.laporan', compact('absensi', 'ab', 'siswa', 'totalAbsensi', 'totalKeterlambatan', 'jumlah', 'persentase'),
+         [ 'data' => $results ]
+        );
     }
 }

@@ -89,18 +89,18 @@
                             <div data-i18n="Dashboards">Data Pengguna</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="kelolawalikelas" class="menu-link ">
+                            <li class="menu-item ">
+                                <a href="/kelolawalikelas" class="menu-link ">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>
-                            <li class="menu-item ">
-                                <a href="kelolawalisiswa" class="menu-link">
+                            <li class="menu-item active">
+                                <a href="#" class="menu-link">
                                     <div data-i18n="Basic">Wali Siswa</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
-                                <a href="kelolakesiswaan" class="menu-link">
+                            <li class="menu-item ">
+                                <a href="/kelolakesiswaan" class="menu-link">
                                     <div data-i18n="Basic">Kesiswaan</div>
                                 </a>
                             </li>
@@ -108,14 +108,14 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="kelolakelas" class="menu-link">
+                        <a href="/kelolakelas" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                             <div data-i18n="Basic">Kelas</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="kelolajurusan" class="menu-link">
+                        <a href="/kelolajurusan" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                             <i class='book-bookmark'></i>
                             <div data-i18n="laporan">Jurusan</div>
@@ -153,7 +153,7 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <!-- Search -->
-                        <h4 class="m-1">Kelola Wali Kelas</h4>
+                        <h4 class="m-1">Kelola Wali Siswa</h4>
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -169,6 +169,19 @@
                     <!-- Content -->
 
                     <div class="container container-p-y">
+                        @if (Session::get('success'))
+                            <div class="alert alert-success alert-dismissible hide" role="alert">
+                                {{ Session::get('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @elseif (Session::get('failed'))
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                {{ Session::get('warning') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="card">
                             <div class="card-header d-flex">
                                 <input class="form-control" list="datalistOptions" id="search"
@@ -178,6 +191,48 @@
 
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
                                         data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#impor"><i class="bx bx-import"></i> Impor</button>
+                                </div>
+                            </div>
+
+                            {{-- Impor --}}
+                            <div class="modal fade" id="impor" tabindex="-1" style="display: none;"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalCenterTitle">Impor Data Wali Siswa</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <p>Gunakan <a href={{ route('exportwalisiswa') }}><i><u>Format
+                                                                Ini</u></i></a> Untuk Impor Data!</p>
+                                            </div>
+
+                                            <form action= "/kelolawalisiswa/import" method="POST"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input name="file" type="file" class="form-control"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                        </div>
+
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                data-bs-dismiss="modal">
+                                                Batalkan
+                                            </button>
+                                            <button type="submit" class="btn btn-primary">Impor</button>
+                                        </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
 
@@ -188,24 +243,19 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel1">Tambah kesiswaan</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel1">Tambah Wali Siswa</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
 
 
-                                            <form action="/tambahkesiswaan" method="post">
+                                            <form action="/tambahwalisiswa" method="post">
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col mb-3">
                                                         <label for="nameBasic" class="form-label">Nama</label>
                                                         <input name="name" type="text" id="nameBasic"
-                                                            class="form-control" placeholder="Masukkan Nama" required>
-                                                    </div>
-                                                    <div class="col mb-3">
-                                                        <label for="nameBasic" class="form-label">email</label>
-                                                        <input name="email" type="text" id="nameBasic"
                                                             class="form-control" placeholder="Masukkan Nama" required>
                                                     </div>
                                                 </div>
@@ -217,7 +267,31 @@
                                                             placeholder="Default Password '12345678'">
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label for="nameBasic" class="form-label">NIK</label>
+                                                        <input name="nik" type="text" id="nameBasic"
+                                                            class="form-control" placeholder="Masukkan NIK"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label for="emailBasic" class="form-label">Email</label>
+                                                        <input name="email" type="email" id="emailBasic"
+                                                            class="form-control" placeholder="xxxx@xxx.xx" required>
+                                                    </div>
+                                                    <div class="col mb-3">
+                                                        <label for="jk" class="form-label">Jenis Kelamin</label>
+                                                        <select name="jenis_kelamin" id="jk"
+                                                            class="form-select form-control">
+                                                            <option selected hidden>Pilih</option>
+                                                            <option value="1">laki laki</option>
+                                                            <option value="2">perempuan</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Tambah</button>
                                         </div>
@@ -232,19 +306,19 @@
                                 <table class="table " id="tabel">
                                     <thead>
                                         <tr>
-                                            <th>id</th>
+                                            <th>NIK</th>
                                             <th>Nama</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
 
-                                        @foreach ($kesiswaan as $k)
+                                        @foreach ($walisiswa as $w)
                                             <tr>
                                                 <td>
-                                                    <span class="fw-medium">@php echo($k->id); @endphp</span>
+                                                    <span class="fw-medium">@php echo($w->nik); @endphp</span>
                                                 </td>
-                                                <td>@php echo($k->name); @endphp</td>
+                                                <td>@php echo($w->user->name); @endphp</td>
                                                 <td>
                                                     <div class="dropdown text-center">
                                                         <button type="button"
@@ -252,17 +326,17 @@
                                                             data-bs-toggle="dropdown">
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
-                                                        <div class="dropdown-menu ">
+                                                        <div class="dropdown-menu">
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{$k->id}}"><i
+                                                                data-bs-target="#edit{{ $w->id_user }}"><i
                                                                     class="bx bx-edit-alt me-2"></i> Edit</button>
-                                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#hapus{{$k->id}}"><i
-                                                                    class="bx bx-trash me-2"></i> Hapus</a>
+                                                            <button class="dropdown-item" data-bs-toggle="modal"
+                                                                data-bs-target="#hapus{{ $w->id_user }}"><i
+                                                                    class="bx bx-trash me-2"></i> Hapus</button>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                @include('operator.kesiswaan.crud')
+                                                @include('operator.walisiswa.crud')
                                             </tr>
                                         @endforeach
                                     </tbody>

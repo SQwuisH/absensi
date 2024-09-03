@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     @laravelPWA
-    
+
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
@@ -107,7 +107,7 @@
         <!-- Content -->
 
         <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 60px;">
-            <h4 class="py-3 mb-4">
+            <h4 class="py-3 mb-2">
                 <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
                         class='bx bx-chevron-left'></i></a>
                 Absen

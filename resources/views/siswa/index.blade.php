@@ -276,7 +276,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p class="d-lg-none" id="d"></p>
+                            <h2 class="d-lg-none" id="d"></h2>
                         </div>
                     </div>
                 </div>

@@ -4302,6 +4302,13 @@ textarea.form-control-lg {
   --bs-alert-link-color: var(--bs-secondary-text-emphasis);
 }
 
+.alert-absen {
+    --bs-alert-color: 38, 166, 153;
+    --bs-alert-bg: 38, 166, 153;
+    --bs-alert-border-color: 38, 166, 153;
+    --bs-alert-link-color: 38, 166, 153;
+  }
+
 .alert-success {
   --bs-alert-color: var(--bs-success-text-emphasis);
   --bs-alert-bg: var(--bs-success-bg-subtle);
@@ -11343,6 +11350,11 @@ button.list-group-item-gray.active {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-primary-rgb), var(--bs-bg-opacity)) !important;
 }
+
+.bg-absen {
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-absen-rgb), var(--bs-bg-opacity)) !important;
+  }
 
 .bg-secondary {
   --bs-bg-opacity: 1;

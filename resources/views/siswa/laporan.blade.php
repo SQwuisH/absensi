@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src={{ asset('assets/checkbox.js') }}></script>
 
     @laravelPWA
 
@@ -14,12 +15,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
 
     <link rel="stylesheet" href={{ asset('assets/t2/css/styles.css') }}>
     <link rel="stylesheet" href={{ asset('assets/t1/vendor/fonts/boxicons.css') }} />
@@ -42,6 +37,11 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src={{ asset('assets/t1/js/config.js') }}></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- icon -->
     <link rel="icon" type="image/x-icon" href={{ asset('assets/t2/img/6.png') }} />
@@ -83,7 +83,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{route('sProfil')}}" class="dropdown-item d-flex align-items-center"><i
+                                    <a href="{{ route('sProfil') }}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
                                 </li>
                                 <li>
@@ -130,8 +130,296 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
+
+            <h4 class="card-title mb-2">
+                <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                        class='bx bx-chevron-left'></i></a>
+                Laporan Absensi
+            </h4>
+
+            <div class="row mb-2">
+                <div class="col">
+
+                    <div class="card">
+                        <div class="card-header">
+
+                            {{-- <div class="row">
+                                <div class="col-4">
+                                    <input class="form-control" type="date" value="" id="mulai"
+                                        name="mulai">
+                                </div>
+                                <div class=" col-1 text-center">
+                                    <h5>/</h5>
+                                </div>
+                                <div class=" col-4">
+                                    <input class="form-control" type="date" value="" id="akhir"
+                                        name="akhir">
+                                </div>
+                            </div> --}}
+                        </div>
+                        <div class="card-body">
+
+                            {{-- PERSENTASE --}}
+                            <div class="progress mb-3" style="height: 35px; font-size:13px;">
+
+                                {{-- HADIR --}}
+                                @if ($persentase['hadir'] != 0)
+                                    <div class="progress-bar border-end shadow-none" role="progressbar"
+                                        style="width: {{ $persentase['hadir'] }}%; background-color: hsl(174, 63%, 40%)"
+                                        aria-valuemin="0">
+                                        <div>{{ round($persentase['hadir']) }}%</div>
+                                    </div>
+                                @endif
+
+                                {{-- SAKIT --}}
+                                @if ($persentase['sakit'] != 0)
+                                    <div class="progress-bar bg-info border-end shadow-none text-center"
+                                        role="progressbar" style="width: {{ $persentase['sakit'] }}%"
+                                        aria-valuemin="0">
+                                        <div>{{ round($persentase['sakit']) }}%</div>
+                                    </div>
+                                @endif
+
+                                {{-- IZIN --}}
+                                @if ($persentase['izin'] != 0)
+                                    <div class="progress-bar bg-warning border-end shadow-none text-center"
+                                        role="progressbar" style="width: {{ $persentase['izin'] }}%"
+                                        aria-valuemin="0">
+                                        <div>{{ round($persentase['izin']) }}%</div>
+                                    </div>
+                                @endif
+
+                                {{-- ALFA --}}
+                                @if ($persentase['alfa'] != 0)
+                                    <div class="progress-bar bg-danger border-end shadow-none" role="progressbar"
+                                        style="width: {{ $persentase['alfa'] }}%" aria-valuemin="0">
+                                        <div>{{ round($persentase['alfa']) }}%</div>
+                                    </div>
+                                @endif
+
+                                {{-- TERLAMBAT --}}
+                                @if ($persentase['terlambat'] != 0)
+                                    <div class="progress-bar bg-secondary border-end shadow-none" role="progressbar"
+                                        style="width: {{ $persentase['terlambat'] }}%" aria-valuemin="0">
+                                        <div>{{ round($persentase['terlambat']) }}%</div>
+                                    </div>
+                                @endif
+
+                                {{-- TAP --}}
+                                @if ($persentase['tap'] != 0)
+                                    <div class="progress-bar bg-black border-end shadow-none" role="progressbar"
+                                        style="width: {{ $persentase['tap'] }}%" aria-valuemin="0">
+                                        <div>{{ round($persentase['tap']) }}%</div>
+                                    </div>
+                                @endif
+
+                            </div>
+
+                            {{-- INFO --}}
+                            <div class="container">
+                                <div class="row">
+
+                                    {{-- hadir --}}
+                                    <div class="col">
+                                        <div class="card bg-absen text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">Hadir:</h6>
+                                                {{ $jumlah['hadir'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- sakit --}}
+                                    <div class="col">
+                                        <div class="card bg-info text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">sakit:</h6>
+                                                {{ $jumlah['sakit'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- izin --}}
+                                    <div class="col">
+                                        <div class="card bg-warning text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">Izin:</h6>
+                                                {{ $jumlah['izin'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- ALFA --}}
+                                    <div class="col">
+                                        <div class="card bg-danger text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">Alfa:</h6>
+                                                {{ $jumlah['alfa'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- TERLAMBAT --}}
+                                    <div class="col">
+                                        <div class="card bg-secondary text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">Terlambat:</h6>
+                                                {{ $jumlah['terlambat'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- TAP --}}
+                                    <div class="col">
+                                        <div class="card bg-black text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">TAP:</h6>
+                                                {{ $jumlah['tap'] }} Hari
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="d-flex bd-highlight">
+                                    <div class="p-2 w-100 bd-highlight">
+                                        <h5>Tabel Kehadiran</h5>
+                                    </div>
+                                    <div class="p-2 flex-shrink-1 bd-highlight">
+                                        <button class="btn btn-outline-secondary" data-bs-toggle="offcanvas"
+                                            data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                                            <i class='bx bxs-filter-alt'></i>
+                                            Filter
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- MODAL FILTER CHECKBOX --}}
+                            <div class="col-lg-4 col-md-6">
+                                <div class="offcanvas offcanvas-start border border-black" data-bs-scroll="true"
+                                    data-bs-backdrop="false" tabindex="-1" id="offcanvasScroll"
+                                    aria-labelledby="offcanvasScrollLabel">
+                                    <div class="offcanvas-header">
+                                        <h5 id="offcanvasScrollLabel" class="offcanvas-title">Filter Status Kehadiran
+                                        </h5>
+                                        <button type="button" class="btn-close text-reset"
+                                            data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                    </div>
+                                    <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+                                        <div class="position">
+                                            <form action="{{ route('sLaporan')}}" method="GET">
+                                                <div class="row">
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="hadir" id="hadir"
+                                                            name="category[0]" checked>
+                                                        <label class="form-check-label" for="hadir">Hadir</label>
+                                                    </div>
+
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="sakit" id="sakit"
+                                                            name="category[1]" checked>
+                                                        <label for="sakit" class="form-check-label">Sakit</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="izin" id="izin"
+                                                            name="category[2]" checked>
+                                                        <label class="form-check-label" for="izin">Izin</label>
+                                                    </div>
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="alfa" id="alfa"
+                                                            name="category[3]" checked>
+                                                        <label for="alfa" class="form-check-label">Alfa</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-2">
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="terlambat" id="terlambat"
+                                                            name="category[4]" checked>
+                                                        <label for="terlambat"
+                                                            class="form-check-label">Terlambat</label>
+                                                    </div>
+                                                    <div class="col form-check">
+                                                        <input class="form-check-input filter-checkbox"
+                                                            type="checkbox" value="TAP" id="tap"
+                                                            name="category[5]" checked>
+                                                        <label for="tap" class="form-check-label">TAP</label>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col modal-footer">
+                                                        <button class="btn btn-primary" type="submit">Apply</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- TABEL --}}
+                        <table class="table mb-3" id="tabel">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th class="pl-5">Status</th>
+                                    <th class="text-center">detil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($absensi as $a)
+                                    <tr>
+                                        <td>{{ $a->date }}</td>
+                                        <td id="data-category">{{ $a->status }}</td>
+                                        <td class="text-center">
+                                            <a class="btn btn-secondary" href="">Lihat</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
+                        </table>
+
+                        {{-- PAGINATION --}}
+                        <div class="d-flex justify-content-center">
+                            {{ $absensi->links('pagination::bootstrap-4') }}
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
+    </div>
+    </div>
+    <footer class="content-footer footer bg-footer-theme">
+        <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+            <div class="mb-2 mb-md-0">
+                ©
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                , Absensi Sebelas
+            </div>
+        </div>
+    </footer>
+    </div>
+
 
 
     <!--=============== MAIN JS ===============-->
@@ -159,6 +447,59 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
+
+
+
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const table = document.getElementById('tabel');
+            const pagination = document.getElementById('pagination');
+            const data = json_parse("{{$test}}");
+            console.log(data);
+
+            const rowsPerPage = 5;
+            let currentPage = 1;
+
+            function displayTable(page) {
+                const tbody = table.querySelector('tbody');
+                tbody.innerHTML = '';
+
+                const startIndex = (page - 1) * rowsPerPage;
+                const endIndex = startIndex + rowsPerPage;
+                const paginatedData = data.slice(startIndex, endIndex);
+
+                paginatedData.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${item.date}</td><td>${item.status}</td><td class="text-center"><button class="btn btn-outline-secondary"><i
+                class='bx bx-show-alt'></i> Lihat
+        </button></td>`;
+                    tbody.appendChild(row);
+                });
+
+                updatePaginationControls();
+            }
+
+            function updatePaginationControls() {
+                pagination.innerHTML = '';
+
+                const pageCount = Math.ceil(data.length / rowsPerPage);
+
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i;
+                    button.disabled = i === currentPage;
+                    button.addEventListener('click', () => {
+                        currentPage = i;
+                        displayTable(currentPage);
+                    });
+                    pagination.appendChild(button);
+                }
+            }
+
+            displayTable(currentPage);
+        });
+    </script> --}}
+
 </body>
 
 </html>

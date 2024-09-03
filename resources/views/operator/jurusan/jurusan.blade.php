@@ -53,7 +53,7 @@
 
                 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                     <div class="app-brand demo">
-                        <a href="/" class="app-brand-link">
+                        <a href="/operator" class="app-brand-link">
                             <span class="app-brand-logo demo">
                                 <img src={{ asset('assets/t2/img/7.png') }} style="height: 70px; width: auto;">
                             </span>
@@ -70,31 +70,13 @@
                     <ul class="menu-inner py-1 overflow-auto">
 
                         <li class="menu-header small text-uppercase">
-                            <span class="menu-header-text">Dashboard</span>
+                            <span class="menu-header-text">Pengaturan Presensi</span>
                         </li>
 
                         <li class="menu-item ">
-                            <a href="operator" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                <div data-i18n="Basic">Dashboard</div>
-                            </a>
-                        </li>
-
-                        <li class="menu-header small text-uppercase">
-                            <span class="menu-header-text">Presensi</span>
-                        </li>
-
-                        <li class="menu-item">
-                            <a href="kelolakoordinat" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-map"></i>
-                                <div data-i18n="Basic">Titik Koordinat</div>
-                            </a>
-                        </li>
-
-                        <li class="menu-item">
-                            <a href="kelolawaktuabsen" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-time"></i>
-                                <div data-i18n="Basic">Waktu Absen</div>
+                            <a href="/operator" class="menu-link">
+                                <i class="menu-icon tf-icons bx bx-gear"></i>
+                                <div data-i18n="Basic">Koordinat & Waktu</div>
                             </a>
                         </li>
 
@@ -105,34 +87,38 @@
 
                         <!-- Pages -->
                         <li class="menu-item" style="">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <a href="javascript:void(0);" class="menu-link menu-toggle ">
                                 <i class="menu-icon tf-icons bx bx-user"></i>
-                                <div data-i18n="Dashboards">Wali Kelas & Kesiswaan</div>
+                                <div data-i18n="Dashboards">Data Pengguna</div>
                             </a>
                             <ul class="menu-sub">
-                                <li class="menu-item ">
-                                    <a href="kelolawalikelas" class="menu-link">
+                                <li class="menu-item">
+                                    <a href="/kelolawalikelas" class="menu-link ">
                                         <div data-i18n="Basic">Wali Kelas</div>
                                     </a>
                                 </li>
                                 <li class="menu-item ">
-                                    <a href="kelolakesiswaan" class="menu-link">
+                                    <a href="/kelolawalisiswa" class="menu-link">
+                                        <div data-i18n="Basic">Wali Siswa</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item ">
+                                    <a href="/kelolakesiswaan" class="menu-link">
                                         <div data-i18n="Basic">Kesiswaan</div>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-
-                        <li class="menu-item ">
-                            <a href="kelolakelas" class="menu-link">
+                        <li class="menu-item">
+                            <a href="/kelolakelas" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                                 <div data-i18n="Basic">Kelas</div>
                             </a>
                         </li>
 
                         <li class="menu-item active">
-                            <a href="kelolajurusan" class="menu-link">
+                            <a href="#" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                                 <i class='book-bookmark'></i>
                                 <div data-i18n="laporan">Jurusan</div>
@@ -267,7 +253,7 @@
                                                         <span class="fw-medium">@php echo($w->id_jurusan); @endphp</span>
                                                     </td>
                                                     <td>
-                                                        <span class="fw-medium">@php echo($w->nama_jurusan); @endphp</span>
+                                                        <span class="fw">@php echo($w->nama_jurusan); @endphp</span>
                                                     </td>
                                                     <td class="text-center">
                                                         <div class="dropdown">

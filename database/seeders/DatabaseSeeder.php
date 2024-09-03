@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(waliSiswaSeeder::class);
         $this->call(SiswaSeeder::class);
         $this->call(waktu_koodinatSeeder::class);
+        $this->call(absenSeed::class);
     }
 }
