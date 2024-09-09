@@ -1,4 +1,4 @@
-@if ($statusabsen == 'belum presensi' || $statusabsen == 'izin' || $statusabsen == 'sakit' || $statusabsen == 'terlambat')
+@if ($statusabsen == 'belum presen' || $statusabsen == 'izin' || $statusabsen == 'sakit' || $statusabsen == 'terlambat')
     @if ($statusabsen == 'terlambat' && date('Hi') > $waktu->mulai_pulang)
         <div class="col">
             <div class="card mb-4 border border-warning">
@@ -7,8 +7,9 @@
                         Status
                     </h4>
                 </div>
-                <div class="card-body d-flex justify-content-center text-center ">
-                    <h2 class="bg-label-warning">Belum Absen Pulang</h2>
+                <div class="card-body d-flex justify-content-center text-center">
+                    <h2 class="bg-label-warning d-none d-lg-block">Belum Absen Pulang</h2>
+                    <h5 class="bg-label-warning d-block d-lg-none d-xl-none">Belum Absen Pulang</h5>
                 </div>
             </div>
         </div>
@@ -21,7 +22,8 @@
                     </h4>
                 </div>
                 <div class="card-body d-flex justify-content-center text-center ">
-                    <h2 class="bg-label-warning">{{ $statusabsen }}</h2>
+                    <h2 class="bg-label-warning d-none d-lg-block">{{ $statusabsen }}</h2>
+                    <h5 class="bg-label-warning d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
                 </div>
             </div>
         </div>
@@ -36,7 +38,8 @@
                     </h4>
                 </div>
                 <div class="card-body d-flex justify-content-center text-center ">
-                    <h2 class="bg-label-warning">Belum Absen Pulang</h2>
+                    <h2 class="bg-label-warning d-none d-lg-block">Belum Absen Pulang</h2>
+                    <h5 class="bg-label-warning d-block d-lg-none d-xl-none">Belum Absen Pulang</h5>
                 </div>
             </div>
         </div>
@@ -49,7 +52,8 @@
                     </h4>
                 </div>
                 <div class="card-body d-flex justify-content-center text-center ">
-                    <h2 class="bg-label-absen">{{ $statusabsen }}</h2>
+                    <h2 class="bg-label-warning d-none d-lg-block">{{ $statusabsen }}</h2>
+                    <h5 class="bg-label-warning d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
                 </div>
             </div>
         </div>
@@ -63,7 +67,8 @@
                 </h4>
             </div>
             <div class="card-body d-flex justify-content-center text-center ">
-                <h2 class="bg-label-danger">{{ $statusabsen }}</h2>
+                <h2 class="bg-label-warning d-none d-lg-block">{{ $statusabsen }}</h2>
+                <h5 class="bg-label-warning d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
             </div>
         </div>
     </div>

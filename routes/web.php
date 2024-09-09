@@ -6,6 +6,7 @@ use App\Http\Controllers\KesiswaanController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\WaliController;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,14 +23,13 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
 
-
 //login page
-Route::group(['middleware' => 'guest'], function ()
-{
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [App\Http\Controllers\login::class, 'index'])->name('login');
     Route::post('/postlogin', [App\Http\Controllers\login::class, 'postlogin'])->name('postlogin');
 });
 
+route::post('/test', [App\Http\Controllers\Controller::class, 'test'])->name('test');
 
 Route::get('/', function () {
     if (auth()->check()) {
@@ -41,8 +41,10 @@ Route::get('/', function () {
             return redirect('siswa');
         } elseif ($role == 'wali') {
             return redirect('wali');
-        }elseif ($role == 'kesiswaan') {
+        } elseif ($role == 'kesiswaan') {
             return redirect('kesiswaan');
+        } elseif ($role == 'wali siswa') {
+            return redirect('walisiswa');
         }
     }
     return redirect('login');
@@ -52,8 +54,7 @@ Route::get('/', function () {
 
 
 //OPERATOR
-Route::group(['middleware' => ['auth', 'roles:operator']], function ()
-{
+Route::group(['middleware' => ['auth', 'roles:operator']], function () {
     //LANDING PAGE
     Route::get('/operator', [App\Http\Controllers\OperatorController::class, 'index'])->name('operator');
     Route::post('/editkoordinat', [App\Http\Controllers\OperatorController::class, 'editkoordinat'])->name('editkoordinat');
@@ -86,11 +87,11 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function ()
     Route::get('/kelolakelas/export', [App\Http\Controllers\OperatorController::class, 'exportkelas'])->name('exportkelas');
     Route::post('/kelolakelas/import', [App\Http\Controllers\OperatorController::class, 'importkelas'])->name('importkelas');
     route::get('/back', [App\Http\Controllers\OperatorController::class, 'back'])->name('back');
-        //SISWA
-        Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('kelassiswa');
-        Route::post('/kelolakelas/tambahsiswa', [App\Http\Controllers\OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
-        Route::post('/kelolakelas/editsiswa', [App\Http\Controllers\OperatorController::class, 'editSiswa'])->name('editSiswa');
-        Route::delete('/kelolakelas/hapussiswa{id}', [App\Http\Controllers\OperatorController::class, 'hapusSiswa'])->name('hapussiswa');
+    //SISWA
+    Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('kelassiswa');
+    Route::post('/kelolakelas/tambahsiswa', [App\Http\Controllers\OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
+    Route::post('/kelolakelas/editsiswa', [App\Http\Controllers\OperatorController::class, 'editSiswa'])->name('editSiswa');
+    Route::delete('/kelolakelas/hapussiswa{id}', [App\Http\Controllers\OperatorController::class, 'hapusSiswa'])->name('hapussiswa');
     Route::post('/tambahkelas', [App\Http\Controllers\OperatorController::class, 'tambahkelas'])->name('tambahkelas');
     Route::post('/editkelas', [App\Http\Controllers\OperatorController::class, 'editkelas'])->name('editkelas');
     Route::delete('/hapuskelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuskelas'])->name('hapuskelas');
@@ -103,20 +104,17 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function ()
 });
 
 //KESISWAAN
-Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function ()
-{
+Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function () {
     Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
 });
 
 //WALI KELAS
-Route::group(['middleware' => ['auth', 'roles:wali']], function ()
-{
+Route::group(['middleware' => ['auth', 'roles:wali']], function () {
     Route::get('/wali', [App\Http\Controllers\WaliController::class, 'index'])->name('wali');
 });
 
 //SISWA
-Route::group(['middleware' => ['auth', 'roles:siswa']], function ()
-{
+Route::group(['middleware' => ['auth', 'roles:siswa']], function () {
     Route::get('/siswa', [App\Http\Controllers\siswaController::class, 'index'])->name('siswa');
     Route::get('/siswa/absen', [App\Http\Controllers\siswaController::class, 'absen'])->name('absen');
     Route::post('/absen', [App\Http\Controllers\siswaController::class, 'kirimabsen'])->name('kirimabsen');
@@ -125,4 +123,8 @@ Route::group(['middleware' => ['auth', 'roles:siswa']], function ()
     Route::get('/siswa/profil', [App\Http\Controllers\siswaController::class, 'profil'])->name('sProfil');
     Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('editprofil');
     Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('sLaporan');
+});
+
+Route::group(['middleware' => ['auth', 'roles:wali siswa']], function () {
+    Route::get('/walisiswa', [App\Http\Controllers\walisiswaController::class, 'index'])->name('walisiswa');
 });

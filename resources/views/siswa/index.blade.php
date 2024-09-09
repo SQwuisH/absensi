@@ -119,6 +119,7 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
+            {{-- MODAL --}}
             <div class="modal fade" id="izinSakitModal" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -146,6 +147,7 @@
                 </div>
             </div>
 
+            {{-- ALERT --}}
             <div class="row">
                 @if (Session('success'))
                     <div class="alert alert-success alert-dismissible" role="alert">
@@ -156,6 +158,7 @@
                 @endif
             </div>
 
+            {{-- USERNAME --}}
             <div class="row mb-2">
                 <div class="col d-none d-lg-block">
                     <div class="card">
@@ -169,8 +172,10 @@
 
             </div>
 
-            <div class="row mb-2 text-center">
+            {{-- ROW 1 --}}
+            <div class="row text-center">
 
+                {{-- JADWAL ABSEN --}}
                 <div class="col d-none d-lg-block">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -187,7 +192,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col d-none d-lg-block">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -205,7 +209,7 @@
                     </div>
                 </div>
 
-
+                {{-- JARAK --}}
                 <div class="col d-none d-lg-block">
                     <div class="card mb-4" style="max-height: 125px">
                         <div class="card-header">
@@ -219,6 +223,7 @@
                     </div>
                 </div>
 
+                {{-- JAM --}}
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-header ">
@@ -253,8 +258,9 @@
                 </div>
 
             </div>
-
-            <div class="row mb-2 text-center">
+            {{-- ROW 2 --}}
+            <div class="row text-center">
+                {{-- JAM || JARAK  --}}
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -276,13 +282,251 @@
                                     </div>
                                 </div>
                             </div>
-                            <h2 class="d-lg-none" id="d"></h2>
+                            <h5 class="d-lg-none" id="d"></h5>
                         </div>
                     </div>
                 </div>
+
+                {{-- KETERANGAN --}}
                 @include('siswa.keteranganstatus')
+
             </div>
-            @include('siswa.tombolabsen')
+
+            {{-- BUTTON --}}
+            <div class="container mb-2">
+                @include('siswa.tombolabsen')
+            </div>
+
+            {{-- REKAP --}}
+            <div class="container">
+                <div class="row">
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                Rekap
+                            </h4>
+                            <div>
+                                {{-- BUTTON NAV --}}
+                                <ul class="nav nav-tabs nav-fill" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button type="button" class="nav-link active" role="tab"
+                                            data-bs-toggle="tab" data-bs-target="#navs-justified-profile"
+                                            aria-controls="true" aria-selected="navs-justified-home" tabindex="-1">
+                                            <span>Bulan ini</span>
+
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                            data-bs-target="#navs-justified-messages"
+                                            aria-controls="navs-justified-messages" aria-selected="false"
+                                            tabindex="-1">
+                                            <span>Bulan lalu</span>
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                {{-- CONTENT --}}
+                                <div class="tab-content">
+
+                                    {{-- BULAN INI --}}
+                                    <div class="tab-pane fade active show" id="navs-justified-profile"
+                                        role="tabpanel">
+                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                            @if ($persentase['ini'] == 0)
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:100%; background-color:white; color:black"
+                                                    aria-valuenow={{ $persentase['ini'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase['ini'] }}%
+                                                </div>
+                                            @else
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:{{ $persentase['ini'] }}%; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuenow={{ $persentase['ini'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase['ini'] }}%
+                                                </div>
+                                            @endif
+                                        </div>
+                                        {{-- INFO --}}
+                                        <div>
+                                            <div class="row">
+
+                                                {{-- hadir --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-absen text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Hadir:</h6>
+                                                            {{ $jumlah['hadirIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- sakit --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-info text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">sakit:</h6>
+                                                            {{ $jumlah['sakitIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- izin --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-warning text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Izin:</h6>
+                                                            {{ $jumlah['izinIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                {{-- ALFA --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-danger text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Alfa:</h6>
+                                                            {{ $jumlah['alfaIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TERLAMBAT --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-secondary text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Terlambat:</h6>
+                                                            {{ $jumlah['terlambatIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TAP --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-black text-white mb-3"
+                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                        data-bs-placement="top" data-bs-html="true"
+                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <h6 class="col card-title text-white">TAP:</h6>
+                                                            </div>
+
+                                                            {{ $jumlah['tapIni'] }} Hari
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- BULAN LALU --}}
+                                    <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
+                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                            @if ($persentase['lalu'] == 0)
+                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                    style="width:100%;  height: 35px; font-size:13px; background-color:white; color:black"
+                                                    aria-valuenow={{ $persentase['lalu'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase['lalu'] }}%
+                                                </div>
+                                            @else
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:{{ $persentase['lalu'] }}%;  height: 35px; font-size:13px; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuenow={{ $persentase['lalu'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase['lalu'] }}%
+                                                </div>
+                                            @endif
+                                        </div>
+                                        {{-- INFO --}}
+                                        <div>
+                                            <div class="row">
+
+                                                {{-- hadir --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-absen text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Hadir:</h6>
+                                                            {{ $jumlah['hadirLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- sakit --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-info text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">sakit:</h6>
+                                                            {{ $jumlah['sakitLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- izin --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-warning text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Izin:</h6>
+                                                            {{ $jumlah['izinLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                {{-- ALFA --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-danger text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Alfa:</h6>
+                                                            {{ $jumlah['alfaLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TERLAMBAT --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-secondary text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Terlambat:</h6>
+                                                            {{ $jumlah['terlambatLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TAP --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-black text-white mb-3"
+                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                        data-bs-placement="top" data-bs-html="true"
+                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <h6 class="col card-title text-white">TAP:</h6>
+                                                            </div>
+
+                                                            {{ $jumlah['tapLalu'] }} Hari
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
 
 
             <i class='bx bx-copyright'></i> Aplikasi Absensi Sebelas, 2024

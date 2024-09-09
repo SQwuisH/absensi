@@ -2,38 +2,71 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Support\Str;
 use App\Models\absensi;
 use App\Models\koordinat_sekolah;
 use App\Models\siswa;
 use App\Models\User;
 use App\Models\waktu_absen;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
+use Yajra\DataTables\DataTables;
+
 class SiswaController extends Controller
 {
     public function index()
     {
-        $waktu = waktu_absen::first();
-
         $siswa = siswa::with('user')->where('id_user', auth::user()->id)->first();
-
-        $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
-
+        $waktu = waktu_absen::first();
+        $lokasi = koordinat_sekolah::first();
         $absenmasuk = false;
         $absenpulang = false;
 
-        $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presensi';
-
-        $lokasi = koordinat_sekolah::first();
-
+        // CEK ABSENSI
+        $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
+        $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presen';
         if ($cekabsen) {
             $absenmasuk = !empty($cekabsen->photo_in);
             $absenpulang = !empty($cekabsen->photo_out);
         }
+
+        // REKAP DASHBOARD
+        $ini = Absensi::whereYear('date', date('Y'))
+            ->where('nis', $siswa->nis)
+            ->whereMonth('date', date('m'))->get();
+
+        $lalu = Absensi::whereYear('date', date('Y'))
+            ->where('nis', $siswa->nis)
+            ->whereMonth('date', date('m', strtotime('first day of previous month')))->get();
+
+        $jumlah = [
+            // BULAN INI
+            'ini' => $ini->count(),
+            'hadirIni' => $ini->where('status', "hadir")->count(),
+            'sakitIni' => $ini->where('status', "sakit")->count(),
+            'izinIni' => $ini->where('status', "izin")->count(),
+            'terlambatIni' => $ini->where('status', "terlambat")->count(),
+            'alfaIni' => $ini->where('status', "alfa")->count(),
+            'tapIni' => $ini->where('status', "TAP")->count(),
+
+            // BULAN LALU
+            'lalu' => $lalu->count(),
+            'hadirLalu' => $lalu->where('status', "hadir")->count(),
+            'sakitLalu' => $lalu->where('status', "sakit")->count(),
+            'izinLalu' => $lalu->where('status', "izin")->count(),
+            'terlambatLalu' => $lalu->where('status', "terlambat")->count(),
+            'alfaLalu' => $lalu->where('status', "alfa")->count(),
+            'tapLalu' => $lalu->where('status', "TAP")->count(),
+        ];
+
+        $persentase = [
+            'ini' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirini'] / $jumlah['ini']) * 100, 1) : 0,
+            'lalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $jumlah['lalu']) * 100, 1) : 0
+        ];
 
         return view('siswa.index', [
             'waktu' => $waktu,
@@ -41,7 +74,9 @@ class SiswaController extends Controller
             'absenmasuk' => $absenmasuk,
             'absenpulang' => $absenpulang,
             'statusabsen' => $statusAbsen,
-            'lokasi' => $lokasi
+            'lokasi' => $lokasi,
+            'jumlah' => $jumlah,
+            'persentase' => $persentase
         ]);
     }
 
@@ -256,23 +291,31 @@ class SiswaController extends Controller
     public function laporan(request $request)
     {
         $siswa = siswa::where('id_user', auth::user()->id)->first();
+        $nis = $siswa->nis;
 
-        $query = absensi::query()->orderBy('date','desc');
-        if(isset($request->category) && $request->category != null)
-        {
+        $query = absensi::query()->orderBy('date', 'desc')->where('nis', '00' . $nis);
+
+        $s = absensi::orderBy('date', 'asc')->first();
+
+        $start = $s->date;
+        $end = date("Y-m-d");
+
+        $date = Str::of($request->daterange)->remove('-')->replace('/', '-')->split('/[\s,]+/');
+        if (isset($request->daterange)) {
+            $start = DateTime::createFromFormat("m-d-Y", $date[0])->format("Y-m-d");
+            $end = DateTime::createFromFormat("m-d-Y", $date[1])->format("Y-m-d");
+        }
+        if (isset($request->category) && $request->category != null) {
             $query->whereIn('status', $request->category);
-        } $absensi = $query->paginate(15);
-
-        $ab = absensi::where('nis', $siswa->nis)->get();
-
-        $user = Auth::user();
-        $nis = $user->siswa->nis;
-        $hariini = date("Y-m-d");
+        }
+        $absensi = $query->whereBetween('date', [$start, $end])->paginate(15);
+        $ab = absensi::where('nis', $siswa->nis)->whereBetween('date', [$start, $end])->get();
 
         $totalAbsensi = $ab->count();
-
-        $totalKeterlambatan = $ab->where('status', 'Terlambat')->sum('keterangan');
-
+        $totalKeterlambatan = DB::table('absensis')
+            ->select(DB::raw('SUM(CAST(keterangan AS UNSIGNED)) as total_sum'))
+            ->where('status', 'terlambat')
+            ->value('total_sum');
         $jumlah = [
             'hadir' => $ab->where('status', 'hadir')->count(),
             'sakit' => $ab->whereIn('status', 'sakit')->count(),
@@ -281,7 +324,6 @@ class SiswaController extends Controller
             'alfa' => $ab->where('status', 'alfa')->count(),
             'tap' => $ab->where('status', 'TAP')->count(),
         ];
-
         $persentase = [
             'hadir' => $totalAbsensi > 0 ? round(($jumlah['hadir'] / $totalAbsensi) * 100, 1) : 0,
             'sakit' => $totalAbsensi > 0 ? round(($jumlah['sakit'] / $totalAbsensi) * 100, 1) : 0,
@@ -291,9 +333,6 @@ class SiswaController extends Controller
             'tap' => $totalAbsensi > 0 ? round(($jumlah['tap'] / $totalAbsensi) * 100, 1) : 0,
         ];
 
-        $results = response()->json($ab);
-        return view('siswa.laporan', compact('absensi', 'ab', 'siswa', 'totalAbsensi', 'totalKeterlambatan', 'jumlah', 'persentase'),
-         [ 'data' => $results ]
-        );
+        return view('siswa.laporan', compact('absensi', 'ab', 'siswa', 'totalAbsensi', 'totalKeterlambatan', 'jumlah', 'persentase', 'start', 'end'));
     }
 }

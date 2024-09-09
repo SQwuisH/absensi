@@ -1,21 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Console\Commands;
 
 use App\Models\absensi;
 use App\Models\siswa;
-use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
-class Controller extends BaseController
+class InsertAbsen extends Command
 {
-    use AuthorizesRequests, ValidatesRequests;
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'app:insert-absen';
 
-    public function test()
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Execute the console command.
+     */
+
+     public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function handle()
     {
         $today = Carbon::today();
 
@@ -31,7 +49,7 @@ class Controller extends BaseController
 
         foreach ($siswaList as $siswa) {
             // Cek apakah absensi untuk siswa ini dan tanggal hari ini sudah ada
-            $absensi = Absensi::where('nis', '00' . $siswa->nis)
+            $absensi = Absensi::where('nis', $siswa->nis)
                               ->whereDate('date', $todayDate)
                               ->first();
 
@@ -44,5 +62,7 @@ class Controller extends BaseController
                 ]);
             }
         }
+
+        $this->info('Default absensi created successfully for all students.');
     }
 }

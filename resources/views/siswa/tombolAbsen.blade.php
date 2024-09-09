@@ -1,4 +1,5 @@
-@if ($statusabsen == 'belum presensi')
+{{-- MASUK --}}
+@if ($statusabsen == 'belum presen')
     @if (!date('Hi') < $waktu->mulai_pulang)
         <div class="row mb-2 text-center">
             <a href="{{ route('absen') }}" id="presensi" class="btn btn-absen">
@@ -19,6 +20,8 @@
             </button>
         </div>
     @endif
+
+{{-- ABSEN PULANG --}}
 @elseif ($statusabsen == 'hadir' || $statusabsen == 'terlambat')
     @if (date('Hi') > $waktu->mulai_pulang)
         <div class="row mb-2 text-center">
