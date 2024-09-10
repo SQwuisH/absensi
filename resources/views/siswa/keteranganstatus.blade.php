@@ -52,8 +52,8 @@
                     </h4>
                 </div>
                 <div class="card-body d-flex justify-content-center text-center ">
-                    <h2 class="bg-label-warning d-none d-lg-block">{{ $statusabsen }}</h2>
-                    <h5 class="bg-label-warning d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
+                    <h2 class="bg-label-absen d-none d-lg-block">{{ $statusabsen }}</h2>
+                    <h5 class="bg-label-absen d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
                 </div>
             </div>
         </div>

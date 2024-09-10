@@ -110,5 +110,14 @@ class users extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        User::create([
+            'name' => 'Hariz May Rayhan',
+            'email' => 'Riz@gmail.com',
+            'password' => password_hash("12345678", PASSWORD_DEFAULT),
+            'role' => 'siswa',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

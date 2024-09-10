@@ -43,7 +43,7 @@
 
     <script></script>
 
-    <title>Siswa | Aplikasi Absensi Sebelas</title>
+    <title>Wali Siswa | Aplikasi Absensi Sebelas</title>
 </head>
 
 <body>
@@ -57,14 +57,14 @@
             <div class="nav__menu mt-3" id="nav-menu">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="{{ route('siswa') }}" class="nav__link">
+                        <a href="{{ route('walisiswa') }}" class="nav__link">
                             <i class='bx bx-home-alt nav__icon'></i>
                             <span class="nav__name">Home</span>
                         </a>
                     </li>
 
                     <li class="nav__item">
-                        <a href="{{ route('sLaporan') }}" class="nav__link">
+                        <a href="{{ route('wLaporan') }}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
                             <span class="nav__name">Laporan Absensi</span>
                         </a>
@@ -117,11 +117,11 @@
 
 
 
-            <form action={{ route('sEditprofil') }} method="POST" enctype="multipart/form-data">
+            <form action={{ route('wEditProfil') }} method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="id" value={{ $siswa->id }}>
+                <input type="hidden" name="id" value={{ $walisiswa->id_user }}>
                 <h4 class="card-title mb-2">
-                    <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                    <a href={{ route('walisiswa') }} class="btn rounded btn-outline-danger"><i
                             class='bx bx-chevron-left'></i></a>
                     Profil
                 </h4>
@@ -143,7 +143,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-item-start gap-4">
-                                    <img src="{{ asset('/storage/user_avatar/' . $siswa->foto) }}" alt=""
+                                    <img src="{{ asset('/storage/user_avatar/' . $walisiswa->user->foto) }}" alt=""
                                         class="d-block rounded" height="100" width="100">
                                     <div class="button-wrapper">
                                         <label for="upload" class="btn btn-absen me-2 mb-4" tabindex="0">
@@ -164,20 +164,20 @@
                                     <div class="mb-3 col-md-6">
                                         <label for="Nama" class="form-label">Nama Panjang</label>
                                         <input class="form-control" type="text" id="Nama"
-                                            value="{{ $siswa->name }}" disabled>
+                                            value="{{ $walisiswa->user->name }}" disabled>
                                     </div>
 
                                     <div class="mb-3 col-md-6">
-                                        <label for="NIS" class="form-label">NIS</label>
-                                        <input class="form-control" type="text" id="NIS"
-                                            value="00{{ $siswa->siswa->nis }}" disabled>
-                                        <input type="hidden" name="nis" value="00{{ $siswa->siswa->nis }}">
+                                        <label for="nik" class="form-label">NIK</label>
+                                        <input class="form-control" type="text" id="nik"
+                                            value="00{{ $walisiswa->nik }}" disabled>
+                                        <input type="hidden" name="nik" value="00{{ $walisiswa->nik }}">
                                     </div>
 
                                     <div class="mb-3 col-md-6">
                                         <label for="Email" class="form-label">Email</label>
                                         <input class="form-control" type="Email" id="Email" name="email"
-                                            value="{{ $siswa->email }}">
+                                            value="{{ $walisiswa->user->email }}">
                                     </div>
                                 </div>
                                 <div class="row">

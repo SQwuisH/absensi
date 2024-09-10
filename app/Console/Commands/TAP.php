@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Models\absensi;
 use App\Models\siswa;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -40,5 +39,19 @@ class TAP extends Command
         // Dapatkan semua siswa
         $siswaList = siswa::all();
         $todayDate = $today->toDateString();
+
+        foreach ($siswaList as $siswa) {
+            $absensi = absensi::where('nis', $siswa->nis)->wheredate('date', $todayDate)->first();
+
+            if ($absensi->status == "terlambat" || $absensi->status == "hadir") {
+                if ($absensi->foto_pulang == null || $absensi->titik_koordinat_pulang == null) {
+                    absensi::where('id_absensi', $absensi->id_absensi)->update([
+                        'status' => "TAP"
+                    ]);
+                }
+            }
+        }
+
+        $this->info('cek update TAP successfully for all students.');
     }
 }

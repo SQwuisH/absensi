@@ -64,7 +64,7 @@ class SiswaController extends Controller
         ];
 
         $persentase = [
-            'ini' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirini'] / $jumlah['ini']) * 100, 1) : 0,
+            'ini' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirIni'] / $jumlah['ini']) * 100, 1) : 0,
             'lalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $jumlah['lalu']) * 100, 1) : 0
         ];
 
@@ -292,7 +292,6 @@ class SiswaController extends Controller
     {
         $siswa = siswa::where('id_user', auth::user()->id)->first();
         $nis = $siswa->nis;
-
         $query = absensi::query()->orderBy('date', 'desc')->where('nis', '00' . $nis);
 
         $s = absensi::orderBy('date', 'asc')->first();

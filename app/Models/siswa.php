@@ -39,4 +39,9 @@ class siswa extends Model
     {
         return $this->hasOneThrough(jurusan::class, kelas::class, 'id_kelas', 'id_jurusan', 'id_kelas', 'id_jurusan');
     }
+
+    public function walisiswa()
+    {
+        return $this->belongsTo(wali_siswa::class, 'nik', 'nik');
+    }
 }

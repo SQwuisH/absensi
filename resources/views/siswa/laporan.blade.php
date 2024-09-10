@@ -163,7 +163,6 @@
                                         <button type="submit" class="btn btn-absen">search</button>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                         <div class="card-body">
 
@@ -326,59 +325,51 @@
                                     </div>
                                     <div class="offcanvas-body my-auto mx-0 flex-grow-0">
                                         <div class="position">
-                                            <form action="{{ route('sLaporan') }}" method="GET">
-                                                <div class="row mb-0">
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="hadir" id="hadir"
-                                                            name="category[0]" checked>
-                                                        <label class="form-check-label" for="hadir">Hadir</label>
-                                                    </div>
-
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="sakit" id="sakit"
-                                                            name="category[1]" checked>
-                                                        <label for="sakit" class="form-check-label">Sakit</label>
-                                                    </div>
+                                            <div class="row mb-0">
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="hadir" id="hadir" name="category[0]" checked>
+                                                    <label class="form-check-label" for="hadir">Hadir</label>
                                                 </div>
 
-                                                <div class="row mb-2">
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="izin" id="izin"
-                                                            name="category[2]" checked>
-                                                        <label class="form-check-label" for="izin">Izin</label>
-                                                    </div>
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="alfa" id="alfa"
-                                                            name="category[3]" checked>
-                                                        <label for="alfa" class="form-check-label">Alfa</label>
-                                                    </div>
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="sakit" id="sakit" name="category[1]" checked>
+                                                    <label for="sakit" class="form-check-label">Sakit</label>
                                                 </div>
+                                            </div>
 
-                                                <div class="row mb-2">
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="terlambat" id="terlambat"
-                                                            name="category[4]" checked>
-                                                        <label for="terlambat"
-                                                            class="form-check-label">Terlambat</label>
-                                                    </div>
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="TAP" id="tap"
-                                                            name="category[5]" checked>
-                                                        <label for="tap" class="form-check-label">TAP</label>
-                                                    </div>
+                                            <div class="row mb-2">
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="izin" id="izin" name="category[2]" checked>
+                                                    <label class="form-check-label" for="izin">Izin</label>
                                                 </div>
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="alfa" id="alfa" name="category[3]" checked>
+                                                    <label for="alfa" class="form-check-label">Alfa</label>
+                                                </div>
+                                            </div>
 
-                                                <div class="row">
-                                                    <div class="col modal-footer">
-                                                        <button class="btn btn-primary" type="submit">Apply</button>
-                                                    </div>
+                                            <div class="row mb-2">
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="terlambat" id="terlambat" name="category[4]" checked>
+                                                    <label for="terlambat" class="form-check-label">Terlambat</label>
                                                 </div>
+                                                <div class="col form-check">
+                                                    <input class="form-check-input filter-checkbox" type="checkbox"
+                                                        value="TAP" id="tap" name="category[5]" checked>
+                                                    <label for="tap" class="form-check-label">TAP</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col modal-footer">
+                                                    <button class="btn btn-primary" type="submit">Apply</button>
+                                                </div>
+                                            </div>
                                             </form>
 
                                         </div>

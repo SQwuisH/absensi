@@ -8,6 +8,6 @@ class WaliController extends Controller
 {
     public function index()
     {
-        return view('kesiswaan.index');
+        return view('walikelas.index');
     }
 }

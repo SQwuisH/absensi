@@ -121,10 +121,14 @@ Route::group(['middleware' => ['auth', 'roles:siswa']], function () {
     Route::get('/pengajuan/{opt}', [App\Http\Controllers\siswaController::class, 'izinSakit'])->name('izinSakit');
     Route::post('/pengajuan', [App\Http\Controllers\siswaController::class, 'krmizinSakit'])->name('krmizinSakit');
     Route::get('/siswa/profil', [App\Http\Controllers\siswaController::class, 'profil'])->name('sProfil');
-    Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('editprofil');
+    Route::post('/siswa/editprofil', [App\Http\Controllers\siswaController::class, 'editprofil'])->name('sEditprofil');
     Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('sLaporan');
 });
 
 Route::group(['middleware' => ['auth', 'roles:wali siswa']], function () {
     Route::get('/walisiswa', [App\Http\Controllers\walisiswaController::class, 'index'])->name('walisiswa');
+    Route::get('/walisiswa/laporan', [App\Http\Controllers\walisiswaController::class, 'laporan'])->name('wLaporan');
+    Route::get('/walisiswa/profil', [App\Http\Controllers\walisiswaController::class, 'profil'])->name('wProfil');
+    Route::get('/walisiswa/{nis}', [App\Http\Controllers\walisiswaController::class, 'sProfil'])->name('wsProfil');
+    Route::post('/walisiswa/editprofil', [App\Http\Controllers\walisiswaController::class, 'editprofil'])->name('wEditProfil');
 });

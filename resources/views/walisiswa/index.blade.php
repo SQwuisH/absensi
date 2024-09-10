@@ -48,7 +48,7 @@
 
     <script></script>
 
-    <title>Siswa | Aplikasi Absensi Sebelas</title>
+    <title>Wali Siswa | Aplikasi Absensi Sebelas</title>
 </head>
 
 <body>
@@ -83,7 +83,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('sProfil') }}" class="dropdown-item d-flex align-items-center"><i
+                                    <a href="{{ route('wProfil') }}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
                                 </li>
                                 <li>
@@ -169,6 +169,129 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
+
+            <div class="row">
+                <span hidden>{{$int = 0}}</span>
+                @foreach ($siswa as $s)
+                    <div class="col-md mb-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <a class="text-black" href="#">{{ $s["user"]["name"]}} <i class='bx bx-link-external'></i></a>
+                                        </div>
+                                        <div class="col-3 text-end">
+                                            {{ $s["kelas"]["tingkat"] . " " . strtoupper($s["kelas"]["id_jurusan"]) ." " . $s["kelas"]["nomor_kelas"]}}
+                                        </div>
+                                    </div>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <p>
+                                    Persentase Kehadiran :
+                                </p>
+
+                                {{-- PROGRES BAR --}}
+                                <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                    @if ($persentase[$int]['semua'] == 0)
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
+                                            aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
+                                            aria-valuemax="100">
+                                            {{ $persentase[$int]['semua'] }}%
+                                        </div>
+                                    @else
+                                        <div class="progress-bar" role="progressbar"
+                                            style="width:{{ $persentase[$int]['semua'] }}%; background-color: hsl(174, 63%, 40%)"
+                                            aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
+                                            aria-valuemax="100">
+                                            {{ $persentase[$int]['semua'] }}%
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- INFO --}}
+                                <div>
+                                    <div class="row">
+
+                                        {{-- hadir --}}
+                                        <div class="col-4">
+                                            <div class="card bg-absen text-white mb-3">
+                                                <div class="card-header">
+                                                    <h6 class="card-title text-white">Hadir:</h6>
+                                                    {{ $jumlah[$int]['hadirSemua'] }} Hari
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- sakit --}}
+                                        <div class="col-4">
+                                            <div class="card bg-info text-white mb-3">
+                                                <div class="card-header">
+                                                    <h6 class="card-title text-white">sakit:</h6>
+                                                    {{ $jumlah[$int]['sakitSemua'] }} Hari
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- izin --}}
+                                        <div class="col-4">
+                                            <div class="card bg-warning text-white mb-3">
+                                                <div class="card-header">
+                                                    <h6 class="card-title text-white">Izin:</h6>
+                                                    {{ $jumlah[$int]['izinSemua'] }} Hari
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        {{-- ALFA --}}
+                                        <div class="col-4">
+                                            <div class="card bg-danger text-white mb-3">
+                                                <div class="card-header">
+                                                    <h6 class="card-title text-white">Alfa:</h6>
+                                                    {{ $jumlah[$int]['alfaSemua'] }} Hari
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- TERLAMBAT --}}
+                                        <div class="col-4">
+                                            <div class="card bg-secondary text-white mb-3">
+                                                <div class="card-header">
+                                                    <h6 class="card-title text-white">Terlambat:</h6>
+                                                    {{ $jumlah[$int]['terlambatSemua'] }} Hari
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{-- TAP --}}
+                                        <div class="col-4">
+                                            <div class="card bg-black text-white mb-3"
+                                                data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                data-bs-placement="top" data-bs-html="true"
+                                                data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <h6 class="col card-title text-white">TAP:</h6>
+                                                    </div>
+
+                                                    {{ $jumlah[$int]['tapSemua'] }} Hari
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span hidden>{{$int = $int +1}}</span>
+                @endforeach
 
             </div>
 
