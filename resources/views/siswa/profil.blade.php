@@ -119,7 +119,7 @@
 
             <form action={{ route('sEditprofil') }} method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="id" value={{ $siswa->id }}>
+                <input type="hidden" name="id" value={{ $user->user->id }}>
                 <h4 class="card-title mb-2">
                     <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
                             class='bx bx-chevron-left'></i></a>
@@ -143,8 +143,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-item-start gap-4">
-                                    <img src="{{ asset('/storage/user_avatar/' . $siswa->foto) }}" alt=""
-                                        class="d-block rounded" height="100" width="100">
+                                    <img src="{{ asset('/storage/user_avatar/' . $user->user->foto) }}"
+                                        alt="" class="d-block rounded" height="100" width="100">
                                     <div class="button-wrapper">
                                         <label for="upload" class="btn btn-absen me-2 mb-4" tabindex="0">
                                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -164,20 +164,20 @@
                                     <div class="mb-3 col-md-6">
                                         <label for="Nama" class="form-label">Nama Panjang</label>
                                         <input class="form-control" type="text" id="Nama"
-                                            value="{{ $siswa->name }}" disabled>
+                                            value="{{ $user->user->name }}" disabled>
                                     </div>
 
                                     <div class="mb-3 col-md-6">
                                         <label for="NIS" class="form-label">NIS</label>
                                         <input class="form-control" type="text" id="NIS"
-                                            value="00{{ $siswa->siswa->nis }}" disabled>
-                                        <input type="hidden" name="nis" value="00{{ $siswa->siswa->nis }}">
+                                            value="00{{ $user->nis }}" disabled>
+                                        <input type="hidden" name="nis" value="00{{ $user->nis }}">
                                     </div>
 
                                     <div class="mb-3 col-md-6">
                                         <label for="Email" class="form-label">Email</label>
                                         <input class="form-control" type="Email" id="Email" name="email"
-                                            value="{{ $siswa->email }}">
+                                            value="{{ $user->user->email }}">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -203,6 +203,7 @@
                     </div>
 
                 </div>
+
             </form>
 
             <div>

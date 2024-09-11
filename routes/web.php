@@ -127,8 +127,8 @@ Route::group(['middleware' => ['auth', 'roles:siswa']], function () {
 
 Route::group(['middleware' => ['auth', 'roles:wali siswa']], function () {
     Route::get('/walisiswa', [App\Http\Controllers\walisiswaController::class, 'index'])->name('walisiswa');
-    Route::get('/walisiswa/laporan', [App\Http\Controllers\walisiswaController::class, 'laporan'])->name('wLaporan');
+    Route::get('/walisiswa/laporan/{nis}', [App\Http\Controllers\walisiswaController::class, 'laporan'])->name('wLaporan');
     Route::get('/walisiswa/profil', [App\Http\Controllers\walisiswaController::class, 'profil'])->name('wProfil');
-    Route::get('/walisiswa/{nis}', [App\Http\Controllers\walisiswaController::class, 'sProfil'])->name('wsProfil');
+    Route::get('/walisiswa/profil/{nis}', [App\Http\Controllers\walisiswaController::class, 'sProfil'])->name('wsProfil');
     Route::post('/walisiswa/editprofil', [App\Http\Controllers\walisiswaController::class, 'editprofil'])->name('wEditProfil');
 });

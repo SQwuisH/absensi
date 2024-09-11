@@ -1,5 +1,5 @@
 @php
-    $s = date('m-d-Y', strtotime($start));
+    $sta = date('m-d-Y', strtotime($start));
     $e = date('m-d-Y', strtotime($end));
 @endphp
 <!DOCTYPE html>
@@ -42,14 +42,10 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src={{ asset('assets/t1/js/config.js') }}></script>
 
-
-
     <!-- icon -->
     <link rel="icon" type="image/x-icon" href={{ asset('assets/t2/img/6.png') }} />
 
-    <script></script>
-
-    <title>Siswa | Aplikasi Absensi Sebelas</title>
+    <title>Wali Siswa | Aplikasi Absensi Sebelas</title>
 </head>
 
 <body>
@@ -63,7 +59,7 @@
             <div class="nav__menu mt-3" id="nav-menu">
                 <ul class="nav__list">
                     <li class="nav__item">
-                        <a href="{{ route('siswa') }}" class="nav__link ">
+                        <a href="{{ route('walisiswa') }}" class="nav__link ">
                             <i class='bx bx-home-alt nav__icon'></i>
                             <span class="nav__name">Home</span>
                         </a>
@@ -84,7 +80,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
-                                    <a href="{{ route('sProfil') }}" class="dropdown-item d-flex align-items-center"><i
+                                    <a href="{{ route('wProfil') }}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
                                 </li>
                                 <li>
@@ -135,7 +131,7 @@
             <h4 class="card-title mb-2">
                 <div class="row">
                     <div class="col-10">
-                        <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                        <a href={{ route('walisiswa') }} class="btn rounded btn-outline-danger"><i
                                 class='bx bx-chevron-left'></i></a> Laporan Absensi
                     </div>
                     <div class="col-2 d-flex justify-content-end">
@@ -147,14 +143,40 @@
                 </div>
             </h4>
 
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="btn-group">
+
+                        @foreach ($allSiswa as $s)
+                            @if ($s->nis == $siswa->nis)
+                                <a href="#" class="btn btn-secondary disabled">{{ $siswa->user->name }}</a>
+                            @else
+                                <a class="btn btn-absen"
+                                    href="{{ route('wLaporan', "00$s->nis") }}">{{ $s->user->name }}</a>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
             <div class="row mb-2">
                 <div class="col">
-
                     <div class="card">
 
                         <div class="card-header">
-
-                            <form action={{ route('sLaporan') }}>
+                            <div class="row">
+                                <h5 class="card-title">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <a href="{{route('wsProfil', "00$siswa->nis")}}" class="text-black">{{ $siswa->user->name }} <i class='bx bx-search-alt'></i></a>
+                                        </div>
+                                        <span class="col-3 text-end">{{ $siswa->kelas->tingkat }}
+                                            {{ strtoupper($siswa->kelas->id_jurusan) }}
+                                            {{ $siswa->kelas->nomor_kelas }}</span>
+                                    </div>
+                                </h5>
+                            </div>
+                            <form action={{ route('wLaporan', "00$siswa->nis") }}>
                                 <div class="row">
                                     <div class="col-9">
                                         <input type="text" name="daterange" class="form-control" />
@@ -326,7 +348,7 @@
                                     </div>
                                     <div class="offcanvas-body my-auto mx-0 flex-grow-0">
                                         <div class="position">
-                                            <form action={{ route('sLaporan') }}>
+                                            <form action={{ route('wLaporan', "00$siswa->nis") }}>
                                                 <div class="row mb-0">
                                                     <div class="col form-check">
                                                         <input class="form-check-input filter-checkbox"
@@ -516,12 +538,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-
     <script>
         $(function() {
 
             $('input[name="daterange"]').daterangepicker({
-                startDate: "{{ $s }}",
+                startDate: "{{ $sta }}",
                 endDate: "{{ $e }}"
             });
         });

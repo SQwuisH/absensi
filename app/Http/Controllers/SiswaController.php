@@ -237,9 +237,9 @@ class SiswaController extends Controller
 
     public function profil()
     {
-        $siswa = auth::user();
+        $user = siswa::where("id_user", auth::user()->id)->with('user', 'kelas')->first();
 
-        return view('siswa.profil', compact('siswa'));
+        return view('siswa.profil', compact('user'));
     }
 
     public function editprofil(Request $r)
@@ -317,8 +317,8 @@ class SiswaController extends Controller
             ->value('total_sum');
         $jumlah = [
             'hadir' => $ab->where('status', 'hadir')->count(),
-            'sakit' => $ab->whereIn('status', 'sakit')->count(),
-            'izin' => $ab->whereIn('status', 'izin')->count(),
+            'sakit' => $ab->where('status', 'sakit')->count(),
+            'izin' => $ab->where('status', 'izin')->count(),
             'terlambat' => $ab->where('status', 'terlambat')->count(),
             'alfa' => $ab->where('status', 'alfa')->count(),
             'tap' => $ab->where('status', 'TAP')->count(),

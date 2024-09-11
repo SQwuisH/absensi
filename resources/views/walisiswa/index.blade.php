@@ -69,7 +69,7 @@
                     </li>
 
                     <li class="nav__item">
-                        <a href="{{ route('sLaporan') }}" class="nav__link">
+                        <a href="{{ route('wLaporan', "00$first->nis") }}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
                             <span class="nav__name">Laporan Absensi</span>
                         </a>
@@ -172,117 +172,346 @@
 
             </div>
 
+
+            <span hidden>{{ $int = 0 }}</span>
             <div class="row">
-                <span hidden>{{$int = 0}}</span>
                 @foreach ($siswa as $s)
-                    <div class="col-md mb-3">
+                    <div class="col-md-6 mb-3">
                         <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <a class="text-black" href="#">{{ $s["user"]["name"]}} <i class='bx bx-link-external'></i></a>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            {{ $s["kelas"]["tingkat"] . " " . strtoupper($s["kelas"]["id_jurusan"]) ." " . $s["kelas"]["nomor_kelas"]}}
-                                        </div>
-                                    </div>
-                                </h5>
-                            </div>
                             <div class="card-body">
-                                <p>
-                                    Persentase Kehadiran :
-                                </p>
-
-                                {{-- PROGRES BAR --}}
-                                <div class="progress mb-5" style="height: 35px; font-size:13px;">
-                                    @if ($persentase[$int]['semua'] == 0)
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
-                                            aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
-                                            aria-valuemax="100">
-                                            {{ $persentase[$int]['semua'] }}%
-                                        </div>
-                                    @else
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width:{{ $persentase[$int]['semua'] }}%; background-color: hsl(174, 63%, 40%)"
-                                            aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
-                                            aria-valuemax="100">
-                                            {{ $persentase[$int]['semua'] }}%
-                                        </div>
-                                    @endif
+                                {{-- HEADER --}}
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h6 class="card-title">
+                                            <a class="text-black"
+                                                href="{{ route('wLaporan', '00' . $s['nis']) }}">{{ $s['user']['name'] }}
+                                                <i class='bx bx-link-external'></i></a>
+                                        </h6>
+                                    </div>
+                                    <div class="col-3 text-end">
+                                        {{ $s['kelas']['tingkat'] . ' ' . strtoupper($s['kelas']['id_jurusan']) . ' ' . $s['kelas']['nomor_kelas'] }}
+                                    </div>
                                 </div>
+                                <ul class="nav nav-tabs nav-fill" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button type="button" class="nav-link active" role="tab"
+                                            data-bs-toggle="tab" data-bs-target="#sepanjangWaktu{{ $s['nis'] }}"
+                                            aria-controls="sepanjangWaktu{{ $s['nis'] }}" aria-selected="false"
+                                            tabindex="-1">
+                                            Sepanjang Waktu
 
-                                {{-- INFO --}}
-                                <div>
-                                    <div class="row">
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                            data-bs-target="#bulanIni{{ $s['nis'] }}"
+                                            aria-controls="bulanIni{{ $s['nis'] }}" aria-selected="false"
+                                            tabindex="-1">
+                                            Bulan ini
+                                        </button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                            data-bs-target="#bulanLalu{{ $s['nis'] }}"
+                                            aria-controls="bulanLalu{{ $s['nis'] }}" aria-selected="true"> Bulan
+                                            Lalu
+                                        </button>
+                                    </li>
+                                </ul>
 
-                                        {{-- hadir --}}
-                                        <div class="col-4">
-                                            <div class="card bg-absen text-white mb-3">
-                                                <div class="card-header">
-                                                    <h6 class="card-title text-white">Hadir:</h6>
-                                                    {{ $jumlah[$int]['hadirSemua'] }} Hari
+                                {{-- CONTENT --}}
+                                <div class="tab-content">
+                                    {{-- ALL TIME --}}
+                                    <div class="tab-pane fade active show" id="sepanjangWaktu{{ $s['nis'] }}"
+                                        role="tabpanel">
+                                        {{-- PERSENTASE KEHADIRAN --}}
+                                        <p class="text-mute">Persentase Kehadiran :</p>
+                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                            @if ($persentase[$int]['semua'] == 0)
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
+                                                    aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['semua'] }}%
                                                 </div>
-                                            </div>
+                                            @else
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:{{ $persentase[$int]['semua'] }}%; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['semua'] }}%
+                                                </div>
+                                            @endif
                                         </div>
 
-                                        {{-- sakit --}}
-                                        <div class="col-4">
-                                            <div class="card bg-info text-white mb-3">
-                                                <div class="card-header">
-                                                    <h6 class="card-title text-white">sakit:</h6>
-                                                    {{ $jumlah[$int]['sakitSemua'] }} Hari
+                                        {{-- INFO --}}
+                                        <div>
+                                            <div class="row">
+
+                                                {{-- hadir --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-absen text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Hadir:</h6>
+                                                            {{ $jumlah[$int]['hadirSemua'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- sakit --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-info text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">sakit:</h6>
+                                                            {{ $jumlah[$int]['sakitSemua'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- izin --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-warning text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Izin:</h6>
+                                                            {{ $jumlah[$int]['izinSemua'] }} Hari
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        {{-- izin --}}
-                                        <div class="col-4">
-                                            <div class="card bg-warning text-white mb-3">
-                                                <div class="card-header">
-                                                    <h6 class="card-title text-white">Izin:</h6>
-                                                    {{ $jumlah[$int]['izinSemua'] }} Hari
+                                            <div class="row">
+                                                {{-- ALFA --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-danger text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Alfa:</h6>
+                                                            {{ $jumlah[$int]['alfaSemua'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TERLAMBAT --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-secondary text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Terlambat:</h6>
+                                                            {{ $jumlah[$int]['terlambatSemua'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TAP --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-black text-white mb-3"
+                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                        data-bs-placement="top" data-bs-html="true"
+                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <h6 class="col card-title text-white">TAP:</h6>
+                                                            </div>
+
+                                                            {{ $jumlah[$int]['tapSemua'] }} Hari
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        {{-- ALFA --}}
-                                        <div class="col-4">
-                                            <div class="card bg-danger text-white mb-3">
-                                                <div class="card-header">
-                                                    <h6 class="card-title text-white">Alfa:</h6>
-                                                    {{ $jumlah[$int]['alfaSemua'] }} Hari
+                                    {{-- BULAN INI --}}
+                                    <div class="tab-pane fade" id="bulanIni{{ $s['nis'] }}" role="tabpanel">
+                                        {{-- PERSENTASE KEHADIRAN --}}
+                                        <p class="text-mute">Persentase Kehadiran :</p>
+                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                            @if ($persentase[$int]['ini'] == 0)
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
+                                                    aria-valuenow={{ $persentase[$int]['ini'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['ini'] }}%
                                                 </div>
-                                            </div>
+                                            @else
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:{{ $persentase[$int]['ini'] }}%; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuenow={{ $persentase[$int]['ini'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['ini'] }}%
+                                                </div>
+                                            @endif
                                         </div>
 
-                                        {{-- TERLAMBAT --}}
-                                        <div class="col-4">
-                                            <div class="card bg-secondary text-white mb-3">
-                                                <div class="card-header">
-                                                    <h6 class="card-title text-white">Terlambat:</h6>
-                                                    {{ $jumlah[$int]['terlambatSemua'] }} Hari
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{-- INFO --}}
+                                        <div>
+                                            <div class="row">
 
-                                        {{-- TAP --}}
-                                        <div class="col-4">
-                                            <div class="card bg-black text-white mb-3"
-                                                data-bs-toggle="tooltip" data-bs-offset="0,4"
-                                                data-bs-placement="top" data-bs-html="true"
-                                                data-bs-original-title="<span>Tanpa Absen Pulang</span>">
-                                                <div class="card-header">
-                                                    <div class="row">
-                                                        <h6 class="col card-title text-white">TAP:</h6>
+                                                {{-- hadir --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-absen text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Hadir:</h6>
+                                                            {{ $jumlah[$int]['hadirIni'] }} Hari
+                                                        </div>
                                                     </div>
-
-                                                    {{ $jumlah[$int]['tapSemua'] }} Hari
                                                 </div>
 
+                                                {{-- sakit --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-info text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">sakit:</h6>
+                                                            {{ $jumlah[$int]['sakitIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- izin --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-warning text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Izin:</h6>
+                                                            {{ $jumlah[$int]['izinIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                {{-- ALFA --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-danger text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Alfa:</h6>
+                                                            {{ $jumlah[$int]['alfaIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TERLAMBAT --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-secondary text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Terlambat:</h6>
+                                                            {{ $jumlah[$int]['terlambatIni'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TAP --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-black text-white mb-3"
+                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                        data-bs-placement="top" data-bs-html="true"
+                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <h6 class="col card-title text-white">TAP:</h6>
+                                                            </div>
+
+                                                            {{ $jumlah[$int]['tapIni'] }} Hari
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- BULAN LALU --}}
+                                    <div class="tab-pane fade" id="bulanLalu{{ $s['nis'] }}" role="tabpanel">
+                                        {{-- PERSENTASE KEHADIRAN --}}
+                                        <p class="text-mute">Persentase Kehadiran :</p>
+                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                            @if ($persentase[$int]['lalu'] == 0)
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
+                                                    aria-valuenow={{ $persentase[$int]['lalu'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['lalu'] }}%
+                                                </div>
+                                            @else
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width:{{ $persentase[$int]['lalu'] }}%; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuenow={{ $persentase[$int]['lalu'] }} aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                    {{ $persentase[$int]['lalu'] }}%
+                                                </div>
+                                            @endif
+                                        </div>
+
+                                        {{-- INFO --}}
+                                        <div>
+                                            <div class="row">
+
+                                                {{-- hadir --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-absen text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Hadir:</h6>
+                                                            {{ $jumlah[$int]['hadirLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- sakit --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-info text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">sakit:</h6>
+                                                            {{ $jumlah[$int]['sakitLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- izin --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-warning text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Izin:</h6>
+                                                            {{ $jumlah[$int]['izinLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                {{-- ALFA --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-danger text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Alfa:</h6>
+                                                            {{ $jumlah[$int]['alfaLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TERLAMBAT --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-secondary text-white mb-3">
+                                                        <div class="card-header">
+                                                            <h6 class="card-title text-white">Terlambat:</h6>
+                                                            {{ $jumlah[$int]['terlambatLalu'] }} Hari
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {{-- TAP --}}
+                                                <div class="col-4">
+                                                    <div class="card bg-black text-white mb-3"
+                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
+                                                        data-bs-placement="top" data-bs-html="true"
+                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card-header">
+                                                            <div class="row">
+                                                                <h6 class="col card-title text-white">TAP:</h6>
+                                                            </div>
+
+                                                            {{ $jumlah[$int]['tapLalu'] }} Hari
+                                                        </div>
+
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -290,10 +519,10 @@
                             </div>
                         </div>
                     </div>
-                    <span hidden>{{$int = $int +1}}</span>
+                    <span hidden>{{ $int = $int + 1 }}</span>
                 @endforeach
-
             </div>
+
 
 
             <i class='bx bx-copyright'></i> Aplikasi Absensi Sebelas, 2024
