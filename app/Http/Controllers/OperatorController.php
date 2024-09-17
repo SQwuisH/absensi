@@ -192,8 +192,6 @@ class OperatorController extends Controller
         }
     }
 
-
-
     //KELAS
     public function kelas()
     {
@@ -322,7 +320,7 @@ class OperatorController extends Controller
     //JURUSAN
     public function jurusan()
     {
-        $jurusan = jurusan::all();
+        $jurusan = jurusan::paginate(7);
         return view('operator.jurusan.jurusan', compact('jurusan'));
     }
 

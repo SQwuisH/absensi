@@ -25,12 +25,15 @@ class walisiswaController extends Controller
         foreach ($siswa as $s) {
             $nama[] = strtoLower($s["user"]["name"]);
             $semua = absensi::where('nis', $s["nis"])->get();
+            $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $s["nis"])->first();
             $ini = absensi::whereYear('date', date('Y'))
                 ->where('nis', $s["nis"])
                 ->whereMonth('date', date('m'))->get();
             $lalu = absensi::whereYear('date', date('Y'))
                 ->where('nis', $s["nis"])
                 ->whereMonth('date', date('m', strtotime('first day of previous month')))->get();
+
+            $statusAbsen[] = $cekabsen ? $cekabsen->status : 'belum presen';
 
             $jumlah[] = [
                 // SEMUA
@@ -61,7 +64,7 @@ class walisiswaController extends Controller
                 'tapLalu' => $lalu->where('status', "TAP")->count(),
             ];
             $persentase[] = [
-                'semua' => $jumlah["$int"]['hadirSemua'] > 0 ? round(($jumlah["$int"]['hadirSemua'] / $jumlah["$int"]['semua']) * 100, 1) :0,
+                'semua' => $jumlah["$int"]['hadirSemua'] > 0 ? round(($jumlah["$int"]['hadirSemua'] / $jumlah["$int"]['semua']) * 100, 1) : 0,
                 'ini' => $jumlah["$int"]['hadirIni'] > 0 ? round(($jumlah["$int"]['hadirIni'] / $jumlah["$int"]['ini']) * 100, 1) : 0,
                 'lalu' => $jumlah["$int"]['hadirLalu'] > 0 ? round(($jumlah["$int"]['hadirLalu'] / $jumlah["$int"]['lalu']) * 100, 1) : 0
             ];
@@ -69,7 +72,7 @@ class walisiswaController extends Controller
             $int = $int + 1;
         }
 
-        return view('walisiswa.index', compact('walisiswa', 'siswa', 'ini', 'lalu', 'jumlah', 'persentase', 'first'));
+        return view('walisiswa.index', compact('walisiswa', 'siswa', 'ini', 'lalu', 'jumlah', 'persentase', 'first', 'statusAbsen'));
     }
 
     public function profil()

@@ -30,8 +30,8 @@ class SiswaController extends Controller
         $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
         $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presen';
         if ($cekabsen) {
-            $absenmasuk = !empty($cekabsen->photo_in);
-            $absenpulang = !empty($cekabsen->photo_out);
+            $absenmasuk = !empty($cekabsen->foto_masuk);
+            $absenpulang = !empty($cekabsen->foto_pulang);
         }
 
         // REKAP DASHBOARD
@@ -122,11 +122,8 @@ class SiswaController extends Controller
 
         $image = $request->image;
         $folderPath = "public/uploads/absensi/";
-        $formatName = $siswa->nis . "-" . $date;
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
-        $fileName = $formatName . ".png";
-        $file = $folderPath . $fileName;
         $j = $radius - $radiussekolah;
 
         // Get face confidence
@@ -139,6 +136,9 @@ class SiswaController extends Controller
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
             if ($cek > 0) {
+                $formatName = $siswa->nis . "-" . $date . "-pulang" ;
+                $fileName = $formatName . ".png";
+                $file = $folderPath . $fileName;
                 $data_pulang = [
                     'jam_pulang' => $jam,
                     'titik_koordinat_pulang' => $lokasiSiswa,
@@ -152,6 +152,9 @@ class SiswaController extends Controller
                     echo "error|Absen Gagal|out";
                 }
             } else {
+                $formatName = $siswa->nis . "-" . $date . "-masuk" ;
+                $fileName = $formatName . ".png";
+                $file = $folderPath . $fileName;
                 $data = [
                     'nis' => "00$siswa->nis",
                     'status' => $status,

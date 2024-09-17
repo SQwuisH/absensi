@@ -278,6 +278,10 @@
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <div class="d-flex justify-content-center">
+                                    {{ $jurusan->links('pagination::bootstrap-4') }}
+                                </div>
                             </div>
                         </div>
                     </div>

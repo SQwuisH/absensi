@@ -192,6 +192,17 @@
                                         {{ $s['kelas']['tingkat'] . ' ' . strtoupper($s['kelas']['id_jurusan']) . ' ' . $s['kelas']['nomor_kelas'] }}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="card border border-">
+                                        <div class="card-body d-flex justify-content-center text-center ">
+
+                                            <h2 class="bg-label- d-none d-lg-block">
+                                                {{ $statusAbsen[$int] }}</h2>
+                                            <h5 class="bg-label- d-block d-lg-none d-xl-none">
+                                                {{ $statusAbsen[$int] }}</h5>
+                                        </div>
+                                    </div>
+                                </div>
                                 <ul class="nav nav-tabs nav-fill" role="tablist">
                                     <li class="nav-item" role="presentation">
                                         <button type="button" class="nav-link active" role="tab"

@@ -12,25 +12,30 @@
                         <div class="col mb-0">
                             <label for="masuk" class="form-label">Foto Masuk</label>
                             <div id="masuk">
-                                <img src={{ asset('storage/uploads/absensi/62894371-2024-08-14.png') }}>
-
+                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
                             </div>
                         </div>
                         <div class="col mb-0">
                             <label for="pulang" class="form-label">Foto Pulang</label>
                             <div id="pulang">
-                                <img src={{ asset('storage/uploads/absensi/62894371-2024-08-14.png') }}>
+                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
                             </div>
                         </div>
                     </div>
                 @elseif ($a->status == 'izin' || $a->status == 'sakit')
-                    <div class="row g-2 mb-2">
-                        <div class="col mb-0">
-                            <label for="masuk" class="form-label">Foto Masuk</label>
-                            <div id="masuk">
-                                <img src={{ asset('storage/uploads/absensi/62894371-2024-08-14.png') }}>
+                    <div class="row mb-2">
 
+                        <label for="masuk" class="form-label">Foto :</label>
+                        <div class="col mb-0 text-center">
+                            <div id="masuk">
+                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col">
+                            <label for="keterangan">Keterangan :</label>
+                            <textarea class="form-control" id="keterangan" rows="3" disabled>{{$a->keterangan}}</textarea>
                         </div>
                     </div>
                 @endif

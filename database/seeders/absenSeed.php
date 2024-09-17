@@ -13,7 +13,7 @@ class absenSeed extends Seeder
      */
     public function run(): void
     {
-        $nis = '0062894371';
+        $nis = '0069537821';
         $titikKoordinat = '-6.890622076541303, 107.55806983605572';
 
         Absensi::create([
