@@ -27,7 +27,7 @@ class SiswaController extends Controller
         $absenpulang = false;
 
         // CEK ABSENSI
-        $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
+        $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
         $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presen';
         if ($cekabsen) {
             $absenmasuk = !empty($cekabsen->foto_masuk);

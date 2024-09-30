@@ -23,7 +23,7 @@ class absensi extends Model
 
     public $timestamps = false;
 
-    public function siswa()
+    public function absensi()
     {
         return $this->belongsTo(siswa::class, 'nis', 'nis');
     }

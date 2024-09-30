@@ -25,7 +25,7 @@ class walisiswaController extends Controller
         foreach ($siswa as $s) {
             $nama[] = strtoLower($s["user"]["name"]);
             $semua = absensi::where('nis', $s["nis"])->get();
-            $cekabsen = absensi::with('siswa')->where('date', date('Y-m-d'))->where('nis', $s["nis"])->first();
+            $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $s["nis"])->first();
             $ini = absensi::whereYear('date', date('Y'))
                 ->where('nis', $s["nis"])
                 ->whereMonth('date', date('m'))->get();

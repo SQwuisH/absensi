@@ -8,6 +8,8 @@
 
     <title>Login | Aplikasi Absensi Sebelas</title>
 
+    @laravelPWA
+
     <meta name="description" content="" />
 
     <!-- icon -->

@@ -106,6 +106,13 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function () {
 //KESISWAAN
 Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function () {
     Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
+
+    // Laporan Kelas
+    Route::get('/kesiswaan/laporan', [App\Http\Controllers\KesiswaanController::class, 'laporan'])->name('kesiswaanLaporan');
+    Route::get('/kesiswaan/laporan/kelas/{kelas}', [App\Http\Controllers\KesiswaanController::class, 'laporanKelas'])->name('kesiswaanLaporanKelas');
+
+    // Laporan Siswa
+    Route::get('/kesiswaan/laporan/siswa/{siswa}', [App\Http\Controllers\KesiswaanController::class, 'laporanSiswa'])->name('kesiswaanLaporanSiswa');
 });
 
 //WALI KELAS

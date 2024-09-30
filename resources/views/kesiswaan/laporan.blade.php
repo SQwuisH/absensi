@@ -1,3 +1,7 @@
+@php
+    $sta = date('m-d-Y', strtotime($start));
+    $e = date('m-d-Y', strtotime($end));
+@endphp
 <html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
     data-template="vertical-menu-template-free">
 
@@ -78,16 +82,16 @@
                         <span class="menu-header-text">Halaman</span>
                     </li>
 
-                    <li class="menu-item active">
-                        <a href="#" class="menu-link">
+                    <li class="menu-item">
+                        <a href="{{ route('kesiswaan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home"></i>
                             <div data-i18n="Basic">Beranda</div>
                         </a>
                     </li>
 
 
-                    <li class="menu-item">
-                        <a href="{{ route('kesiswaanLaporan') }}" class="menu-link">
+                    <li class="menu-item active">
+                        <a href="#" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
                             <div data-i18n="Basic">Laporan Presensi</div>
                         </a>
@@ -128,7 +132,7 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <!-- Search -->
-                        <h4 class="m-1">Kesiswaan SMKN 11 Bandung</h4>
+                        <h4 class="m-1">Laporan Presensi</h4>
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -143,56 +147,68 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container container-p-y">
+
                         <div class="row">
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Rekap Laporan Absensi Hari Ini</h5>
 
-                                        {{-- Progress Bar --}}
+                                        {{-- Search & Export --}}
+                                        <form action="{{ route('kesiswaanLaporan') }}">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <input type="text" name="daterange" class="form-control">
+                                                </div>
+                                                <div class="col-3 d-flex justify-content-end">
+                                                    <div class="btn-group">
+                                                        <button type="submit" class="btn btn-absen">
+                                                            <i class="bx bx-search"></i><span
+                                                                class="d-none d-md-block">Cari</span></button>
+                                                        <a href="#" class="btn btn-absen"><i
+                                                                class="bx bx-export"></i> <span
+                                                                class="d-none d-md-block">Ekspor</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        {{-- Progress Bar & Collapse --}}
                                         <div class="row mb-3">
-                                            <div class="col">
+                                            <div class="col-10">
                                                 <div class="progress" style="height: 30px">
-                                                    @if ($persen['hadir'] != 0)
-                                                        <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen['hadir'] }}%">
-                                                            {{ $persen['hadir'] }}% Kehadiran</div>
-                                                    @endif
-                                                    @if ($persen['terlambat'] != 0)
-                                                        <div class="progress-bar bg-secondary"
-                                                            style="width: {{ $persen['terlambat'] }}%">
-                                                            {{ $persen['terlambat'] }}% Terlambat</div>
-                                                    @endif
-                                                    @if ($persen['hadir'] == 0 && $persen['terlambat'] == 0)
+                                                    @if ($persen == 0)
                                                         <div class="progress-bar bg-white w-100 text-dark"
                                                             aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
                                                         </div>
+                                                    @else
+                                                        <div class="progress-bar bg-absen"
+                                                            style="width: {{ $persen }}%"
+                                                            aria-valuenow="{{ $persen }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen }}% Kehadiran</div>
                                                     @endif
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        {{-- Collapse --}}
-                                        <div class="row">
-                                            <div class="col">
-                                                Kehadiran Siswa : {{ $count['hadir'] + $count['terlambat'] }} /
-                                                {{ $jumlahsiswa }}
-                                            </div>
-                                            <div class="col d-flex justify-content-end">
+                                            {{-- Collapse Button --}}
+                                            <div class="col-2 d-flex justify-content-end">
                                                 {{-- Button --}}
                                                 <div>
                                                     <a class="btn btn-white border" data-bs-toggle="collapse"
-                                                        href="#collapse" role="button"
-                                                        aria-expanded="false" aria-controls="collapseExample">
+                                                        href="#collapse" role="button" aria-expanded="false"
+                                                        aria-controls="collapseExample">
                                                         <i class='bx bx-chevron-up'></i><span
                                                             class="d-none d-md-block">Detil</span>
                                                     </a>
                                                 </div>
                                             </div>
                                         </div>
+
+                                        {{-- Collapse --}}
                                         <div class="collapse mt-2 show" id="collapse">
                                             <div class="justify-content-center">
-                                                <div class="row mb-2">
+                                                {{-- Card Info --}}
+                                                <div class="row">
+
                                                     {{-- hadir --}}
                                                     <div class="col-4">
                                                         <div class="card bg-absen text-white mb-3">
@@ -223,7 +239,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="row mb-2">
                                                     {{-- ALFA --}}
                                                     <div class="col-4">
@@ -248,10 +263,7 @@
 
                                                     {{-- TAP --}}
                                                     <div class="col-4">
-                                                        <div class="card bg-black text-white mb-3"
-                                                            data-bs-toggle="tooltip" data-bs-offset="0,4"
-                                                            data-bs-placement="top" data-bs-html="true"
-                                                            data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                        <div class="card bg-black text-white mb-3">
                                                             <div class="card-header">
                                                                 <div class="row">
                                                                     <h6 class="col card-title text-white">TAP:
@@ -294,32 +306,25 @@
                                                                     <a href="{{ route('kesiswaanLaporanKelas', $k->id_kelas) }}"
                                                                         class="btn btn-absen">
                                                                         <i class="bx bx-show"></i> <span
-                                                                            class="d-none d-md-block"> Lihat</span>
+                                                                            class="d-none d-md-block">lihat</span>
                                                                     </a>
                                                                 </div>
                                                             </div>
 
                                                             {{-- Collapse Title & Button --}}
                                                             <div class="row">
-                                                                <div class="col-3">
-                                                                    Kehadiran Siswa :
-                                                                    {{ $hadir[$class] + $terlambat[$class] . ' / ' . $siswaKelas[$class]->count() }}
-                                                                </div>
-
                                                                 {{-- Progress Bar --}}
-                                                                <div class="col-7">
+                                                                <div class="col">
                                                                     <div class="progress" style="height: 30px">
-                                                                        @if ($persentase[$class]['hadir'] != 0)
-                                                                            <div class="progress-bar bg-absen"
-                                                                                style="width: {{ $persentase[$class]['hadir'] }}%">
-                                                                                {{ $persentase[$class]['hadir'] }}%
-                                                                                Kehadiran</div>
-                                                                        @endif
-                                                                        @if ($persentase[$class]['terlambat'] != 0)
-                                                                            <div class="progress-bar bg-secondary"
-                                                                                style="width: {{ $persentase[$class]['terlambat'] }}%">
-                                                                                {{ $persentase[$class]['terlambat'] }}%
-                                                                                Terlambat
+                                                                        @if ($persentase[$class] == 0)
+                                                                            <div
+                                                                                class="progress-bar bg-white w-100 text-dark">
+                                                                                {{ $persentase[$class] }}% Kehadiran
+                                                                            </div>
+                                                                        @else
+                                                                            <div class="progress-bar bg-absen }}"
+                                                                                style="width: {{ $persentase[$class] }}%">
+                                                                                {{ $persentase[$class] }}% Kehadiran
                                                                             </div>
                                                                         @endif
                                                                     </div>
@@ -332,8 +337,7 @@
                                                                         href="#collapse{{ $k->id_kelas }}"
                                                                         role="button" aria-expanded="false"
                                                                         aria-controls="collapseExample">
-                                                                        <i class='bx bx-chevron-down'></i><span
-                                                                            class="d-none d-md-block">Detil</span>
+                                                                        <i class='bx bx-chevron-down'></i>
                                                                     </a>
                                                                 </div>
                                                             </div>
@@ -405,12 +409,7 @@
 
                                                                         {{-- TAP --}}
                                                                         <div class="col-2">
-                                                                            <div class="card bg-black text-white mb-3"
-                                                                                data-bs-toggle="tooltip"
-                                                                                data-bs-offset="0,4"
-                                                                                data-bs-placement="top"
-                                                                                data-bs-html="true"
-                                                                                data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                                                            <div class="card bg-black text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <div class="row">
                                                                                         <h6
@@ -437,47 +436,47 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- / Content -->
-
-                    <!-- Footer -->
-                    <footer class="content-footer footer bg-footer-theme">
-                        <div
-                            class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                            <div class="mb-2 mb-md-0">
-                                ©
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script>
-                                , made with ❤️ by
-                                <a href="https://themeselection.com" target="_blank"
-                                    class="footer-link fw-medium">ThemeSelection</a>
-                            </div>
-                            <div class="d-none d-lg-inline-block">
-                                <a href="https://themeselection.com/license/" class="footer-link me-4"
-                                    target="_blank">License</a>
-                                <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More
-                                    Themes</a>
-
-                                <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
-                                    target="_blank" class="footer-link me-4">Documentation</a>
-
-                                <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                                    target="_blank" class="footer-link">Support</a>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
                 </div>
-                <!-- Content wrapper -->
-            </div>
-            <!-- / Layout page -->
-        </div>
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                <footer class="content-footer footer bg-footer-theme">
+                    <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+                        <div class="mb-2 mb-md-0">
+                            ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            , made with ❤️ by
+                            <a href="https://themeselection.com" target="_blank"
+                                class="footer-link fw-medium">ThemeSelection</a>
+                        </div>
+                        <div class="d-none d-lg-inline-block">
+                            <a href="https://themeselection.com/license/" class="footer-link me-4"
+                                target="_blank">License</a>
+                            <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More
+                                Themes</a>
+
+                            <a href="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/documentation/"
+                                target="_blank" class="footer-link me-4">Documentation</a>
+
+                            <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                                target="_blank" class="footer-link">Support</a>
+                        </div>
+                    </div>
+                </footer>
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
 
@@ -494,6 +493,20 @@
 
     <!-- Main JS -->
     <script src={{ asset('assets/t1/js/main.js') }}></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script>
+        $(function() {
+
+            $('input[name="daterange"]').daterangepicker({
+                startDate: "{{ $sta }}",
+                endDate: "{{ $e }}"
+            });
+        });
+    </script>
 
     <!-- Page JS -->
 
