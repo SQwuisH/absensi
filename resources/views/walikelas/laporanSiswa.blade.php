@@ -73,8 +73,11 @@
                         <div class="menu-link">
                             <i class="menu-icon tf-icons bx bx-user-circle"></i>
                             <div data-i18n="Basic">{{ $user->name }}<br>
-                                <span class="text-secondary">Kesiswaan</span>
+                                <span class="text-secondary">Wali Kelas</span>
                             </div>
+                        </div>
+                        <div class="container row">
+                            <button class="btn btn-absen"> Lihat Profil </button>
                         </div>
                     </li>
 
@@ -83,19 +86,19 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{ route('kesiswaan') }}" class="menu-link">
+                        <a href="{{ route('wali') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home"></i>
                             <div data-i18n="Basic">Beranda</div>
                         </a>
                     </li>
 
-
-                    <li class="menu-item">
-                        <a href="{{route('kesiswaanLaporan')}}" class="menu-link">
+                    <li class="menu-item active">
+                        <a href="#" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
-                            <div data-i18n="Basic">Laporan Presensi</div>
+                            <div data-i18n="Basic">Laporan</div>
                         </a>
                     </li>
+
 
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Log out</span>
@@ -132,7 +135,8 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <!-- Search -->
-                        <h4 class="m-1">Kesiswaan SMKN 11 Bandung</h4>
+                        <h4 class="m-1">Laporan Kelas
+                            {{ $k->tingkat . ' ' . strtoupper($k->id_jurusan) . ' ' . $k->nomor_kelas }}</h4>
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -153,7 +157,6 @@
                             <h5><a href="{{ url()->previous() }}" class="btn btn-danger"><i
                                         class='bx bx-arrow-back'></i> <span class="d-none d-md-block">
                                         Kembali</span></a>
-                                {{ $k->tingkat . ' ' . strtoupper($k->id_jurusan) . ' ' . $k->nomor_kelas }}</h5>
                         </div>
 
                         <div class="row">
@@ -163,12 +166,12 @@
                                         {{-- Name --}}
                                         <a href="#">
                                             <h5 class="card-title">
-                                                {{$sis->user->name}} <i class="bx bx-search"></i>
+                                                {{ $sis->user->name }} <i class="bx bx-search"></i>
                                             </h5>
                                         </a>
 
                                         {{-- Date Range --}}
-                                        <form action="{{ route('kesiswaanLaporanSiswa', '00'.$sis->nis) }}">
+                                        <form action="{{ route('kesiswaanLaporanSiswa', '00' . $sis->nis) }}">
                                             <div class="row">
                                                 <div class="col-9">
                                                     <input type="text" name="daterange" class="form-control">
@@ -289,56 +292,58 @@
                                                 <td class="text-center">Detil</td>
                                             </thead>
                                             @foreach ($paginated as $a)
-                                            <tr>
-                                                <td>{{$a->date}}</td>
-                                                <td>
-                                                    @switch($a->status)
-                                                    @case('hadir')
-                                                        <span class="badge bg-absen">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                <tr>
+                                                    <td>{{ $a->date }}</td>
+                                                    <td>
+                                                        @switch($a->status)
+                                                            @case('hadir')
+                                                                <span class="badge bg-absen">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('sakit')
-                                                        <span class="badge bg-info">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('sakit')
+                                                                <span class="badge bg-info">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('izin')
-                                                        <span class="badge bg-warning">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('izin')
+                                                                <span class="badge bg-warning">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('alfa')
-                                                        <span class="badge bg-danger">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('alfa')
+                                                                <span class="badge bg-danger">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('terlambat')
-                                                        <span class="badge bg-secondary">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('terlambat')
+                                                                <span class="badge bg-secondary">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('TAP')
-                                                        <span class="badge bg-black">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
-                                                @endswitch
-                                                </td>
-                                                <td class="text-center">
-                                                    <button data-bs-toggle="modal" data-bs-target="#modal{{ $a->id_absensi }}" class="btn btn-absen">
-                                                        <i class="bx bx-show"></i><span class="d-none d-md-block">Lihat</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                            @case('TAP')
+                                                                <span class="badge bg-black">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal{{ $a->id_absensi }}"
+                                                            class="btn btn-absen">
+                                                            <i class="bx bx-show"></i><span
+                                                                class="d-none d-md-block">Lihat</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
 
-                                            @include('siswa.modalLaporan')
-
+                                                @include('siswa.modalLaporan')
                                             @endforeach
                                         </table>
 

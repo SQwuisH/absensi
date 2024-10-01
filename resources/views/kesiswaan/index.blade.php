@@ -147,7 +147,12 @@
                             <div class="col">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Rekap Laporan Absensi Hari Ini</h5>
+                                        <h5 class="card-title">Rekap Laporan Absensi
+                                            @php
+                                                setlocale(LC_ALL, 'IND');
+                                                echo strftime('%A, %e %B %G');
+                                            @endphp
+                                        </h5>
 
                                         {{-- Progress Bar --}}
                                         <div class="row mb-3">

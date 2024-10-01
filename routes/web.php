@@ -86,7 +86,6 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function () {
     Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
     Route::get('/kelolakelas/export', [App\Http\Controllers\OperatorController::class, 'exportkelas'])->name('exportkelas');
     Route::post('/kelolakelas/import', [App\Http\Controllers\OperatorController::class, 'importkelas'])->name('importkelas');
-    route::get('/back', [App\Http\Controllers\OperatorController::class, 'back'])->name('back');
     //SISWA
     Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('kelassiswa');
     Route::post('/kelolakelas/tambahsiswa', [App\Http\Controllers\OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
@@ -118,6 +117,14 @@ Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function () {
 //WALI KELAS
 Route::group(['middleware' => ['auth', 'roles:wali']], function () {
     Route::get('/wali', [App\Http\Controllers\WaliController::class, 'index'])->name('wali');
+
+    Route::get('/wali/laporan', [App\Http\Controllers\WaliController::class, 'laporan'])->name('waliLaporan');
+    Route::get('/wali/laporan/{siswa}', [App\Http\Controllers\WaliController::class, 'laporanSiswa'])->name('waliLaporanSiswa');
+
+    Route::get('/wali/profil', [App\Http\Controllers\WaliController::class, 'profil'])->name('waliProfil');
+    Route::get('/wali/profil/{siswa}', [App\Http\Controllers\WaliController::class, 'profil'])->name('waliSiswaProfil');
+    Route::get('/wali/profil/update', [App\Http\Controllers\WaliController::class, 'update'])->name('waliProfilUpdate');
+
 });
 
 //SISWA
@@ -132,6 +139,7 @@ Route::group(['middleware' => ['auth', 'roles:siswa']], function () {
     Route::get('/siswa/laporan', [App\Http\Controllers\siswaController::class, 'laporan'])->name('sLaporan');
 });
 
+// WALI SISWA
 Route::group(['middleware' => ['auth', 'roles:wali siswa']], function () {
     Route::get('/walisiswa', [App\Http\Controllers\walisiswaController::class, 'index'])->name('walisiswa');
     Route::get('/walisiswa/laporan/{nis}', [App\Http\Controllers\walisiswaController::class, 'laporan'])->name('wLaporan');

@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nomor" class="form-label">Nomor Kelas</label>
-                            <input name="nomor_kelas" id="nomor" class="form-control" value={{ $w->nomor_kelas }}
+                            <input name="nomor_kelas" id="nomor" type="number" class="form-control" value={{ $w->nomor_kelas }}
                                 placeholder="Masukkan Nomor Kelas">
                             </input>
                         </div>
@@ -57,7 +57,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-absen">Simpan</button>
                 </div>
             </div>
         </div>

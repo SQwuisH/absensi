@@ -133,18 +133,8 @@
             @endif
 
             <h4 class="card-title mb-2">
-                <div class="row">
-                    <div class="col-10">
-                        <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
-                                class='bx bx-chevron-left'></i></a> Laporan Absensi
-                    </div>
-                    <div class="col-2 d-flex justify-content-end">
-                        <form action="">
-                            <button type="submit" class="btn btn-light border border-black"><i
-                                    class='bx bx-export'></i>Export</button>
-                        </form>
-                    </div>
-                </div>
+                <a href={{ url()->previous() }} class="btn rounded btn-outline-danger"><i
+                        class='bx bx-chevron-left'></i></a> Laporan Absensi
             </h4>
 
             <div class="row mb-2">
@@ -376,7 +366,7 @@
 
                                                 <div class="row">
                                                     <div class="col modal-footer">
-                                                        <button class="btn btn-primary" type="submit">Apply</button>
+                                                        <button class="btn btn-absen" type="submit">Apply</button>
                                                     </div>
                                                 </div>
                                             </form>

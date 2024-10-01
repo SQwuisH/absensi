@@ -72,7 +72,7 @@
 
                     <li class="menu-item ">
                         <a href="/operator" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-gear"></i>
+                            <i class="menu-icon tf-icons bx bx-cog"></i>
                             <div data-i18n="Basic">Koordinat & Waktu</div>
                         </a>
                     </li>

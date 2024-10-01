@@ -38,11 +38,11 @@
         <div class="row">
             <div class="col mb-3">
                 <label for="nameBasic" class="form-label">nis</label>
-                <input name="nis" type="text" id="nameBasic" class="form-control" value="@php echo('00'); echo($w->nis); @endphp" required>
+                <input name="nis" type="text" id="nameBasic" class="form-control" type="number" value="@php echo('00'); echo($w->nis); @endphp" required>
             </div>
             <div class="col mb-3">
                 <label for="nameBasic" class="form-label">nisn</label>
-                <input name="nisn" type="text" id="nameBasic" class="form-control" value="@php echo($w->nisn); @endphp" required>
+                <input name="nisn" type="text" id="nameBasic" class="form-control" type="number" value="@php echo($w->nisn); @endphp" required>
             </div>
         </div>
           <div class="row">
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-absen">Simpan</button>
           </div>
       </div>
     </div>

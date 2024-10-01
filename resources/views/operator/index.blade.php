@@ -71,7 +71,7 @@
 
                     <li class="menu-item active">
                         <a href="#" class="menu-link">
-                            <i class="menu-icon tf-icons bx bx-gear"></i>
+                            <i class="menu-icon tf-icons bx bx-cog"></i>
                             <div data-i18n="Basic">Koordinat & Waktu</div>
                         </a>
                     </li>
@@ -197,7 +197,7 @@
                                             </div>
 
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                                <button type="submit" class="btn btn-absen">Simpan</button>
                                             </div>
                                         </form>
                                     </div>
@@ -249,7 +249,7 @@
                                             </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                        <button type="submit" class="btn btn-absen">Simpan</button>
                                     </div>
                                     </form>
                                 </div>

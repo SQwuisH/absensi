@@ -426,10 +426,10 @@
                                     </div>
 
                                     {{-- BULAN LALU --}}
-                                    <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
+                                    <div class="tab-pane fade" id="navs-justified-messages">
                                         <div class="progress mb-5" style="height: 35px; font-size:13px;">
                                             @if ($persentase['lalu'] == 0)
-                                                <div class="progress-bar bg-secondary" role="progressbar"
+                                                <div class="progress-bar" role="progressbar"
                                                     style="width:100%;  height: 35px; font-size:13px; background-color:white; color:black"
                                                     aria-valuenow={{ $persentase['lalu'] }} aria-valuemin="0"
                                                     aria-valuemax="100">
@@ -520,7 +520,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>  
+                            </div>
                         </div>
 
 

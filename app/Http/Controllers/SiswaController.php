@@ -23,15 +23,22 @@ class SiswaController extends Controller
         $siswa = siswa::with('user')->where('id_user', auth::user()->id)->first();
         $waktu = waktu_absen::first();
         $lokasi = koordinat_sekolah::first();
-        $absenmasuk = false;
-        $absenpulang = false;
 
         // CEK ABSENSI
         $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
-        $statusAbsen = $cekabsen ? $cekabsen->status : 'belum presen';
         if ($cekabsen) {
-            $absenmasuk = !empty($cekabsen->foto_masuk);
-            $absenpulang = !empty($cekabsen->foto_pulang);
+            if($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang)
+            {
+                $statusAbsen = "belum presen";
+            }
+            elseif(($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang)
+            {
+                $statusAbsen = "belum pulang";
+            }
+            else
+            {
+                $statusAbsen = $cekabsen->status;
+            }
         }
 
         // REKAP DASHBOARD
@@ -71,8 +78,6 @@ class SiswaController extends Controller
         return view('siswa.index', [
             'waktu' => $waktu,
             'cekabsen' => $cekabsen,
-            'absenmasuk' => $absenmasuk,
-            'absenpulang' => $absenpulang,
             'statusabsen' => $statusAbsen,
             'lokasi' => $lokasi,
             'jumlah' => $jumlah,
@@ -136,7 +141,7 @@ class SiswaController extends Controller
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
             if ($cek > 0) {
-                $formatName = $siswa->nis . "-" . $date . "-pulang" ;
+                $formatName = $siswa->nis . "-" . $date . "-pulang";
                 $fileName = $formatName . ".png";
                 $file = $folderPath . $fileName;
                 $data_pulang = [
@@ -152,7 +157,7 @@ class SiswaController extends Controller
                     echo "error|Absen Gagal|out";
                 }
             } else {
-                $formatName = $siswa->nis . "-" . $date . "-masuk" ;
+                $formatName = $siswa->nis . "-" . $date . "-masuk";
                 $fileName = $formatName . ".png";
                 $file = $folderPath . $fileName;
                 $data = [

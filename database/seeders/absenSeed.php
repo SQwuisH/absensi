@@ -17,7 +17,7 @@ class absenSeed extends Seeder
     {
         $siswa = siswa::all();
         $photo = "default.png";
-        $now = Carbon::yesterday();
+        $now = Carbon::today();
 
         $titikKoordinat = '-6.890622076541303, 107.55806983605572';
         foreach ($siswa as $s) {

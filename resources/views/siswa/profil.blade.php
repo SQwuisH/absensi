@@ -121,7 +121,7 @@
                 @csrf
                 <input type="hidden" name="id" value={{ $user->user->id }}>
                 <h4 class="card-title mb-2">
-                    <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                    <a href={{ url()->previous() }} class="btn rounded btn-outline-danger"><i
                             class='bx bx-chevron-left'></i></a>
                     Profil
                 </h4>
@@ -139,8 +139,6 @@
                 <div class="row mb-2">
                     <div class="col">
                         <div class="card">
-                            <div class="card-header">
-                            </div>
                             <div class="card-body">
                                 <div class="d-flex align-item-start gap-4">
                                     <img src="{{ asset('/storage/user_avatar/' . $user->user->foto) }}"

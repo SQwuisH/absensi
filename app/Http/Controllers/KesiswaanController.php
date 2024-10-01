@@ -136,7 +136,6 @@ class KesiswaanController extends Controller
         foreach ($siswa as $s)
         {
             $nis = "00$s->nis";
-
             $absen[$nis] = $absensi->where('nis', $nis);
             $hadir[$nis] = $absen[$nis]->where('status', 'hadir')->count();
             $sakit[$nis] = $absen[$nis]->where('status', 'sakit')->count();

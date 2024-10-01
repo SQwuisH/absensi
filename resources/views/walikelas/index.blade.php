@@ -89,7 +89,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="#" class="menu-link">
+                        <a href="{{route('waliLaporan')}}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
                             <div data-i18n="Basic">Laporan</div>
                         </a>
@@ -263,7 +263,7 @@
                                                 @foreach ($ab as $a)
                                                     @include('siswa.modalLaporan')
                                                     <tr>
-                                                        <td>{{ $a->name }}</td>
+                                                        <td><a href="#" class="text-dark">{{ $a->name }} <i class="bx bx-search"></i></a></td>
                                                         <td>
                                                             @switch($a->status)
                                                                 @case('hadir')
@@ -306,7 +306,7 @@
                                                         <td class="text-center">
                                                             <button class="btn btn-absen" data-bs-toggle="modal"
                                                                 data-bs-target="#modal{{ $a->id_absensi }}"><i
-                                                                    class='bx bx-show-alt'></i>Lihat</button>
+                                                                    class='bx bx-show-alt'></i><span class="d-none d-md-block">Lihat</span></button>
                                                         </td>
                                                     </tr>
                                                 @endforeach

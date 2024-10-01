@@ -75,7 +75,7 @@
 
                         <li class="menu-item ">
                             <a href="/operator" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-gear"></i>
+                                <i class="menu-icon tf-icons bx bx-cog"></i>
                                 <div data-i18n="Basic">Koordinat & Waktu</div>
                             </a>
                         </li>
@@ -229,7 +229,7 @@
                                                             <label for="nomor" class="form-label">Nomor
                                                                 Kelas</label>
                                                             <input name="nomor_kelas" id="nomor"
-                                                                class="form-control"
+                                                                class="form-control" type="number"
                                                                 placeholder="Masukkan Nomor Kelas">
                                                             </input>
                                                         </div>
@@ -326,7 +326,7 @@
                                                     @endif
                                                     <td class="text-center">
                                                         <a href={{ route('kelassiswa', ['id' => $w->id_kelas]) }}
-                                                            class="btn btn-outline-primary">
+                                                            class="btn btn-outline-absen">
                                                             <span class="tf-icons bx bx-show p-o"></span> Lihat
                                                         </a>
                                                     </td>

@@ -261,10 +261,10 @@ class OperatorController extends Controller
     public function siswa($id)
     {
         $siswa = siswa::with('user', 'kelas')->where('id_kelas', '=', $id)->get();
-
+        $k = kelas::with('jurusan')->where('id_kelas', $id)->first();
         $kelas = kelas::with('jurusan')->get();
 
-        return view('operator.kelas.kelassiswa', compact('siswa', 'kelas', 'id'));
+        return view('operator.kelas.kelassiswa', compact('siswa', 'kelas', 'id', 'k'));
     }
 
     public function tambahsiswa(Request $request)
