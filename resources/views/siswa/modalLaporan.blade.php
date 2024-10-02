@@ -12,13 +12,19 @@
                         <div class="col mb-0">
                             <label for="masuk" class="form-label">Foto Masuk</label>
                             <div id="masuk">
-                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
+                                <img
+                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
                             </div>
                         </div>
                         <div class="col mb-0">
                             <label for="pulang" class="form-label">Foto Pulang</label>
                             <div id="pulang">
-                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
+                                @if ($a->foto_pulang)
+                                    <img
+                                        style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
+                                @else
+                                    <p>Belum Absen Pulang</p>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -28,14 +34,15 @@
                         <label for="masuk" class="form-label">Foto :</label>
                         <div class="col mb-0 text-center">
                             <div id="masuk">
-                                <img style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
+                                <img
+                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-2">
                         <div class="col">
                             <label for="keterangan">Keterangan :</label>
-                            <textarea class="form-control" id="keterangan" rows="3" disabled>{{$a->keterangan}}</textarea>
+                            <textarea class="form-control" id="keterangan" rows="3" disabled>{{ $a->keterangan }}</textarea>
                         </div>
                     </div>
                 @endif

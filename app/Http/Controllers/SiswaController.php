@@ -40,6 +40,10 @@ class SiswaController extends Controller
                 $statusAbsen = $cekabsen->status;
             }
         }
+        else
+        {
+            $statusAbsen = "libur";
+        }
 
         // REKAP DASHBOARD
         $ini = Absensi::whereYear('date', date('Y'))
@@ -134,13 +138,13 @@ class SiswaController extends Controller
         // Get face confidence
         $faceConfidence = $request->faceConfidence;
 
-        $cek = absensi::where('date', $date)->where('nis', $siswa->nis)->count();
+        $cek = absensi::where('date', $date)->where('nis', $siswa->nis)->first();
         if ($radius > $radiussekolah) {
             echo "error|Anda Berada Diluar Radius, Jarak Anda lebih dari " . $j . " meter dari Radius Sekolah|";
         } elseif ($faceConfidence < 0.90) { // Confidence threshold
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
-            if ($cek > 0) {
+            if ($cek->count() > 0 && $cek->status != "alfa") {
                 $formatName = $siswa->nis . "-" . $date . "-pulang";
                 $fileName = $formatName . ".png";
                 $file = $folderPath . $fileName;
@@ -170,7 +174,7 @@ class SiswaController extends Controller
                     'foto_masuk' => $fileName,
                 ];
 
-                $simpan = DB::table('absensis')->insert($data);
+                $simpan = absensi::where('date', $date)->where('nis', "00$siswa->nis")->update($data);
 
                 if ($simpan) {
                     echo "success|Terimakasih, Selamat Belajar!|in";

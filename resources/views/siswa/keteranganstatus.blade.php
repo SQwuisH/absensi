@@ -66,7 +66,7 @@
     </div>
 @endif
 
-@if ($statusabsen == 'hadir')
+@if ($statusabsen == 'hadir' || $statusabsen == 'libur')
 <div class="col">
     <div class="card mb-4 border border-absen">
         <div class="card-header">
