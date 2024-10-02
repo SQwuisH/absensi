@@ -106,7 +106,7 @@
         <input type="hidden" id="lokasi">
         <!-- Content -->
 
-        <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 60px;">
+        <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 40px;">
             <h4 class="py-3 mb-2">
                 <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
                         class='bx bx-chevron-left'></i></a>
@@ -129,10 +129,10 @@
                             <div class="row d-flex justify-content-center">
                                 <div style="overflow: hidden; position: relative;"
                                     class="mb-3">
-                                    <div style="width: 100%; height: 100%; overflow:hidden">
-                                        <div style="width: 100%; height: 100%; object-fit:cover" id="webcamCapture">
+                                    <div style="width: 450px; height: 300px; overflow:hidden">
+                                        <div style="width: 100%; height: 100%;" id="webcamCapture">
                                         </div>
-                                        <img id="result" style="width: 100%; height: 100%; object-fit:contain;">
+                                        <img id="result" style="width: 100%; height: 100%;">
                                         <canvas id="faceCanvas" style="position: absolute; top: 0; left: 0;">
                                         </canvas>
                                     </div>
@@ -141,10 +141,10 @@
 
 
                             <div class="d-flex justify-content-center">
-                                <button type="button" id="takeSnapshot" class="btn btn-primary"><i
+                                <button type="button" id="takeSnapshot" class="btn btn-absen"><i
                                         class='bx bx-fullscreen'></i>&nbsp;Ambil Foto</button>
                                 <div class="m-3"></div>
-                                <button type="button" id="resetCamera" class="btn btn-primary"><i
+                                <button type="button" id="resetCamera" class="btn btn-warning"><i
                                         class='bx bx-repeat'></i>&nbsp;Ulang</button>
 
                             </div>
@@ -167,17 +167,21 @@
                     </div>
                 </div>
 
+
+
                 @if ($cek > 0)
                     <button type="button" class="btn-absen btn-danger btn-block" id="absen"
                         style="border-radius: 10px; padding:7px; font-size: 20px">
                         <i class="ik ik-maximize"></i>&nbsp;Absen Pulang
                     </button>
                 @else
-                    <button type="button" class="btn-absen btn-primary btn-block" id="absen"
+                    <button type="button" class="btn-absen btn-absen btn-block" id="absen"
                         style="border-radius: 10px; padding:7px; font-size: 20px">
                         <i class="ik ik-maximize"></i>&nbsp;Absen Masuk
                     </button>
                 @endif
+
+                <div class="d-block d-md-none" style="height: 50px"></div>
 
             </div>
         </div>

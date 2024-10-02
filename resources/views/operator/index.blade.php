@@ -90,6 +90,11 @@
                         <ul class="menu-sub">
                             <li class="menu-item ">
                                 <a href="/kelolawalikelas" class="menu-link">
+                                    <div data-i18n="Basic">Siswa</div>
+                                </a>
+                            </li>
+                            <li class="menu-item ">
+                                <a href="/kelolawalikelas" class="menu-link">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>

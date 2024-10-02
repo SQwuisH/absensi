@@ -176,7 +176,8 @@
                             <div class="col">
                                 <h5>
                                     <a href={{ url()->previous() }} class="btn rounded btn-outline-danger"><i
-                                            class='bx bx-chevron-left'></i><span class="d-none d-md-block">Kembali</span></a>
+                                            class='bx bx-chevron-left'></i><span
+                                            class="d-none d-md-block">Kembali</span></a>
                                     {{ $k->tingkat . ' ' . strtoupper($k->id_jurusan) . ' ' . $k->nomor_kelas }}
                                 </h5>
                             </div>
@@ -187,13 +188,9 @@
                                 <input class="form-control" list="datalistOptions" id="search"
                                     placeholder="Type to search...">
                                 <div class="col-5"></div>
-                                <div class="btn-group" role="group" aria-label="Basic example">
 
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
-                                    <button type="button" class="btn btn-outline-secondary"><i
-                                            class="bx bx-import"></i> Impor</button>
-                                </div>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                    data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
                             </div>
 
                             {{-- Tambah --}}
@@ -259,7 +256,7 @@
                                                 </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Tambah</button>
+                                            <button type="submit" class="btn btn-absen">Tambah</button>
                                         </div>
                                     </div>
 

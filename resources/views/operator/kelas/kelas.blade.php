@@ -176,14 +176,9 @@
                                     <input class="form-control" list="datalistOptions" id="search"
                                         placeholder="Type to search...">
                                     <div class="col-5"></div>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-outline-secondary"
                                             data-bs-toggle="modal" data-bs-target="#tambah"><i
                                                 class="bx bxs-file-plus"></i> Tambah</button>
-                                        <button type="button" class="btn btn-outline-secondary"
-                                            data-bs-toggle="modal" data-bs-target="#impor"><i
-                                                class="bx bx-import"></i> Impor</button>
-                                    </div>
 
                                 </div>
 
@@ -247,51 +242,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">Tambah</button>
+                                                        <button type="submit" class="btn btn-absen">Tambah</button>
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Impor --}}
-                                <div class="modal fade" id="impor" tabindex="-1" style="display: none;"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modalCenterTitle">Impor Data Kelas
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <p>Gunakan <a href={{ route('exportkelas') }}><i><u>Format
-                                                                    Ini</u></i></a> Untuk Impor Data!</p>
-                                                </div>
-
-                                                <form action= "/kelolakelas/import" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <input name="file" type="file" class="form-control"
-                                                                required>
-                                                        </div>
-                                                    </div>
-                                            </div>
-
-
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-secondary"
-                                                    data-bs-dismiss="modal">
-                                                    Batalkan
-                                                </button>
-                                                <button type="submit" class="btn btn-primary">Impor</button>
-                                            </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>

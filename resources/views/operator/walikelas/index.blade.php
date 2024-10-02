@@ -229,7 +229,7 @@
                                                 data-bs-dismiss="modal">
                                                 Batalkan
                                             </button>
-                                            <button type="submit" class="btn btn-primary">Impor</button>
+                                            <button type="submit" class="btn btn-absen">Impor</button>
                                         </div>
                                         </form>
                                     </div>
@@ -298,7 +298,7 @@
                                                 </div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-primary">Tambah</button>
+                                            <button type="submit" class="btn btn-absen">Tambah</button>
                                         </div>
                                     </div>
 
