@@ -294,7 +294,7 @@
 
             {{-- BUTTON --}}
             <div class="container mb-2">
-                @include('siswa.tombolabsen')
+                @include('siswa.tombolAbsen')
             </div>
 
             {{-- REKAP --}}
