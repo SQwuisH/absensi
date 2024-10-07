@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\kelasExpor;
 use App\Exports\waliExpor;
-use App\Imports\kelasImpor;
+use App\Imports\siswaImpor;
 use App\Imports\waliImpor;
 use App\Models\jurusan;
 use App\Models\kelas;
@@ -234,20 +234,6 @@ class OperatorController extends Controller
         return Excel::download(new kelasExpor, 'formatkelas.xlsx');
     }
 
-    public function importkelas(Request $r)
-    {
-        $r->validate([
-            'file' => [
-                'required',
-                'file'
-            ],
-        ]);
-
-        Excel::import(new kelasImpor, $r->file('file'));
-
-        return redirect()->back()->with('success', 'Kelas Berhasil Diimpor');
-    }
-
     public function hapuskelas($id)
     {
         $w = kelas::find($id);
@@ -314,7 +300,19 @@ class OperatorController extends Controller
         return redirect()->back();
     }
 
+    public function importsiswa(Request $r)
+    {
+        $r->validate([
+            'file' => [
+                'required',
+                'file'
+            ],
+        ]);
 
+        Excel::import(new siswaImpor, $r->file('file'));
+
+        return redirect()->back()->with('success', 'Kelas Berhasil Diimpor');
+    }
 
 
     //JURUSAN
