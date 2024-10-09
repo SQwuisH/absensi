@@ -20,7 +20,8 @@ class waliSiswaSeeder extends Seeder
 
         wali_siswa::insert([
             'nik' => '2345678901234567',
-            'id_user' => 10
+            'id_user' => 10,
+            'jenis_kelamin' => 1
         ]);
 
         wali_siswa::insert([

@@ -59,15 +59,18 @@
                 <img src={{ asset('assets/t2/img/7.png') }} style="height: 35px; width: auto;">
             </a>
 
+            {{-- NAV --}}
             <div class="nav__menu mt-3" id="nav-menu">
                 <ul class="nav__list">
+                    {{-- Beranda --}}
                     <li class="nav__item">
                         <a href="#" class="nav__link " style="color: hsl(174, 63%, 40%)">
                             <i class='bx bx-home-alt nav__icon'></i>
-                            <span class="nav__name">Home</span>
+                            <span class="nav__name">Beranda</span>
                         </a>
                     </li>
 
+                    {{-- Laporan Absensi --}}
                     <li class="nav__item">
                         <a href="{{ route('sLaporan') }}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
@@ -75,6 +78,7 @@
                         </a>
                     </li>
 
+                    {{-- Profil & Logout --}}
                     <li class="nav__item" style="color: #222b2a;">
                         <div class="btn-group" id="dropdown-icon-demo">
                             <a class="dropdown nav__link" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,6 +86,7 @@
                                 <span class="nav__name"> Profil <i class="bx bx-chevron-down me-1"></i> </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                {{-- Profil --}}
                                 <li>
                                     <a href="{{ route('sProfil') }}" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
@@ -89,6 +94,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                {{-- Logout --}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();"
@@ -113,6 +119,8 @@
     <!--=============== HOME ===============-->
     <div class="content-wrapper">
         <div class="container flex-grow-1 container-p-y">
+
+            {{--  --}}
             <div class="d-block d-sm-none" style="min-height: 25px"></div>
             <div class="d-none d-sm-block d-md-none" style="min-height: 30px"></div>
             <div class="d-none d-md-block d-lg-none" style="min-height: 50px"></div>
@@ -354,7 +362,7 @@
                                             <div class="row">
 
                                                 {{-- hadir --}}
-                                                <div class="col-4">
+                                                <div class="col">
                                                     <div class="card bg-absen text-white mb-3">
                                                         <div class="card-header">
                                                             <h6 class="card-title text-white">Hadir:</h6>
@@ -363,65 +371,17 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- sakit --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-info text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">sakit:</h6>
-                                                            {{ $jumlah['sakitIni'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- izin --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-warning text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Izin:</h6>
-                                                            {{ $jumlah['izinIni'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                {{-- ALFA --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-danger text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Alfa:</h6>
-                                                            {{ $jumlah['alfaIni'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- TERLAMBAT --}}
-                                                <div class="col-4">
+                                                {{-- tidak hadir --}}
+                                                <div class="col">
                                                     <div class="card bg-secondary text-white mb-3">
                                                         <div class="card-header">
-                                                            <h6 class="card-title text-white">Terlambat:</h6>
-                                                            {{ $jumlah['terlambatIni'] }} Hari
+                                                            <h6 class="card-title text-white">Tidak Hadir:</h6>
+                                                            {{ $jumlah['tidakHadirIni'] }} Hari
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- TAP --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-black text-white mb-3"
-                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
-                                                        data-bs-placement="top" data-bs-html="true"
-                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
-                                                        <div class="card-header">
-                                                            <div class="row">
-                                                                <h6 class="col card-title text-white">TAP:</h6>
-                                                            </div>
-
-                                                            {{ $jumlah['tapIni'] }} Hari
-                                                        </div>
-
                                                     </div>
                                                 </div>
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -449,7 +409,7 @@
                                             <div class="row">
 
                                                 {{-- hadir --}}
-                                                <div class="col-4">
+                                                <div class="col">
                                                     <div class="card bg-absen text-white mb-3">
                                                         <div class="card-header">
                                                             <h6 class="card-title text-white">Hadir:</h6>
@@ -458,62 +418,13 @@
                                                     </div>
                                                 </div>
 
-                                                {{-- sakit --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-info text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">sakit:</h6>
-                                                            {{ $jumlah['sakitLalu'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- izin --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-warning text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Izin:</h6>
-                                                            {{ $jumlah['izinLalu'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                {{-- ALFA --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-danger text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Alfa:</h6>
-                                                            {{ $jumlah['alfaLalu'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- TERLAMBAT --}}
-                                                <div class="col-4">
+                                                {{-- tidak hadir --}}
+                                                <div class="col">
                                                     <div class="card bg-secondary text-white mb-3">
                                                         <div class="card-header">
-                                                            <h6 class="card-title text-white">Terlambat:</h6>
-                                                            {{ $jumlah['terlambatLalu'] }} Hari
+                                                            <h6 class="card-title text-white">Tidak Hadir:</h6>
+                                                            {{ $jumlah['tidakHadirLalu'] }} Hari
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- TAP --}}
-                                                <div class="col-4">
-                                                    <div class="card bg-black text-white mb-3"
-                                                        data-bs-toggle="tooltip" data-bs-offset="0,4"
-                                                        data-bs-placement="top" data-bs-html="true"
-                                                        data-bs-original-title="<span>Tanpa Absen Pulang</span>">
-                                                        <div class="card-header">
-                                                            <div class="row">
-                                                                <h6 class="col card-title text-white">TAP:</h6>
-                                                            </div>
-
-                                                            {{ $jumlah['tapLalu'] }} Hari
-                                                        </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -537,6 +448,8 @@
 
         <!--=============== MAIN JS ===============-->
         <script src={{ asset('assets/waktu.js') }}></script>
+
+        {{-- Location --}}
         <script>
             function jarak() {
                 var lokasi = document.getElementById('lokasi');

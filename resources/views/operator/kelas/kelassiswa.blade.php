@@ -71,7 +71,7 @@
                     </li>
 
                     <li class="menu-item ">
-                        <a href="/operator" class="menu-link">
+                        <a href="/" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-cog"></i>
                             <div data-i18n="Basic">Koordinat & Waktu</div>
                         </a>
@@ -90,17 +90,22 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="/kelolawalikelas" class="menu-link ">
+                                <a href="{{route('OPsiswa')}}" class="menu-link ">
+                                    <div data-i18n="Basic">Siswa</div>
+                                </a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="{{route('OPwalikelas')}}" class="menu-link ">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="/kelolawalisiswa" class="menu-link">
+                                <a href="{{route('OPwalisiswa')}}" class="menu-link">
                                     <div data-i18n="Basic">Wali Siswa</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="/kelolakesiswaan" class="menu-link">
+                                <a href="{{route('OPkesiswaan')}}" class="menu-link">
                                     <div data-i18n="Basic">Kesiswaan</div>
                                 </a>
                             </li>
@@ -108,14 +113,14 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="/kelolakelas" class="menu-link">
+                        <a href="{{route('OPkelas')}}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                             <div data-i18n="Basic">Kelas</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="/kelolajurusan" class="menu-link">
+                        <a href="{{route('OPjurusan')}}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                             <i class='book-bookmark'></i>
                             <div data-i18n="laporan">Jurusan</div>
@@ -172,6 +177,19 @@
                     <!-- Content -->
 
                     <div class="container container-p-y">
+                        @if (Session::get('success'))
+                            <div class="alert alert-success alert-dismissible hide" role="alert">
+                                {{ Session::get('success') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @elseif (Session::get('warning'))
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                {{ Session::get('warning') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </div>
+                        @endif
                         <div class="row">
                             <div class="col">
                                 <h5>
@@ -207,7 +225,7 @@
                                         <div class="modal-body">
 
 
-                                            <form action="/kelolakelas/tambahsiswa" method="post">
+                                            <form action="{{ route('addSiswa') }}" method="post">
                                                 @csrf
                                                 <input type="text" name="id_kelas" hidden
                                                     value={{ $id }}>
@@ -298,10 +316,10 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#edit{{ $w->id }}"><i
+                                                                data-bs-target="#edit{{ $w->id_user }}"><i
                                                                     class="bx bx-edit-alt me-2"></i> Edit</button>
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#hapus{{ $w->id }}"><i
+                                                                data-bs-target="#hapus{{ $w->id_user }}"><i
                                                                     class="bx bx-trash me-2"></i> Hapus</button>
                                                         </div>
                                                     </div>

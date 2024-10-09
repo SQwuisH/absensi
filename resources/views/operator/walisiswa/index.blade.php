@@ -89,8 +89,13 @@
                             <div data-i18n="Dashboards">Data Pengguna</div>
                         </a>
                         <ul class="menu-sub">
+                            <li class="menu-item">
+                                <a href="{{route('OPsiswa')}}" class="menu-link">
+                                    <div data-i18n="Basic">Siswa</div>
+                                </a>
+                            </li>
                             <li class="menu-item ">
-                                <a href="/kelolawalikelas" class="menu-link ">
+                                <a href="{{route('OPwalikelas')}}" class="menu-link ">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>
@@ -100,7 +105,7 @@
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="/kelolakesiswaan" class="menu-link">
+                                <a href="{{route('OPkesiswaan')}}" class="menu-link">
                                     <div data-i18n="Basic">Kesiswaan</div>
                                 </a>
                             </li>
@@ -108,14 +113,14 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="/kelolakelas" class="menu-link">
+                        <a href="{{route('OPkelas')}}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                             <div data-i18n="Basic">Kelas</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="/kelolajurusan" class="menu-link">
+                        <a href="{{route('OPjurusan')}}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                             <i class='book-bookmark'></i>
                             <div data-i18n="laporan">Jurusan</div>
@@ -208,11 +213,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <p>Gunakan <a href={{ route('exportwalisiswa') }}><i><u>Format
+                                                <p>Gunakan <a href={{ route('formatwalisiswa') }}><i><u>Format
                                                                 Ini</u></i></a> Untuk Impor Data!</p>
                                             </div>
 
-                                            <form action= "/kelolawalisiswa/import" method="POST"
+                                            <form action= "{{route('imporwalisiswa')}}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="row">
@@ -266,13 +271,9 @@
                                                             class="form-control"
                                                             placeholder="Default Password '12345678'">
                                                     </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col mb-3">
                                                         <label for="nameBasic" class="form-label">NIK</label>
-                                                        <input name="nik" type="text" id="nameBasic"
-                                                            class="form-control" placeholder="Masukkan NIK"
-                                                            required>
+                                                        <input name="nik" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NIK Wali Siswa" required>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -285,7 +286,7 @@
                                                         <label for="jk" class="form-label">Jenis Kelamin</label>
                                                         <select name="jenis_kelamin" id="jk"
                                                             class="form-select form-control">
-                                                            <option selected hidden>Pilih</option>
+                                                            <option selected hidden value="1">Pilih</option>
                                                             <option value="1">laki laki</option>
                                                             <option value="2">perempuan</option>
                                                         </select>

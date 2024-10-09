@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $waktu = waktu_absen::first();
-        $schedule->command('app:insert-absen')->daily();
+        $schedule->command('app:insert-absen')->dailyAt("00:01");
         $schedule->command('app:cek-tap')->at($waktu->batas_pulang);
         $schedule->command('app:reset-tap')->monthly();
     }

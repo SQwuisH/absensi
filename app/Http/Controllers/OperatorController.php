@@ -52,146 +52,6 @@ class OperatorController extends Controller
         return redirect()->back();
     }
 
-
-    //WALI KELAS
-    public function walikelas()
-    {
-        $walikelas = wali::with('user', 'kelas', 'jurusan')->get();
-
-        return view('operator.walikelas.index', compact('walikelas'));
-    }
-
-    public function tambahwalikelas(Request $request)
-    {
-        $user = '';
-        if (strlen($request->password) > 0) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => password_hash($request->password, PASSWORD_DEFAULT),
-                'role' => 'wali'
-            ]);
-
-            wali::insert([
-                'nuptk' => $request->nuptk,
-                'id_user' => $user->id,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'nip' => $request->nip,
-            ]);
-        } else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'role' => 'wali'
-            ]);
-
-            wali::insert([
-                'nuptk' => $request->nuptk,
-                'id_user' => $user->id,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'nip' => $request->nip,
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Wali Kelas ' . $user->name . ' Berhasil ditambahkan');
-    }
-
-    public function editwalikelas(Request $r)
-    {
-        //DB wali
-        wali::where('id_user', $r->id)->update([
-            'nuptk' => $r->nuptk,
-            'jenis_kelamin' => $r->jenis_kelamin,
-            'nip' => $r->nip,
-        ]);
-
-
-        //DB user
-        $user = user::where('id', $r->id)->first();
-
-        $user->update([
-            'name' => $r->name,
-            'email' => $r->email,
-            'password' => password_hash($r->password, PASSWORD_DEFAULT),
-        ]);
-
-        return redirect()->back()->with('success', 'Wali Kelas ' . $user->name . ' Berhasil Diedit');
-    }
-
-    public function hapuswalikelas($id)
-    {
-        $u = user::where('id', $id)->first();
-        $n = $u->name;
-
-        wali::where('id_user', $id)->delete();
-
-
-        $u->delete();
-
-        return redirect()->back()->with('success', 'Wali Kelas ' . $n . ' Berhasil Diedit');
-    }
-
-    public function exportWalikelas()
-    {
-        return Excel::download(new waliExpor, 'formatwali.xlsx');
-    }
-
-    public function importWalikelas(Request $r)
-    {
-        $r->validate([
-            'file' => [
-                'required',
-                'file'
-            ],
-        ]);
-
-        Excel::import(new waliImpor, $r->file('file'));
-    }
-
-
-    //WALI SISWA
-    public function walisiswa()
-    {
-        $walisiswa =  wali_siswa::with('user')->get();
-
-        return view('operator.walisiswa.index', compact('walisiswa'));
-    }
-
-    public function tambahwalisiswa(request $r)
-    {
-        if(strlen($r->password) > 0)
-        {
-            $u = User::create([
-                'name' => $r->name,
-                'password' => password_hash($r->password, 'default_password'),
-                'email' => $r->email,
-                'role' => 'wali siswa'
-            ]);
-        }
-        else
-        {
-            $u = User::create([
-                'name' => $r->name,
-                'email' => $r->email,
-                'role' => 'wali siswa'
-            ]);
-        }
-
-
-        $w = wali_siswa::insert([
-            'nik' => $r->nik,
-            'id_user' => $u->id,
-            'jenis_kelamin' => $r->jenis_kelamin
-        ]);
-
-        if ($u && $w)
-        {
-        return redirect()->back()->with('success', 'Data Berhasil Ditambahkan');
-        } else {
-            return redirect()->back()->with('warning', 'Gagal Menambahkan Data');
-        }
-    }
-
     //KELAS
     public function kelas()
     {
@@ -205,7 +65,16 @@ class OperatorController extends Controller
         return view('operator.kelas.kelas', compact('kelas', 'kosong', 'jurusan'));
     }
 
-    public function tambahkelas(Request $r)
+    public function siswa($id)
+    {
+        $siswa = siswa::with('user', 'kelas')->where('id_kelas', '=', $id)->get();
+        $k = kelas::with('jurusan')->where('id_kelas', $id)->first();
+        $kelas = kelas::with('jurusan')->get();
+
+        return view('operator.kelas.kelassiswa', compact('siswa', 'kelas', 'id', 'k'));
+    }
+
+    public function addkelas(Request $r)
     {
         kelas::insert([
             'id_jurusan' => $r->id_jurusan,
@@ -214,7 +83,11 @@ class OperatorController extends Controller
             'tingkat' => $r->tingkat
         ]);
 
-        return redirect()->back();
+        $k = kelas::where('id_kelas', $r->id)->first();
+
+        $kelas = strtoupper("$k->tingkat $k->id_jurusan $k->nomor_kelas");
+
+        return redirect()->back()->with('success', 'kelas ' . $kelas . ' Berhasil ditambahkan');;
     }
 
     public function editkelas(request $r)
@@ -226,94 +99,21 @@ class OperatorController extends Controller
             'tingkat' => $r->tingkat
         ]);
 
-        return redirect()->back();
+        $k = kelas::where('id_kelas', $r->id)->first();
+
+        $kelas = strtoupper("$k->tingkat $k->id_jurusan $k->nomor_kelas");
+
+        return redirect()->back()->with('success', 'kelas ' . $kelas . ' Berhasil Edit');
     }
 
-    public function exportkelas()
+    public function deletekelas($id)
     {
-        return Excel::download(new kelasExpor, 'formatkelas.xlsx');
+        $k = kelas::find($id);
+        $kelas = strtoupper("$k->tingkat $k->id_jurusan $k->nomor_kelas");
+        $k->delete();
+
+        return redirect()->back()->with('success', 'kelas ' . $kelas . ' Berhasil Dihapus');
     }
-
-    public function hapuskelas($id)
-    {
-        $w = kelas::find($id);
-        $w->delete();
-
-        return redirect()->back();
-    }
-
-
-    //SISWA
-    public function siswa($id)
-    {
-        $siswa = siswa::with('user', 'kelas')->where('id_kelas', '=', $id)->get();
-        $k = kelas::with('jurusan')->where('id_kelas', $id)->first();
-        $kelas = kelas::with('jurusan')->get();
-
-        return view('operator.kelas.kelassiswa', compact('siswa', 'kelas', 'id', 'k'));
-    }
-
-    public function tambahsiswa(Request $request)
-    {
-        if (strlen($request->password) > 0) {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => password_hash($request->password, PASSWORD_DEFAULT),
-                'role' => 'siswa'
-            ]);
-
-            siswa::insert([
-                'nis' => $request->nis,
-                'id_user' => $user->id,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'id_kelas' => $request->id_kelas,
-                'nisn' => $request->nisn,
-            ]);
-        } else {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'role' => 'siswa'
-            ]);
-
-            siswa::insert([
-                'nis' => $request->nis,
-                'id_user' => $user->id,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'id_kelas' => $request->id_kelas,
-                'nisn' => $request->nisn,
-            ]);
-        }
-
-        return redirect()->back();
-    }
-
-    public function hapussiswa($id)
-    {
-        $w = siswa::where('id_user', $id);
-        $w->delete();
-
-        $w = user::find($id);
-        $w->delete();
-
-        return redirect()->back();
-    }
-
-    public function importsiswa(Request $r)
-    {
-        $r->validate([
-            'file' => [
-                'required',
-                'file'
-            ],
-        ]);
-
-        Excel::import(new siswaImpor, $r->file('file'));
-
-        return redirect()->back()->with('success', 'Kelas Berhasil Diimpor');
-    }
-
 
     //JURUSAN
     public function jurusan()
@@ -322,11 +122,11 @@ class OperatorController extends Controller
         return view('operator.jurusan.jurusan', compact('jurusan'));
     }
 
-    public function tambahjurusan(Request $j)
+    public function addjurusan(Request $j)
     {
         $jur = jurusan::insert(['id_jurusan' => $j->id_jurusan, 'nama_jurusan' => $j->nama_jurusan]);
 
-        return redirect()->back()->with('success', 'Jurusan ' . $jur->id_jurusan . ' Berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Jurusan ' . $j->id_jurusan . ' Berhasil ditambahkan');
     }
 
     public function editjurusan(Request $j)
@@ -334,10 +134,10 @@ class OperatorController extends Controller
         $jur = jurusan::where('id_jurusan', $j->id)->first();
         $jur->update(['id_jurusan' => $j->id_jurusan, 'nama_jurusan' => $j->nama_jurusan]);
 
-        return redirect()->back()->with('success', 'Jurusan ' . $jur->id_jurusan . ' Berhasil Diedit');
+        return redirect()->back()->with('success', 'Jurusan ' . $j->id_jurusan . ' Berhasil Diedit');
     }
 
-    public function hapusjurusan($id)
+    public function deletejurusan($id)
     {
         $jur = jurusan::where('id_jurusan', $id)->first();
         $j = $jur->id_jurusan;
@@ -346,6 +146,7 @@ class OperatorController extends Controller
         return redirect()->back()->with('success', 'Jurusan ' . $j . ' Berhasil Dihapus');
     }
 
+    // Kesiswaan
     public function kesiswaan()
     {
         $kesiswaan = user::where('role', '=', 'kesiswaan')->get();
@@ -353,7 +154,7 @@ class OperatorController extends Controller
         return view('operator.kesiswaan.kesiswaan', compact('kesiswaan'));
     }
 
-    public function tambahkesiswaan(Request $r)
+    public function addkesiswaan(Request $r)
     {
         if (strlen($r->password) > 0) {
             user::create([
@@ -391,7 +192,7 @@ class OperatorController extends Controller
         return redirect()->back();
     }
 
-    public function hapuskesiswaan($id)
+    public function deletekesiswaan($id)
     {
         User::find($id)->delete();
 

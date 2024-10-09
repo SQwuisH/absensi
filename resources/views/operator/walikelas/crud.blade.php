@@ -1,5 +1,5 @@
 {{-- edit --}}
-<form action="/editwalikelas" method="post" enctype="multipart/form-data">
+<form action="{{route('editwalikelas')}}" method="post" enctype="multipart/form-data">
     @csrf
 <input type="text" name="id" hidden value="{{$w->id_user}}">
 <div class="modal fade" id="edit{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -60,7 +60,7 @@
 
 {{-- Hapus --}}
 
-<form action="{{ route('hapuswalikelas', ['id' => $w->id_user]) }}" method="post">
+<form action="{{ route('deletewalikelas', ['id' => $w->id_user]) }}" method="post">
 @csrf
 @method('delete')
     <div class="modal fade" id="hapus{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">

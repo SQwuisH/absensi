@@ -19,7 +19,7 @@ class SiswaSeeder extends Seeder
             'id_kelas' => 1,
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678901',
-            'nik' => '2345678901234567',
+            'nik_ibu' => '2345678901234567',
         ]);
 
         Siswa::insert([
@@ -28,7 +28,7 @@ class SiswaSeeder extends Seeder
             'id_kelas' => 2,
             'jenis_kelamin' => 'laki laki',
             'nisn' => '0045678902',
-            'nik' => '3456789012345678',
+            'nik_ayah' => '3456789012345678',
         ]);
 
         Siswa::insert([
@@ -37,7 +37,7 @@ class SiswaSeeder extends Seeder
             'id_kelas' => 3,
             'jenis_kelamin' => 'perempuan',
             'nisn' => '0045678903',
-            'nik' => '1234567890123456',
+            'nik_wali' => '1234567890123456',
         ]);
 
         Siswa::insert([
@@ -46,7 +46,7 @@ class SiswaSeeder extends Seeder
             'id_kelas' => 3,
             'jenis_kelamin' => 'laki laki',
             'nisn' => '00609129',
-            'nik' => '3456789012345678',
+            'nik_ayah' => '3456789012345678',
         ]);
 
     }

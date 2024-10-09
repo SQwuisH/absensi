@@ -1,4 +1,4 @@
-@if ($statusabsen == 'hadir' || $statusabsen == 'terlambat')
+@if ($statusabsen == 'hadir' || $statusabsen == 'terlambat' || $statusabsen == 'belum waktu presen')
     <div class="row mb-3 text-center">
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#izinSakitModal">
             <div class="card-header">

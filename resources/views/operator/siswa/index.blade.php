@@ -71,7 +71,7 @@
                     </li>
 
                     <li class="menu-item ">
-                        <a href="/" class="menu-link">
+                        <a href="/operator" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-cog"></i>
                             <div data-i18n="Basic">Koordinat & Waktu</div>
                         </a>
@@ -83,29 +83,29 @@
                     </li>
 
                     <!-- Pages -->
-                    <li class="menu-item open active" style="">
+                    <li class="menu-item active open" style="">
                         <a href="javascript:void(0);" class="menu-link menu-toggle ">
                             <i class="menu-icon tf-icons bx bx-user"></i>
                             <div data-i18n="Dashboards">Data Pengguna</div>
                         </a>
                         <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="{{route('OPsiswa')}}" class="menu-link ">
+                            <li class="menu-item active">
+                                <a href="#" class="menu-link ">
                                     <div data-i18n="Basic">Siswa</div>
                                 </a>
                             </li>
-                            <li class="menu-item active">
-                                <a href="#" class="menu-link ">
+                            <li class="menu-item">
+                                <a href="{{ route('OPwalikelas') }}" class="menu-link ">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="{{route('OPwalisiswa')}}" class="menu-link">
+                                <a href="{{ route('OPwalisiswa') }}" class="menu-link">
                                     <div data-i18n="Basic">Wali Siswa</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="{{route('OPkesiswaan')}}" class="menu-link">
+                                <a href="{{ route('OPkesiswaan') }}" class="menu-link">
                                     <div data-i18n="Basic">Kesiswaan</div>
                                 </a>
                             </li>
@@ -113,14 +113,14 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{route('OPkelas')}}" class="menu-link">
+                        <a href="{{ route('OPkelas') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                             <div data-i18n="Basic">Kelas</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{route('OPjurusan')}}" class="menu-link">
+                        <a href="{{ route('OPjurusan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                             <i class='book-bookmark'></i>
                             <div data-i18n="laporan">Jurusan</div>
@@ -158,7 +158,10 @@
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                         <!-- Search -->
-                        <h4 class="m-1">Kelola Wali Kelas</h4>
+                        <h4 class="m-1">
+                            Kelola Siswa
+                        </h4>
+
                         <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
@@ -174,6 +177,15 @@
                     <!-- Content -->
 
                     <div class="container container-p-y">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @if (Session::get('success'))
                             <div class="alert alert-success alert-dismissible hide" role="alert">
                                 {{ Session::get('success') }}
@@ -187,17 +199,18 @@
                                     aria-label="Close"></button>
                             </div>
                         @endif
+
                         <div class="card">
                             <div class="card-header d-flex">
                                 <input class="form-control" list="datalistOptions" id="search"
                                     placeholder="Type to search...">
                                 <div class="col-5"></div>
-                                <div class="btn-group" role="group" aria-label="Basic example">
 
+                                <div class="btn-group">
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
                                         data-bs-target="#tambah"><i class="bx bxs-file-plus"></i> Tambah</button>
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#impor"><i class="bx bx-import"></i> Impor</button>
+                                        data-bs-target="#impor"><i class="bx bx-import"></i> impor</button>
                                 </div>
                             </div>
 
@@ -207,17 +220,17 @@
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modalCenterTitle">Impor Data Wali Kelas</h5>
+                                            <h5 class="modal-title" id="modalCenterTitle">Impor Data Siswa</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
-                                                <p>Gunakan <a href={{ route('formatwalikelas') }}><i><u>Format
+                                                <p>Gunakan <a href={{ route('formatsiswa') }}><i><u>Format
                                                                 Ini</u></i></a> Untuk Impor Data!</p>
                                             </div>
 
-                                            <form action= "/kelolawalikelas/import" method="POST"
+                                            <form action= "{{route('importsiswa')}}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="row">
@@ -248,14 +261,14 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel1">Tambah Wali Kelas</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel1">Tambah Siswa</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
 
 
-                                            <form action="/tambahwalikelas" method="post">
+                                            <form action="{{ route('addSiswa') }}" method="post">
                                                 @csrf
                                                 <div class="row">
                                                     <div class="col mb-3">
@@ -271,18 +284,33 @@
                                                             class="form-control"
                                                             placeholder="Default Password '12345678'">
                                                     </div>
+                                                    <div class="col mb-3">
+                                                        <label for="jurusan" class="form-label">kelas</label>
+                                                        <select name="kelas" id="jurusan" class="form-select">
+                                                            <option selected hidden>Pilih Kelas</option>
+                                                            @foreach ($kelas as $k)
+                                                                <option value={{ $k->id_kelas }}> @php
+                                                                    echo $k->tingkat;
+                                                                    echo ' ';
+                                                                    echo strtoupper($k->id_jurusan);
+                                                                    echo ' ';
+                                                                    echo $k->nomor_kelas;
+                                                                @endphp
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col mb-3">
-                                                        <label for="nameBasic" class="form-label">NUPTK</label>
-                                                        <input name="nuptk" type="text" id="nameBasic"
-                                                            class="form-control" placeholder="Masukkan NUPTK"
-                                                            required>
+                                                        <label for="nameBasic" class="form-label">nis</label>
+                                                        <input name="nis" type="number" id="nameBasic"
+                                                            class="form-control" placeholder="Masukkan NIS" required>
                                                     </div>
                                                     <div class="col mb-3">
-                                                        <label for="nameBasic" class="form-label">NIP</label>
-                                                        <input name="nip" type="text" id="nameBasic"
-                                                            class="form-control" placeholder="Masukkan NIP" required>
+                                                        <label for="nameBasic" class="form-label">NISN</label>
+                                                        <input name="nisn" type="number" id="nameBasic"
+                                                            class="form-control" placeholder="Masukkan NISN" required>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -293,9 +321,9 @@
                                                     </div>
                                                     <div class="col mb-3">
                                                         <label for="jk" class="form-label">Jenis Kelamin</label>
-                                                        <select name="jenis_kelamin" id="jk"
+                                                        <select name="jenis_kelamin" id="jk" required
                                                             class="form-select form-control">
-                                                            <option selected hidden>Pilih</option>
+                                                            <option selected value="1">Pilih</option>
                                                             <option value="1">laki laki</option>
                                                             <option value="2">perempuan</option>
                                                         </select>
@@ -316,33 +344,28 @@
                                 <table class="table " id="tabel">
                                     <thead>
                                         <tr>
-                                            <th>NUPTK</th>
-                                            <th>Nama</th>
+                                            <th>Nis</th>
                                             <th>Kelas</th>
+                                            <th>Nama</th>
+                                            <th>Jenis Kelamin</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table-border-bottom-0">
 
-                                        @foreach ($walikelas as $w)
+                                        @foreach ($siswa as $w)
                                             <tr>
                                                 <td>
-                                                    <span class="fw-medium">@php echo($w->nuptk); @endphp</span>
+                                                    <span class="fw-medium">@php
+                                                        echo '00';
+                                                        echo $w->nis;
+                                                    @endphp</span>
+                                                </td>
+                                                <td>{{ strtoupper($w->kelas->tingkat . ' ' . $w->kelas->id_jurusan . ' ' . $w->kelas->nomor_kelas) }}
                                                 </td>
                                                 <td>@php echo($w->user->name); @endphp</td>
                                                 <td>
-                                                    @if ($w->kelas)
-                                                        @php
-                                                            echo $w->kelas->tingkat;
-                                                            echo ' ';
-                                                            echo $w->jurusan->id_jurusan;
-                                                            echo ' ';
-                                                            echo $w->nomor_kelas;
-                                                        @endphp
-                                                    @else
-                                                        Tanpa Kelas
-                                                    @endif
-
+                                                    {{ $w->jenis_kelamin }}
                                                 </td>
                                                 <td>
                                                     <div class="dropdown">
@@ -356,12 +379,12 @@
                                                                 data-bs-target="#edit{{ $w->id_user }}"><i
                                                                     class="bx bx-edit-alt me-2"></i> Edit</button>
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#   hapus{{ $w->id_user }}"><i
+                                                                data-bs-target="#hapus{{ $w->id_user }}"><i
                                                                     class="bx bx-trash me-2"></i> Hapus</button>
                                                         </div>
                                                     </div>
                                                 </td>
-                                                @include('operator.walikelas.crud')
+                                                @include('operator.siswa.editHapusSiswa')
                                             </tr>
                                         @endforeach
                                     </tbody>

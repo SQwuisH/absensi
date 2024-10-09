@@ -51,13 +51,15 @@
 
             <div class="nav__menu mt-3" id="nav-menu">
                 <ul class="nav__list">
+                    {{-- Beranda --}}
                     <li class="nav__item">
                         <a href="{{ route('siswa') }}" class="nav__link">
                             <i class='bx bx-home-alt nav__icon'></i>
-                            <span class="nav__name">Home</span>
+                            <span class="nav__name">Beranda</span>
                         </a>
                     </li>
 
+                    {{-- Laporan Absensi --}}
                     <li class="nav__item">
                         <a href="#" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
@@ -65,6 +67,7 @@
                         </a>
                     </li>
 
+                    {{-- Profil & Logout --}}
                     <li class="nav__item" style="color: #222b2a;">
                         <div class="btn-group" id="dropdown-icon-demo">
                             <a class="dropdown nav__link" data-bs-toggle="dropdown" aria-expanded="false">
@@ -72,6 +75,7 @@
                                 <span class="nav__name"> Profil <i class="bx bx-chevron-down me-1"></i> </span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
+                                {{-- Profile --}}
                                 <li>
                                     <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"><i
                                             class="bx bx-user scaleX-n1-rtl"></i> Profil </a>
@@ -79,6 +83,8 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+
+                                {{-- Logout --}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();"
@@ -107,12 +113,15 @@
         <!-- Content -->
 
         <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 40px;">
+
+            {{-- Back Button --}}
             <h4 class="py-3 mb-2">
                 <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
                         class='bx bx-chevron-left'></i></a>
                 Absen
             </h4>
 
+            {{-- Warning --}}
             @if (Session::get('warning'))
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     {{ Session::get('warning') }}
@@ -121,11 +130,13 @@
             @endif
 
             <div class="row">
-                <!-- Basic Badges -->
+                <!-- Photo -->
                 <div class="col">
                     <div class="card mb-4">
                         <h5 class="card-header">Foto</h5>
                         <div class="card-body">
+
+                            {{-- Photo --}}
                             <div class="row d-flex justify-content-center">
                                 <div style="overflow: hidden; position: relative;"
                                     class="mb-3">
@@ -139,7 +150,7 @@
                                 </div>
                             </div>
 
-
+                            {{-- Button Photo --}}
                             <div class="d-flex justify-content-center">
                                 <button type="button" id="takeSnapshot" class="btn btn-absen"><i
                                         class='bx bx-fullscreen'></i>&nbsp;Ambil Foto</button>
@@ -153,7 +164,7 @@
                     </div>
                 </div>
 
-                <!-- Label Badges -->
+                <!-- Map -->
                 <div class="col">
                     <div class="card mb-4">
                         <h5 class="card-header">Titik Koordinat</h5>
@@ -168,7 +179,7 @@
                 </div>
 
 
-
+                {{-- Button Absen --}}
                 @if ($cek > 0)
                     <button type="button" class="btn-absen btn-danger btn-block" id="absen"
                         style="border-radius: 10px; padding:7px; font-size: 20px">
@@ -191,6 +202,7 @@
         <div class="content-backdrop fade"></div>
     </div>
 
+    {{-- Location --}}
     <script>
         var lokasi = document.getElementById('lokasi');
         if (navigator.geolocation) {

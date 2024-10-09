@@ -85,8 +85,8 @@ class users extends Seeder
         ]);
 
         User::create([
-            'name' => 'walisiswa1',
-            'email' => 'walisiswa1@gmail.com',
+            'name' => 'asep',
+            'email' => 'asep@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali siswa',
             'created_at' => now(),
@@ -94,8 +94,8 @@ class users extends Seeder
         ]);
 
         User::create([
-            'name' => 'walisiswa2',
-            'email' => 'walisiswa2@gmail.com',
+            'name' => 'Ai',
+            'email' => 'ai@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali siswa',
             'created_at' => now(),
@@ -103,8 +103,8 @@ class users extends Seeder
         ]);
 
         User::create([
-            'name' => 'walisiswa3',
-            'email' => 'walisiswa3@gmail.com',
+            'name' => 'Eeng',
+            'email' => 'Eeng@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'wali siswa',
             'created_at' => now(),

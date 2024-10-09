@@ -29,8 +29,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/postlogin', [App\Http\Controllers\login::class, 'postlogin'])->name('postlogin');
 });
 
-route::post('/test', [App\Http\Controllers\Controller::class, 'test'])->name('test');
-
+// Routing middleware
 Route::get('/', function () {
     if (auth()->check()) {
         $role = auth()->user()->role;
@@ -47,11 +46,8 @@ Route::get('/', function () {
             return redirect('walisiswa');
         }
     }
-    return redirect('login');
+    return route('login');
 });
-
-
-
 
 //OPERATOR
 Route::group(['middleware' => ['auth', 'roles:operator']], function () {
@@ -61,45 +57,48 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function () {
     route::post('/editwaktuabsen', [App\Http\Controllers\OperatorController::class, 'editwaktu'])->name('editabsen');
 
     //KESISWAAN
-    Route::get('/kelolakesiswaan', [App\Http\Controllers\OperatorController::class, 'kesiswaan'])->name('kesiswaan');
-    Route::post('/tambahkesiswaan', [App\Http\Controllers\OperatorController::class, 'tambahkesiswaan'])->name('tambahkesiswaan');
+    Route::get('/kelolakesiswaan', [App\Http\Controllers\OperatorController::class, 'kesiswaan'])->name('OPkesiswaan');
+    Route::post('/tambahkesiswaan', [App\Http\Controllers\OperatorController::class, 'addkesiswaan'])->name('addkesiswaan');
     Route::post('/editkesiswaan', [App\Http\Controllers\OperatorController::class, 'editkesiswaan'])->name('editkesiswaan');
-    Route::delete('/hapuskesiswaan{id}', [App\Http\Controllers\OperatorController::class, 'hapuskesiswaan'])->name('hapuskesiswaan');
+    Route::delete('/hapuskesiswaan{id}', [App\Http\Controllers\OperatorController::class, 'deletekesiswaan'])->name('deletekesiswaan');
 
     //WALI KELAS
-    Route::get('/kelolawalikelas', [App\Http\Controllers\OperatorController::class, 'walikelas'])->name('walikelas');
-    Route::post('/tambahwalikelas', [App\Http\Controllers\OperatorController::class, 'tambahwalikelas'])->name('tambahwalikelas');
-    Route::post('/editwalikelas', [App\Http\Controllers\OperatorController::class, 'editwalikelas'])->name('editwalikelas');
-    Route::delete('/hapuswalikelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuswalikelas'])->name('hapuswalikelas');
-    Route::get('/kelolawalikelas/export', [App\Http\Controllers\OperatorController::class, 'exportwalikelas'])->name('exportwalikelas');
-    Route::post('/kelolawalikelas/import', [App\Http\Controllers\OperatorController::class, 'importwalikelas'])->name('imporwali');
+    Route::get('/kelolawalikelas', [App\Http\Controllers\OperatorWaliKelas::class, 'index'])->name('OPwalikelas');
+    Route::post('/tambahwalikelas', [App\Http\Controllers\OperatorWaliKelas::class, 'add'])->name('addwalikelas');
+    Route::post('/editwalikelas', [App\Http\Controllers\OperatorWaliKelas::class, 'edit'])->name('editwalikelas');
+    Route::delete('/hapuswalikelas/{id}', [App\Http\Controllers\OperatorWaliKelas::class, 'delete'])->name('deletewalikelas');
+    Route::get('/exportwalikelas', [App\Http\Controllers\OperatorWaliKelas::class, 'formatWalikelas'])->name('formatwalikelas');
+    Route::post('/importawalikelas', [App\Http\Controllers\OperatorWaliKelas::class, 'importWalikelas'])->name('imporwali');
 
     //WALI SISWA
-    Route::get('/kelolawalisiswa', [App\Http\Controllers\OperatorController::class, 'walisiswa'])->name('walisiswa');
-    Route::post('/tambahwalisiswa', [App\Http\Controllers\OperatorController::class, 'tambahwalisiswa'])->name('tambahwalisiswa');
-    Route::post('/editwalisiswa', [App\Http\Controllers\OperatorController::class, 'editwalisiswa'])->name('editwalisiswa');
-    Route::delete('/hapuswalisiswa/{id}', [App\Http\Controllers\OperatorController::class, 'hapuswalisiswa'])->name('hapuswalisiswa');
-    Route::get('/kelolawalisiswa/export', [App\Http\Controllers\OperatorController::class, 'exportwalisiswa'])->name('exportwalisiswa');
-    Route::post('/kelolawalisiswa/import', [App\Http\Controllers\OperatorController::class, 'importwalisiswa'])->name('imporwalisiswa');
+    Route::get('/kelolawalisiswa', [App\Http\Controllers\OperatorWaliSiswa::class, 'index'])->name('OPwalisiswa');
+    Route::post('/tambahwalisiswa', [App\Http\Controllers\OperatorWaliSiswa::class, 'add'])->name('addwalisiswa');
+    Route::post('/editwalisiswa', [App\Http\Controllers\OperatorWaliSiswa::class, 'edit'])->name('editwalisiswa');
+    Route::delete('/hapuswalisiswa/{id}', [App\Http\Controllers\OperatorWaliSiswa::class, 'delete'])->name('deletewalisiswa');
+    Route::get('/formatwalisiswa', [App\Http\Controllers\OperatorWaliSiswa::class, 'formatWaliSiswa'])->name('formatwalisiswa');
+    Route::post('/importawalisiswa', [App\Http\Controllers\OperatorWaliSiswa::class, 'importWaliSiswa'])->name('imporwalisiswa');
 
     //KELAS
-    Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('kelas');
+    Route::get('/kelolakelas', [App\Http\Controllers\OperatorController::class, 'kelas'])->name('OPkelas');
+    Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('OPkelassiswa');
+    Route::post('/tambahkelas', [App\Http\Controllers\OperatorController::class, 'addkelas'])->name('addkelas');
+    Route::post('/editkelas', [App\Http\Controllers\OperatorController::class, 'editkelas'])->name('editkelas');
+    Route::delete('/hapuskelas/{id}', [App\Http\Controllers\OperatorController::class, 'deletekelas'])->name('deletekelas');
+
 
     //SISWA
-    Route::post('/kelolakelas/import', [App\Http\Controllers\OperatorController::class, 'importsiswa'])->name('importsiswa');
-    Route::get('/kelolakelas/{id}/siswa', [App\Http\Controllers\OperatorController::class, 'siswa'])->name('kelassiswa');
-    Route::post('/kelolakelas/tambahsiswa', [App\Http\Controllers\OperatorController::class, 'tambahSiswa'])->name('tambahSiswa');
-    Route::post('/kelolakelas/editsiswa', [App\Http\Controllers\OperatorController::class, 'editSiswa'])->name('editSiswa');
-    Route::delete('/kelolakelas/hapussiswa{id}', [App\Http\Controllers\OperatorController::class, 'hapusSiswa'])->name('hapussiswa');
-    Route::post('/tambahkelas', [App\Http\Controllers\OperatorController::class, 'tambahkelas'])->name('tambahkelas');
-    Route::post('/editkelas', [App\Http\Controllers\OperatorController::class, 'editkelas'])->name('editkelas');
-    Route::delete('/hapuskelas/{id}', [App\Http\Controllers\OperatorController::class, 'hapuskelas'])->name('hapuskelas');
+    Route::get('/kelolasiswa', [App\Http\Controllers\OperatorSiswa::class, 'index'])->name('OPsiswa');
+    Route::get('/kelolasiswa/export', [App\Http\Controllers\OperatorSiswa::class, 'formatsiswa'])->name('formatsiswa');
+    Route::post('/kelolasiswa/import', [App\Http\Controllers\OperatorSiswa::class, 'importsiswa'])->name('importsiswa');
+    Route::post('/tambahsiswa', [App\Http\Controllers\OperatorSiswa::class, 'add'])->name('addSiswa');
+    Route::post('/editsiswa', [App\Http\Controllers\OperatorSiswa::class, 'edit'])->name('editSiswa');
+    Route::delete('/hapussiswa/{id}', [App\Http\Controllers\OperatorSiswa::class, 'delete'])->name('deletesiswa');
 
     //JURUSAN
-    Route::get('/kelolajurusan', [App\Http\Controllers\OperatorController::class, 'jurusan'])->name('jurusan');
-    Route::post('/tambahjurusan', [App\Http\Controllers\OperatorController::class, 'tambahjurusan'])->name('tambahjurusan');
+    Route::get('/kelolajurusan', [App\Http\Controllers\OperatorController::class, 'jurusan'])->name('OPjurusan');
+    Route::post('/tambahjurusan', [App\Http\Controllers\OperatorController::class, 'addjurusan'])->name('addjurusan');
     Route::post('/editjurusan', [App\Http\Controllers\OperatorController::class, 'editjurusan'])->name('editjurusan');
-    Route::delete('/hapusjurusan/{id}', [App\Http\Controllers\OperatorController::class, 'hapusjurusan'])->name('hapusjurusan');
+    Route::delete('/hapusjurusan/{id}', [App\Http\Controllers\OperatorController::class, 'deletejurusan'])->name('deletejurusan');
 });
 
 //KESISWAAN

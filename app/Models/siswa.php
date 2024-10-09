@@ -9,6 +9,8 @@ class siswa extends Model
 {
     use HasFactory;
 
+
+    public $timestamps = false;
     public $primaryKey  = 'nis';
     protected $fillable = [
         'nis',

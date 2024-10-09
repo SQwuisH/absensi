@@ -1,5 +1,5 @@
 {{-- edit --}}
-<form action="/editkelas" method="post" enctype="multipart/form-data">
+<form action="{{route('editkelas')}}" method="post" enctype="multipart/form-data">
     @csrf
     <input type="text" name="id" hidden value="{{ $w->id_kelas }}">
     <div class="modal fade" id="edit{{ $w->id_kelas }}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -65,7 +65,7 @@
 </form>
 
 {{-- Hapus --}}
-<form action="{{ route('hapuskelas', ['id' => $w->id_kelas]) }}" method="post">
+<form action="{{ route('deletekelas', ['id' => $w->id_kelas]) }}" method="post">
     @csrf
     @method('delete')
     <div class="modal fade" id="hapus{{ $w->id_kelas }}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -78,7 +78,7 @@
                 <div class="modal-body">Peringatan Data <i><b> @php
                     echo $w->tingkat;
                     echo ' ';
-                    echo $w->nama_jurusan;
+                    echo $w->id_jurusan;
                     echo ' ';
                     echo $w->nomor_kelas;
                 @endphp </b></i> Akan Dihapus Secara Permanen!

@@ -15,13 +15,21 @@ use DateTime;
 
 class walisiswaController extends Controller
 {
-    public function index()
+        public function index()
     {
         $walisiswa = wali_siswa::where('id_user', Auth::user()->id)->with('user')->first();
-        $first = siswa::with('user', 'kelas')->where('nik', $walisiswa->nik)->first();
-        $siswa = siswa::with('user', 'kelas')->where('nik', $walisiswa->nik)->get();
+
+        if($walisiswa->jenis_kelamin == "laki laki")
+        {
+            $first = siswa::with('user', 'kelas')->where('nik_ayah', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->first();
+            $siswa = siswa::with('user', 'kelas')->where('nik_ayah', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->get();
+        }
+        elseif($walisiswa->jenis_kelamin == "perempuan")
+        {
+            $first = siswa::with('user', 'kelas')->where('nik_ibu', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->first();
+            $siswa = siswa::with('user', 'kelas')->where('nik_ibu', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->get();
+        }
         $int = 0;
-        $siswa = $siswa->toArray();
         foreach ($siswa as $s) {
             $nama[] = strtoLower($s["user"]["name"]);
             $semua = absensi::where('nis', $s["nis"])->get();

@@ -74,7 +74,7 @@
                         </li>
 
                         <li class="menu-item ">
-                            <a href="/operator" class="menu-link">
+                            <a href="/" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-cog"></i>
                                 <div data-i18n="Basic">Koordinat & Waktu</div>
                             </a>
@@ -93,17 +93,22 @@
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
-                                    <a href="/kelolawalikelas" class="menu-link ">
+                                    <a href="{{route('OPsiswa')}}" class="menu-link">
+                                        <div data-i18n="Basic">Siswa</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{route('OPwalikelas')}}" class="menu-link ">
                                         <div data-i18n="Basic">Wali Kelas</div>
                                     </a>
                                 </li>
                                 <li class="menu-item ">
-                                    <a href="/kelolawalisiswa" class="menu-link">
+                                    <a href="{{route('OPwalisiswa')}}" class="menu-link">
                                         <div data-i18n="Basic">Wali Siswa</div>
                                     </a>
                                 </li>
                                 <li class="menu-item ">
-                                    <a href="/kelolakesiswaan" class="menu-link">
+                                    <a href="{{route('OPkesiswaan')}}" class="menu-link">
                                         <div data-i18n="Basic">Kesiswaan</div>
                                     </a>
                                 </li>
@@ -111,7 +116,7 @@
                         </li>
 
                         <li class="menu-item">
-                            <a href="/kelolakelas" class="menu-link">
+                            <a href="{{route('OPkelas')}}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                                 <div data-i18n="Basic">Kelas</div>
                             </a>
@@ -207,7 +212,7 @@
                                                     data-bs-dismiss="modal"aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/tambahjurusan" method="post">
+                                                <form action="{{route('addjurusan')}}" method="post">
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col mb-3">

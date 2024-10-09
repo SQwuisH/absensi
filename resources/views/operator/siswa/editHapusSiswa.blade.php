@@ -26,7 +26,8 @@
                 </div>
                 <div class="col mb-3">
                     <label for="jurusan" class="form-label">kelas</label>
-                    <select name="id_jurusan" id="jurusan" class="form-select">
+                    <select name="kelas" id="jurusan" class="form-select">
+                        <option selected hidden value={{$w->id_kelas}}>Pilih Kelas</option>
                         @foreach ($kelas as $k)
 
                         <option value= {{ $k->id_kelas}}> @php echo($k->tingkat); echo(' '); echo(strtoupper($k->id_jurusan)); echo(' '); echo($k->nomor_kelas); @endphp </option>

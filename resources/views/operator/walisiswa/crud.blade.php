@@ -1,5 +1,5 @@
 {{-- edit --}}
-<form action="/editwalisiswa" method="post" enctype="multipart/form-data">
+<form action="{{route('editwalisiswa')}}" method="post" enctype="multipart/form-data">
     @csrf
 <input type="text" name="id" hidden value="{{$w->id_user}}">
 <div class="modal fade" id="edit{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">
@@ -24,17 +24,11 @@
                     <label for="nameBasic" class="form-label">password</label>
                     <input name="password" type="text" id="nameBasic" class="form-control" placeholder="Default Password '12345678'">
                 </div>
+                <div class="col mb-3">
+                    <label for="nameBasic" class="form-label">NIK</label>
+                    <input name="nik" type="text" id="nameBasic" class="form-control" value="@php echo($w->nik); @endphp" required>
+                </div>
             </div>
-        <div class="row">
-            <div class="col mb-3">
-                <label for="nameBasic" class="form-label">NUPTK</label>
-                <input name="nuptk" type="text" id="nameBasic" class="form-control" value="@php echo($w->nuptk); @endphp" required>
-            </div>
-            <div class="col mb-3">
-                <label for="nameBasic" class="form-label">NIP</label>
-                <input name="nip" type="text" id="nameBasic" class="form-control" value="@php echo($w->nip); @endphp" required>
-            </div>
-        </div>
           <div class="row">
             <div class="col mb-3">
               <label for="emailBasic" class="form-label">Email</label>
@@ -60,7 +54,7 @@
 
 {{-- Hapus --}}
 
-<form action="{{ route('hapuswalisiswa', ['id' => $w->id_user]) }}" method="post">
+<form action="{{ route('deletewalisiswa', ['id' => $w->id_user]) }}" method="post">
 @csrf
 @method('delete')
     <div class="modal fade" id="hapus{{$w->id_user}}" tabindex="-1" style="display: none;" aria-hidden="true">

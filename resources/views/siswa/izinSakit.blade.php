@@ -61,13 +61,16 @@
 
             <div class="nav__menu mt-3" id="nav-menu">
                 <ul class="nav__list">
+
+                    {{-- Beranda --}}
                     <li class="nav__item">
                         <a href="{{ route('siswa') }}" class="nav__link " style="color: hsl(174, 63%, 40%)">
                             <i class='bx bx-home-alt nav__icon'></i>
-                            <span class="nav__name">Home</span>
+                            <span class="nav__name">Beranda</span>
                         </a>
                     </li>
 
+                    {{-- Laporan Absensi --}}
                     <li class="nav__item">
                         <a href="#" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
@@ -75,12 +78,14 @@
                         </a>
                     </li>
 
+                    {{-- Profil & Logout --}}
                     <li class="nav__item" style="color: #222b2a;">
                         <div class="btn-group" id="dropdown-icon-demo">
                             <a class="dropdown nav__link" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bx bx-user me-1 nav__icon"></i>
                                 <span class="nav__name"> Profil <i class="bx bx-chevron-down me-1"></i> </span>
                             </a>
+                            {{-- Profil --}}
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                     <a href="javascript:void(0);" class="dropdown-item d-flex align-items-center"><i
@@ -89,6 +94,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
+                                {{-- Logout --}}
                                 <li>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();document.getElementById('logout-form').submit();"
@@ -124,6 +130,7 @@
                 <input type="hidden" name="opt" value="{{ $opt }}">
                 <div class="row">
                     <div class="card">
+                        {{-- Title --}}
                         <div class="card-header">
                             <div class="card-title">
                                 <h4>
@@ -134,6 +141,7 @@
                             </div>
                         </div>
 
+                        {{-- Form --}}
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="foto" class="form-label">Pilih Foto</label>
@@ -144,6 +152,8 @@
                                 <textarea required class="form-control" id="exampleFormControlTextarea1" name="keterangan" rows="3"
                                     style="height: 75px;"></textarea>
                             </div>
+
+                            {{-- Button --}}
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary">Kirim</button>
                             </div>

@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @if ($a->status == 'hadir' || $a->status == 'terlambat')
+                @if ($a->status == 'hadir' || $a->status == 'terlambat' || $a->status == 'TAP')
                     <div class="row g-2 mb-2">
                         <div class="col mb-0">
                             <label for="masuk" class="form-label">Foto Masuk</label>
@@ -22,6 +22,8 @@
                                 @if ($a->foto_pulang)
                                     <img
                                         style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
+                                @elseif($a->status == 'TAP')
+                                    <p>Tidak Absen Pulang</p>
                                 @else
                                     <p>Belum Absen Pulang</p>
                                 @endif

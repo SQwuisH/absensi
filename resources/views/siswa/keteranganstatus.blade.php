@@ -1,8 +1,10 @@
+{{-- Warning --}}
 @if (
     $statusabsen == 'terlambat' ||
         $statusabsen == 'izin' ||
         $statusabsen == 'belum presen' ||
-        $statusabsen == 'belum pulang')
+        $statusabsen == 'belum pulang' ||
+        $statusabsen == 'belum waktu presen')
     <div class="col">
         <div class="card mb-4 border border-warning">
             <div class="card-header">
@@ -18,6 +20,7 @@
     </div>
 @endif
 
+{{-- Info --}}
 @if ($statusabsen == 'sakit')
     <div class="col">
         <div class="card mb-4 border border-info">
@@ -34,6 +37,7 @@
     </div>
 @endif
 
+{{-- Danger --}}
 @if ($statusabsen == 'alfa')
     <div class="col">
         <div class="card mb-4 border border-danger">
@@ -50,6 +54,7 @@
     </div>
 @endif
 
+{{-- Black --}}
 @if ($statusabsen == 'TAP')
     <div class="col">
         <div class="card mb-4 border border-dark">
@@ -66,18 +71,19 @@
     </div>
 @endif
 
-@if ($statusabsen == 'hadir' || $statusabsen == 'libur')
-<div class="col">
-    <div class="card mb-4 border border-absen">
-        <div class="card-header">
-            <h4 class="card-title">
-                Status
-            </h4>
-        </div>
-        <div class="card-body d-flex justify-content-center text-center">
-            <h2 class="bg-label-absen d-none d-lg-block">{{ $statusabsen }}</h2>
-            <h5 class="bg-label-absen d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
+{{-- Green --}}
+@if ($statusabsen == 'hadir' || $statusabsen == 'libur' || $statusabsen == "sudah pulang")
+    <div class="col">
+        <div class="card mb-4 border border-absen">
+            <div class="card-header">
+                <h4 class="card-title">
+                    Status
+                </h4>
+            </div>
+            <div class="card-body d-flex justify-content-center text-center">
+                <h2 class="bg-label-absen d-none d-lg-block">{{ $statusabsen }}</h2>
+                <h5 class="bg-label-absen d-block d-lg-none d-xl-none">{{ $statusabsen }}</h5>
+            </div>
         </div>
     </div>
-</div>
 @endif

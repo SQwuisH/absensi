@@ -74,7 +74,7 @@
                         </li>
 
                         <li class="menu-item ">
-                            <a href="/operator" class="menu-link">
+                            <a href="/" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-cog"></i>
                                 <div data-i18n="Basic">Koordinat & Waktu</div>
                             </a>
@@ -93,17 +93,22 @@
                             </a>
                             <ul class="menu-sub">
                                 <li class="menu-item">
-                                    <a href="/kelolawalikelas" class="menu-link ">
+                                    <a href="{{route('OPsiswa')}}" class="menu-link">
+                                        <div data-i18n="Basic">Siswa</div>
+                                    </a>
+                                </li>
+                                <li class="menu-item">
+                                    <a href="{{route('OPwalikelas')}}" class="menu-link ">
                                         <div data-i18n="Basic">Wali Kelas</div>
                                     </a>
                                 </li>
                                 <li class="menu-item ">
-                                    <a href="/kelolawalisiswa" class="menu-link">
+                                    <a href="{{route('OPwalisiswa')}}" class="menu-link">
                                         <div data-i18n="Basic">Wali Siswa</div>
                                     </a>
                                 </li>
                                 <li class="menu-item ">
-                                    <a href="/kelolakesiswaan" class="menu-link">
+                                    <a href="{{route('OPkesiswaan')}}" class="menu-link">
                                         <div data-i18n="Basic">Kesiswaan</div>
                                     </a>
                                 </li>
@@ -118,7 +123,7 @@
                         </li>
 
                         <li class="menu-item">
-                            <a href="/kelolajurusan" class="menu-link">
+                            <a href="{{route('OPjurusan')}}" class="menu-link">
                                 <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                                 <i class='book-bookmark'></i>
                                 <div data-i18n="laporan">Jurusan</div>
@@ -171,6 +176,18 @@
                     <div class="content-wrapper">
                         <!-- Content -->
                         <div class="container container-p-y">
+                            @if (Session::get('success'))
+                                <div class="alert alert-success alert-dismissible hide" role="alert">
+                                    {{ Session::get('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @elseif (Session::get('warning'))
+                                <div class="alert alert-warning alert-dismissible" role="alert">
+                                    {{ Session::get('warning') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+
                             <div class="card">
                                 <div class="card-header d-flex">
                                     <input class="form-control" list="datalistOptions" id="search"
@@ -194,7 +211,7 @@
                                                     data-bs-dismiss="modal"aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form action="/tambahkelas" method="post">
+                                                <form action="{{route('addkelas')}}" method="post">
                                                     @csrf
                                                     <div class="row">
                                                         <div class="col mb-3">
@@ -279,7 +296,7 @@
                                                         <td>Tanpa Wali Kelas</td>
                                                     @endif
                                                     <td class="text-center">
-                                                        <a href={{ route('kelassiswa', ['id' => $w->id_kelas]) }}
+                                                        <a href={{ route('OPkelassiswa', ['id' => $w->id_kelas]) }}
                                                             class="btn btn-outline-absen">
                                                             <span class="tf-icons bx bx-show p-o"></span> Lihat
                                                         </a>

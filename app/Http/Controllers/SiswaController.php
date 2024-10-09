@@ -27,13 +27,21 @@ class SiswaController extends Controller
         // CEK ABSENSI
         $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
         if ($cekabsen) {
-            if($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang)
+            if(date("H:i:s") < $waktu->mulai_absen)
+            {
+                $statusAbsen = "belum waktu presen";
+            }
+            elseif($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang)
             {
                 $statusAbsen = "belum presen";
             }
             elseif(($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang)
             {
                 $statusAbsen = "belum pulang";
+            }
+            elseif($cekabsen->foto_pulang)
+            {
+                $statusAbsen = "sudah pulang";
             }
             else
             {
@@ -57,21 +65,13 @@ class SiswaController extends Controller
         $jumlah = [
             // BULAN INI
             'ini' => $ini->count(),
-            'hadirIni' => $ini->where('status', "hadir")->count(),
-            'sakitIni' => $ini->where('status', "sakit")->count(),
-            'izinIni' => $ini->where('status', "izin")->count(),
-            'terlambatIni' => $ini->where('status', "terlambat")->count(),
-            'alfaIni' => $ini->where('status', "alfa")->count(),
-            'tapIni' => $ini->where('status', "TAP")->count(),
+            'hadirIni' => $ini->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+            'tidakHadirIni' => $ini->whereIn('status', ["sakit", "izin", "alfa"])->count(),
 
             // BULAN LALU
             'lalu' => $lalu->count(),
-            'hadirLalu' => $lalu->where('status', "hadir")->count(),
-            'sakitLalu' => $lalu->where('status', "sakit")->count(),
-            'izinLalu' => $lalu->where('status', "izin")->count(),
-            'terlambatLalu' => $lalu->where('status', "terlambat")->count(),
-            'alfaLalu' => $lalu->where('status', "alfa")->count(),
-            'tapLalu' => $lalu->where('status', "TAP")->count(),
+            'hadirLalu' => $lalu->whereIn('status', "hadir")->count(),
+            'tidakHadirLalu' => $lalu->whereIn('status', "sakit")->count(),
         ];
 
         $persentase = [
@@ -216,9 +216,8 @@ class SiswaController extends Controller
         if ($r->hasFile('foto_masuk')) {
             $siswa = siswa::where('id_user', auth::user()->id)->first();
             $date =  date("Y-m-d");
-            $nis = $siswa->nis;
+            $nis = "00$siswa->nis";
             $status = $r->opt;
-            $jam = date("H:i:s");
 
             $foto = $r->file('foto_masuk');
 
@@ -229,13 +228,14 @@ class SiswaController extends Controller
             $file = $folderPath . $fileName;
 
 
-            $simpan = absensi::insert([
-                'nis' => "00" . $siswa->nis,
+            $update = absensi::where('nis', $nis)->where('date', $date);
+
+            $simpan = $update->update([
+                'nis' => $nis,
                 'status' => $r->opt,
                 'foto_masuk' => $fileName,
-                'keterangan' => $r->keterangan . " : " . $jam,
-                'date' => $date,
-
+                'keterangan' => $r->keterangan,
+                'date' => $date
             ]);
 
             if ($simpan) {

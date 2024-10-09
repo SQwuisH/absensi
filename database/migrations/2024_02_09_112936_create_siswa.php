@@ -18,8 +18,15 @@ return new class extends Migration
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
 
-            $table->string('nik');
-            $table->foreign('nik')->references('nik')->on('wali_siswas');
+            $table->string('nik_ayah')->nullable();
+            $table->foreign('nik_ayah')->references('nik')->on('wali_siswas');
+
+            $table->string('nik_ibu')->nullable();
+            $table->foreign('nik_ibu')->references('nik')->on('wali_siswas');
+
+            $table->string('nik_wali')->nullable();
+            $table->foreign('nik_wali')->references('nik')->on('wali_siswas');
+
 
             $table->unsignedInteger('id_kelas')->nullable();
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onDelete('set null');
