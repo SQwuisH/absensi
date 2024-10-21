@@ -129,7 +129,7 @@
             @endif
 
             <h4 class="card-title mb-2">
-                <a href={{ route('walisiswa') }} class="btn rounded btn-outline-danger"><i
+                <a href={{ url()->previous() }} class="btn rounded btn-outline-danger"><i
                         class='bx bx-chevron-left'></i></a> Laporan Absensi
             </h4>
 
@@ -390,7 +390,7 @@
 
                                                 <div class="row">
                                                     <div class="col modal-footer">
-                                                        <button class="btn btn-primary" type="submit">Apply</button>
+                                                        <button class="btn btn-absen" type="submit">Apply</button>
                                                     </div>
                                                 </div>
                                             </form>

@@ -19,6 +19,7 @@ class JurusanSeeder extends Seeder
             ['id_jurusan' => 'AKL', 'nama_jurusan' => 'Akutansi Keuangan Lembaga'],
             ['id_jurusan' => 'BR', 'nama_jurusan' => 'Bisnis Ritel'],
             ['id_jurusan' => 'DKV', 'nama_jurusan' => 'Desain Komunikasi Visual'],
+            ['id_jurusan' => 'MM', 'nama_jurusan' => 'Multimedia'],
             ['id_jurusan' => 'MLOG', 'nama_jurusan' => 'Manajemen Logistik'],
             ['id_jurusan' => 'MPLB', 'nama_jurusan' => 'Manajemen Perkantoran dan Layanan Bisnis'],
             ['id_jurusan' => 'MP', 'nama_jurusan' => 'Manajemen Pemasaran'],

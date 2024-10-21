@@ -18,6 +18,9 @@ class siswa extends Model
         'id_kelas',
         'nama',
         'jenis_kelamin',
+        'nik_ayah',
+        'nik_ibu',
+        'nik_wali',
         'NISN',
     ];
 

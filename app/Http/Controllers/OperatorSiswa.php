@@ -131,11 +131,11 @@ class OperatorSiswa extends Controller
 
         if($cek)
         {
-            return redirect()->back()->with('success', 'Kelas Berhasil Diimpor');
+            return redirect()->back()->with('success', 'Siswa Berhasil Diimpor');
         }
         else
         {
-            return redirect()->back()->with('success', 'Kelas Gagal Diimpor');
+            return redirect()->back()->with('failed', 'Siswa Gagal Diimpor');
         }
     }
 

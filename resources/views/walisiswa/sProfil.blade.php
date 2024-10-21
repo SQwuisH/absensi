@@ -64,7 +64,7 @@
                     </li>
 
                     <li class="nav__item">
-                        <a href="{{ route('wLaporan', "00$siswa->nis") }}" class="nav__link">
+                        <a href="{{ route('wLaporan', "00$user->nis") }}" class="nav__link">
                             <i class='bx bx-book nav__icon'></i>
                             <span class="nav__name">Laporan Absensi</span>
                         </a>

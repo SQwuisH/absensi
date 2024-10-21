@@ -12,7 +12,7 @@ if ($user->nis != null) {
 
 @endphp
 <h4 class="card-title mb-2">
-    <a href="/" class="btn rounded btn-outline-danger"><i class='bx bx-chevron-left'></i></a>
+    <a href={{url()->previous()}} class="btn rounded btn-outline-danger"><i class='bx bx-chevron-left'></i></a>
     Profil
 </h4>
 <div class="row mb-2">

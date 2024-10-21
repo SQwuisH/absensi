@@ -1,3 +1,8 @@
+<script>
+    var dailyStatusCounts = @json($dailyStatusCounts);
+</script>
+
+
 <html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
     data-template="vertical-menu-template-free">
 
@@ -143,6 +148,14 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container container-p-y">
+                        {{-- chart --}}
+                        <div id="chart" class="px-2" style="min-height: 315px;">
+                            <div id="apexchartsiya5zp5s"
+                                class="apexcharts-canvas apexchartsiya5zp5s apexcharts-theme-light"
+                                style="width: 515px; height: 300px;">
+
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <div class="card">
@@ -183,12 +196,13 @@
                                                 Kehadiran Siswa : {{ $count['hadir'] + $count['terlambat'] }} /
                                                 {{ $jumlahsiswa }}
                                             </div>
+                                            {{-- Button --}}
                                             <div class="col d-flex justify-content-end">
-                                                {{-- Button --}}
+
                                                 <div>
                                                     <a class="btn btn-white border" data-bs-toggle="collapse"
-                                                        href="#collapse" role="button"
-                                                        aria-expanded="false" aria-controls="collapseExample">
+                                                        href="#collapse" role="button" aria-expanded="false"
+                                                        aria-controls="collapseExample">
                                                         <i class='bx bx-chevron-up'></i><span
                                                             class="d-none d-md-block">Detil</span>
                                                     </a>
@@ -203,7 +217,7 @@
                                                         <div class="card bg-absen text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Hadir:</h6>
-                                                                {{ $count['hadir'] }} Hari
+                                                                {{ $count['hadir'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
@@ -213,7 +227,7 @@
                                                         <div class="card bg-info text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">sakit:</h6>
-                                                                {{ $count['sakit'] }} Hari
+                                                                {{ $count['sakit'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
@@ -223,7 +237,7 @@
                                                         <div class="card bg-warning text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Izin:</h6>
-                                                                {{ $count['izin'] }} Hari
+                                                                {{ $count['izin'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
@@ -235,7 +249,7 @@
                                                         <div class="card bg-danger text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Alfa:</h6>
-                                                                {{ $count['alfa'] }} Hari
+                                                                {{ $count['alfa'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
@@ -246,7 +260,7 @@
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Terlambat:
                                                                 </h6>
-                                                                {{ $count['terlambat'] }} Hari
+                                                                {{ $count['terlambat'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
@@ -263,7 +277,7 @@
                                                                     </h6>
                                                                 </div>
 
-                                                                {{ $count['TAP'] }} Hari
+                                                                {{ $count['TAP'] }} Siswa
                                                             </div>
 
                                                         </div>
@@ -355,7 +369,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Hadir:</h6>
-                                                                                    {{ $hadir[$class] }} Hari
+                                                                                    {{ $hadir[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -366,7 +380,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         sakit:</h6>
-                                                                                    {{ $sakit[$class] }} Hari
+                                                                                    {{ $sakit[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -378,7 +392,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Izin:</h6>
-                                                                                    {{ $izin[$class] }} Hari
+                                                                                    {{ $izin[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -390,7 +404,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Alfa:</h6>
-                                                                                    {{ $alfa[$class] }} Hari
+                                                                                    {{ $alfa[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -403,7 +417,7 @@
                                                                                     <h6 class="card-title text-white">
                                                                                         Terlambat:
                                                                                     </h6>
-                                                                                    {{ $terlambat[$class] }} Hari
+                                                                                    {{ $terlambat[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -424,7 +438,7 @@
                                                                                         </h6>
                                                                                     </div>
 
-                                                                                    {{ $TAP[$class] }} Hari
+                                                                                    {{ $TAP[$class] }} Siswa
                                                                                 </div>
 
                                                                             </div>
@@ -493,17 +507,14 @@
     <script src={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}></script>
     <script src={{ asset('assets/t1/vendor/js/menu.js') }}></script>
 
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
-    <!-- Main JS -->
-    <script src={{ asset('assets/t1/js/main.js') }}></script>
-
-    <!-- Page JS -->
-
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script src={{ asset('assets/t1/vendor/libs/apex-charts/apexcharts.js') }}></script>
+
+    <script src={{ asset('assets/app.js') }}></script>
+
+    <script src={{ asset('assets/t1/js/main.js') }}></script>
 </body>
 
 </html>

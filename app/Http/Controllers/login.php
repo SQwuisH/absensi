@@ -30,7 +30,7 @@ class login extends Controller
             $user = User::find($siswa->id_user); // Pastikan ada relasi antara Siswa dan User
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
-                return redirect('/');
+                return redirect()->route('redirect');
             }
         }
         // Mencari pengguna di tabel User berdasarkan NIK
@@ -38,25 +38,18 @@ class login extends Controller
             $user = User::find($waliSiswa->id_user); // Pastikan ada relasi antara walisiswa dan User
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
-                return redirect('/');
+                return redirect()->route('redirect');
             }
         }
         // Mencari pengguna di tabel User berdasarkan NUPTK
-        elseif ($waliKelas = wali::where('nuptk', $request->identifier)->first()) {
-            $user = User::find($waliKelas->id_user); // Pastikan ada relasi antara walikelas dan User
+        elseif ($guru = wali::where('nuptk', $request->identifier)->first()) {
+            $user = User::find($guru->id_user); // Pastikan ada relasi antara walikelas dan User
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
-                return redirect('/');
+                return redirect()->route('redirect');
             }
         }
-        // Mencari pengguna di tabel User berdasarkan Email
-        elseif ($user = User::where('email', $request->identifier)->first()) {
-            if ($user && Hash::check($request->password, $user->password)) {
-                Auth::login($user);
-                return redirect('/');
-            }
-        }
-
+        
         return back()->withErrors([
             'identifier' => 'Data login tidak valid.',
         ]);

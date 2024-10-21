@@ -13,8 +13,7 @@ class formatWaliKelas implements FromArray, WithHeadingRow
     public function array(): array
     {
         return ([
-            ['nama', 'email', 'nuptk', 'nip', 'jenis_kelamin'],
-            ['', '', '', '', 'laki laki/perempuan']
+            ['nama', 'email', 'nuptk', 'nip', 'jenis_kelamin', 'tingkat', 'id_jurusan', 'nomor_kelas'],
         ]);
     }
 }

@@ -8,21 +8,41 @@ use App\Models\koordinat_sekolah;
 use App\Models\siswa;
 use App\Models\User;
 use App\Models\waktu_absen;
+use Carbon\Carbon;
+use Code16\CarbonBusiness\BusinessDays;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-use Yajra\DataTables\DataTables;
-
 class SiswaController extends Controller
 {
     public function index()
     {
+
         $siswa = siswa::with('user')->where('id_user', auth::user()->id)->first();
         $waktu = waktu_absen::first();
         $lokasi = koordinat_sekolah::first();
+
+        $startMonthNow = carbon::now()->startOfMonth();
+        $endMonthNow = carbon::now()->endOfMonth();
+
+        $startMonthBefore = new Carbon('first day of last month');
+        $endMonthBefore = new Carbon('last day of last month');
+
+        $dateNow = new BusinessDays();
+        $dateBefore = new BusinessDays();
+
+        $daysNow = $dateNow->daysBetween(
+            Carbon::createFromDate($startMonthNow),
+            Carbon::createFromDate( $endMonthNow)
+        );
+
+        $daysBefore = $dateBefore->daysBetween(
+            Carbon::createFromDate($startMonthBefore),
+            Carbon::createFromDate( $endMonthBefore)
+        );
 
         // CEK ABSENSI
         $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
@@ -75,8 +95,8 @@ class SiswaController extends Controller
         ];
 
         $persentase = [
-            'ini' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirIni'] / $jumlah['ini']) * 100, 1) : 0,
-            'lalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $jumlah['lalu']) * 100, 1) : 0
+            'ini' => $jumlah['hadirIni'] > 0 ? round(($jumlah['hadirIni'] / $daysNow) * 100, 1) : 0,
+            'lalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $daysBefore) * 100, 1) : 0
         ];
 
         return view('siswa.index', [
@@ -91,6 +111,7 @@ class SiswaController extends Controller
 
     public function absen()
     {
+
         $user = Auth::user();
 
         $date = date("Y-m-d");
@@ -112,9 +133,9 @@ class SiswaController extends Controller
         $date = date("Y-m-d");
         $jam = date("H:i:s");
 
+
         if (date('H:i:s') > $waktu->batas_masuk) {
             $status = 'terlambat';
-            $ket = '';
         }
 
         $lokasiSiswa = $request->lokasi;

@@ -22,7 +22,6 @@ class waliSiswaImpor implements ToCollection, WithHeadingRow
             {
                 $wali->update([
                     'name' => $c['nama'],
-                    'password' => password_hash("12345678", PASSWORD_DEFAULT),
                     'role' => 'wali'
                 ]);
 

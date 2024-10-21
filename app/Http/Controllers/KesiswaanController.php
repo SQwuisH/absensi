@@ -7,6 +7,9 @@ use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\wali;
 use App\Models\wali_siswa;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Code16\CarbonBusiness\BusinessDays;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,10 +20,11 @@ class KesiswaanController extends Controller
 {
     public function index(Request $r)
     {
+
         $user = Auth::user();
         $siswa = siswa::all();
         $jumlahsiswa = $siswa->count();
-        $kelas = kelas::all();
+        $kelas = kelas::paginate(5);
         $absensi = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->where('date', date('Y-m-d'))->get();
         $count = [
             'hadir' => $absensi->where('status', 'hadir')->count(),
@@ -55,7 +59,27 @@ class KesiswaanController extends Controller
             "terlambat" => $count['terlambat'] > 0 ? round(($count['terlambat'] / $jumlahsiswa) * 100) : 0
         ];
 
-        return view('kesiswaan.index', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absenkelas', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP'));
+        $start = carbon::now()->startOfWeek()->format('Y-m-d');
+        $S = carbon::now()->startOfWeek()->translatedFormat('D, Y-m-d');
+        $end = carbon::now()->endOfWeek()->subday(2)->format('Y-m-d');
+        $query = absensi::wherebetween('date', [$start, $end])->get();
+
+        // Apply date range filtering
+        $query = Absensi::whereBetween('date', [$start, $end])->get();
+
+        $filteredData = $query->groupby('date');
+
+        foreach ($filteredData as $fD) {
+            $dailyStatusCounts[] = [
+                'hadir' =>  $fD->wherein('status', ['hadir', 'terlambat'])->count(),
+                'tidakHadir' =>  $fD->wherein('status', ['sakit', 'izin', 'alfa', 'TAP'])->count(),
+                'date' => $S,   
+            ];
+            $s = carbon::createFromDate($start)->addday()->translatedFormat('D, Y-m-d');
+        }
+
+
+        return view('kesiswaan.index', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absenkelas', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'dailyStatusCounts'));
     }
 
     public function laporan(Request $r)
@@ -63,7 +87,7 @@ class KesiswaanController extends Controller
         $user = Auth::user();
         $siswa = siswa::all();
         $jumlahsiswa = $siswa->count();
-        $kelas = kelas::all();
+        $kelas = kelas::paginate(5);
         $s = absensi::orderBy('date', 'asc')->get('date')->first();
         $start = $s->date;
         $end = date("Y-m-d");
@@ -101,13 +125,13 @@ class KesiswaanController extends Controller
 
         $persen = $count['hadir'] > 0 ? round(($count['hadir'] / $absensi->count()) * 100) : 0;
 
-        return view('kesiswaan.laporan', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absen', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'start' , 'end'));
+        return view('kesiswaan.laporan', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absen', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'start', 'end'));
     }
 
     public function laporanKelas(Request $r, $kelas)
     {
         $user = Auth::user();
-        $k = kelas::where('id_kelas',$kelas)->first();
+        $k = kelas::where('id_kelas', $kelas)->first();
 
         // Date
         $a = absensi::orderBy('date', 'asc')->get('date')->first();
@@ -133,8 +157,7 @@ class KesiswaanController extends Controller
             'TAP' => $absensi->where('status', 'TAP')->count()
         ];
 
-        foreach ($siswa as $s)
-        {
+        foreach ($siswa as $s) {
             $nis = "00$s->nis";
             $absen[$nis] = $absensi->where('nis', $nis);
             $hadir[$nis] = $absen[$nis]->where('status', 'hadir')->count();
@@ -145,12 +168,11 @@ class KesiswaanController extends Controller
             $TAP[$nis] = $absen[$nis]->where('status', 'TAP')->count();
 
             $persentase[$nis] = $hadir[$nis] > 0 ? round(($hadir[$nis] / $absen[$nis]->count()) * 100) : 0;
-
         }
 
         $persen = $count['hadir'] > 0 ? round(($count['hadir'] / $absensi->count()) * 100) : 0;
 
-        return view('kesiswaan.laporanKelas', compact('user', 'absensi', 'count', 'persen', 'start', 'end', 'sw', 'k', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'persentase' , 'siswa', 'nis'));
+        return view('kesiswaan.laporanKelas', compact('user', 'absensi', 'count', 'persen', 'start', 'end', 'sw', 'k', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'persentase', 'siswa', 'nis'));
     }
 
     public function laporanSiswa(Request $r, $siswa)
@@ -169,7 +191,7 @@ class KesiswaanController extends Controller
             $end = DateTime::createFromFormat("m-d-Y", $date[1])->format("Y-m-d");
         }
 
-        $ab = absensi::whereBetween('date', [$start, $end])->where('nis', $siswa);
+        $ab = absensi::whereBetween('date', [$start, $end])->where('nis', $siswa)->orderBy('date', 'desc');
         $absensi = $ab->get();
         $paginated = $ab->paginate(5);
 
@@ -184,6 +206,6 @@ class KesiswaanController extends Controller
 
         $persen = $count['hadir'] > 0 ? round(($count['hadir'] / $absensi->count()) * 100) : 0;
 
-        return view('kesiswaan.laporanSiswa', compact('user', 'k', 'sis', 'absensi', 'paginated' , 'count', 'persen', 'start', 'end'));
+        return view('kesiswaan.laporanSiswa', compact('user', 'k', 'sis', 'absensi', 'paginated', 'count', 'persen', 'start', 'end'));
     }
 }

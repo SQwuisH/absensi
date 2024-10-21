@@ -12,8 +12,7 @@ class formatSiswa implements FromArray
     public function array(): array
     {
         return ([
-            ['tingkat', 'id_jurusan', 'nomor_kelas', 'nis', 'nisn', 'nik_ayah', 'nik_ibu', 'nik_wali', 'nama', 'email', 'jenis_kelamin'],
-            ['10/11/12', '', '', '', '', '', '', '', '', '', 'laki laki/perempuan']
+            ['nis', 'nisn', 'nik_ayah', 'nik_ibu', 'nik_wali', 'nama', 'email', 'jenis_kelamin', 'tingkat', 'id_jurusan', 'nomor_kelas'],
         ]);
     }
 }

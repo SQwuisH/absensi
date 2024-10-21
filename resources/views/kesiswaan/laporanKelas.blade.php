@@ -205,7 +205,7 @@
                                                 <div class="card bg-absen text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Hadir:</h6>
-                                                        {{ $count['hadir'] }} Hari
+                                                        {{ $count['hadir'] }} X
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,7 +215,7 @@
                                                 <div class="card bg-info text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">sakit:</h6>
-                                                        {{ $count['sakit'] }} Hari
+                                                        {{ $count['sakit'] }} X
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,7 +225,7 @@
                                                 <div class="card bg-warning text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Izin:</h6>
-                                                        {{ $count['izin'] }} Hari
+                                                        {{ $count['izin'] }} X
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +236,7 @@
                                                 <div class="card bg-danger text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Alfa:</h6>
-                                                        {{ $count['alfa'] }} Hari
+                                                        {{ $count['alfa'] }} X
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,7 +247,7 @@
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Terlambat:
                                                         </h6>
-                                                        {{ $count['terlambat'] }} Hari
+                                                        {{ $count['terlambat'] }} X
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +263,7 @@
                                                             </h6>
                                                         </div>
 
-                                                        {{ $count['TAP'] }} Hari
+                                                        {{ $count['TAP'] }} X
                                                     </div>
 
                                                 </div>
@@ -337,7 +337,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Hadir:</h6>
-                                                                                {{ $hadir['00' . $s->nis] }} Hari
+                                                                                {{ $hadir['00' . $s->nis] }} X
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -348,7 +348,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     sakit:</h6>
-                                                                                {{ $sakit['00' . $s->nis] }} Hari
+                                                                                {{ $sakit['00' . $s->nis] }} X
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -359,7 +359,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Izin:</h6>
-                                                                                {{ $izin['00' . $s->nis] }} Hari
+                                                                                {{ $izin['00' . $s->nis] }} X
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -370,7 +370,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Alfa:</h6>
-                                                                                {{ $alfa['00' . $s->nis] }} Hari
+                                                                                {{ $alfa['00' . $s->nis] }} X
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -382,7 +382,7 @@
                                                                                 <h6 class="card-title text-white">
                                                                                     Terlambat:
                                                                                 </h6>
-                                                                                {{ $terlambat['00' . $s->nis] }} Hari
+                                                                                {{ $terlambat['00' . $s->nis] }} X
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -398,7 +398,7 @@
                                                                                     </h6>
                                                                                 </div>
 
-                                                                                {{ $TAP['00' . $s->nis] }} Hari
+                                                                                {{ $TAP['00' . $s->nis] }} X
                                                                             </div>
 
                                                                         </div>

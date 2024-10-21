@@ -21,10 +21,15 @@ class siswaImpor implements ToCollection, WithHeadingRow
         // Define the valid ENUM values for 'tingkat' as strings
         $validTingkatValues = ['10', '11', '12']; // Adjust based on your actual ENUM values
 
+
         foreach ($collection as $c) {
             // Find the Jurusan by 'id_jurusan'
             $jurusan = Jurusan::where('id_jurusan', $c['id_jurusan'])->first();
             $jurusanId = $jurusan ? $jurusan->id_jurusan : null;
+
+            $nik_ayah = $c ? $c['nik_ayah'] : null;
+            $nik_ibu = $c ? $c['nik_ibu'] : null;
+            $nik_wali = $c ? $c['nik_wali'] : null;
 
             // Check if the Jurusan ID exists and is valid
             if ($jurusanId) {
@@ -47,12 +52,12 @@ class siswaImpor implements ToCollection, WithHeadingRow
                     if ($user) {
                         // Update existing User
                         $user->update([
-                            'nama' => $c['nama'],
+                            'name' => $c['name'],
                         ]);
                     } else {
                         // Create new User
                         $user = User::create([
-                            'nama' => $c['nama'],
+                            'name' => $c['name'],
                             'email' => $c['email'],
                             'password' => password_hash("12345678", PASSWORD_DEFAULT),
                             'role' => 'siswa'
@@ -60,23 +65,28 @@ class siswaImpor implements ToCollection, WithHeadingRow
                     }
 
                     // Check if the Siswa already exists
-                    $siswa = Siswa::where('nis', $c['nis'])->first();
+                    $siswa = Siswa::where('nis', "00" .  $c["nis"])->first();
                     if ($siswa) {
                         // Update existing Siswa
                         $siswa->update([
                             'id_user' => $user->id,
                             'id_kelas' => $kelas->id_kelas,
                             'jenis_kelamin' => $c['jenis_kelamin'],
-                            'nisn' => $c['nisn'],
+                            'nik_ayah' => $nik_ayah,
+                            'nik_ibu' => $nik_ibu,
+                            'nik_wali' => $nik_wali,
                         ]);
                     } else {
                         // Create new Siswa
-                        Siswa::create([
-                            'nis' => $c['nis'],
+                        Siswa::insert([
+                            'nis' => "00" . $c["nis"],
+                            'nisn' => "00" . $c["nisn"],
                             'id_user' => $user->id,
                             'id_kelas' => $kelas->id_kelas,
                             'jenis_kelamin' => $c['jenis_kelamin'],
-                            'nisn' => $c['nisn'],
+                            'nik_ayah' => $nik_ayah,
+                            'nik_ibu' => $nik_ibu,
+                            'nik_wali' => $nik_wali,
                         ]);
                     }
                     // User and Siswa creation/update logic remains the same...

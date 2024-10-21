@@ -19,6 +19,6 @@ class Roles
         {
             return $next($request);
         }
-        return redirect('/');
+        return redirect()->route('redirect');
     }
 }

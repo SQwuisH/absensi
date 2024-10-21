@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\absensi;
 use App\Models\siswa;
 use App\Models\User;
+use App\Models\waktu_absen;
 use App\Models\wali_siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,25 +16,40 @@ use DateTime;
 
 class walisiswaController extends Controller
 {
-        public function index()
+    public function index()
     {
         $walisiswa = wali_siswa::where('id_user', Auth::user()->id)->with('user')->first();
+        $waktu = waktu_absen::first();
 
-        if($walisiswa->jenis_kelamin == "laki laki")
-        {
-            $first = siswa::with('user', 'kelas')->where('nik_ayah', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->first();
-            $siswa = siswa::with('user', 'kelas')->where('nik_ayah', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->get();
+        if ($walisiswa->jenis_kelamin == "laki laki") {
+            $first = siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+            $siswa = siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->get();
+        } elseif ($walisiswa->jenis_kelamin == "perempuan") {
+            $first = siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+            $siswa = siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->get();
         }
-        elseif($walisiswa->jenis_kelamin == "perempuan")
-        {
-            $first = siswa::with('user', 'kelas')->where('nik_ibu', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->first();
-            $siswa = siswa::with('user', 'kelas')->where('nik_ibu', $walisiswa->nik)->orwhere('nik_wali', $walisiswa->nik)->get();
-        }
+
         $int = 0;
         foreach ($siswa as $s) {
             $nama[] = strtoLower($s["user"]["name"]);
             $semua = absensi::where('nis', $s["nis"])->get();
+            // CEK ABSENSI
             $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $s["nis"])->first();
+            if ($cekabsen) {
+                if (date("H:i:s") < $waktu->mulai_absen) {
+                    $statusAbsen[] = "belum waktu presen";
+                } elseif ($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang) {
+                    $statusAbsen[] = "belum presen";
+                } elseif (($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang) {
+                    $statusAbsen[] = "belum pulang";
+                } elseif ($cekabsen->foto_pulang) {
+                    $statusAbsen[] = "sudah pulang";
+                } else {
+                    $statusAbsen[] = $cekabsen->status;
+                }
+            } else {
+                $statusAbsen[] = "libur";
+            }
             $ini = absensi::whereYear('date', date('Y'))
                 ->where('nis', $s["nis"])
                 ->whereMonth('date', date('m'))->get();
@@ -41,35 +57,22 @@ class walisiswaController extends Controller
                 ->where('nis', $s["nis"])
                 ->whereMonth('date', date('m', strtotime('first day of previous month')))->get();
 
-            $statusAbsen[] = $cekabsen ? $cekabsen->status : 'belum presen';
 
             $jumlah[] = [
                 // SEMUA
                 'semua' => $semua->count(),
-                'hadirSemua' => $semua->where('status', "hadir")->count(),
-                'sakitSemua' => $semua->where('status', "sakit")->count(),
-                'izinSemua' => $semua->where('status', "izin")->count(),
-                'terlambatSemua' => $semua->where('status', "terlambat")->count(),
-                'alfaSemua' => $semua->where('status', "alfa")->count(),
-                'tapSemua' => $semua->where('status', "TAP")->count(),
+                'hadirSemua' => $semua->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+                'tidakHadirSemua' => $semua->whereIn('status', ["sakit", "izin", "alfa"])->count(),
 
                 // BULAN INI
                 'ini' => $ini->count(),
-                'hadirIni' => $ini->where('status', "hadir")->count(),
-                'sakitIni' => $ini->where('status', "sakit")->count(),
-                'izinIni' => $ini->where('status', "izin")->count(),
-                'terlambatIni' => $ini->where('status', "terlambat")->count(),
-                'alfaIni' => $ini->where('status', "alfa")->count(),
-                'tapIni' => $ini->where('status', "TAP")->count(),
+                'hadirIni' => $ini->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+                'tidakHadirIni' => $ini->whereIn('status', ["sakit", "izin", "alfa"])->count(),
 
                 // BULAN LALU
                 'lalu' => $lalu->count(),
-                'hadirLalu' => $lalu->where('status', "hadir")->count(),
-                'sakitLalu' => $lalu->where('status', "sakit")->count(),
-                'izinLalu' => $lalu->where('status', "izin")->count(),
-                'terlambatLalu' => $lalu->where('status', "terlambat")->count(),
-                'alfaLalu' => $lalu->where('status', "alfa")->count(),
-                'tapLalu' => $lalu->where('status', "TAP")->count(),
+                'hadirLalu' => $lalu->whereIn('status', "hadir")->count(),
+                'tidakHadirLalu' => $lalu->whereIn('status', "sakit")->count(),
             ];
             $persentase[] = [
                 'semua' => $jumlah["$int"]['hadirSemua'] > 0 ? round(($jumlah["$int"]['hadirSemua'] / $jumlah["$int"]['semua']) * 100, 1) : 0,
@@ -80,13 +83,18 @@ class walisiswaController extends Controller
             $int = $int + 1;
         }
 
+
         return view('walisiswa.index', compact('walisiswa', 'siswa', 'ini', 'lalu', 'jumlah', 'persentase', 'first', 'statusAbsen'));
     }
 
     public function profil()
     {
         $walisiswa = wali_siswa::where('id_user', Auth::user()->id)->with('user')->first();
-        $siswa = siswa::with('user', 'kelas')->where('nik', $walisiswa->nik)->first();
+        if ($walisiswa->jenis_kelamin == "laki laki") {
+            $siswa = siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+        } elseif ($walisiswa->jenis_kelamin == "perempuan") {
+            $siswa = siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+        }
 
         return view('walisiswa.profil', compact('walisiswa', 'siswa'));
     }
@@ -140,8 +148,13 @@ class walisiswaController extends Controller
     public function laporan(Request $request, $nis)
     {
         $walisiswa = wali_siswa::where('id_user', Auth::user()->id)->with('user')->first();
-        $allSiswa = siswa::with('user', 'kelas')->where('nik', $walisiswa->nik)->get();
-        $siswa = siswa::with('user', 'kelas')->where('nis', $nis)->first();
+        if ($walisiswa->jenis_kelamin == "laki laki") {
+            $siswa = siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+            $allSiswa = siswa::with('user', 'kelas')->where('nik_ayah', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->get();
+        } elseif ($walisiswa->jenis_kelamin == "perempuan") {
+            $siswa = siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->first();
+            $allSiswa = siswa::with('user', 'kelas')->where('nik_ibu', '=', $walisiswa->nik)->orwhere('nik_wali', '=', $walisiswa->nik)->get();
+        }
         $nis = $siswa->nis;
         $query = absensi::query()->orderBy('date', 'desc')->where('nis', '00' . $nis);
 
@@ -189,9 +202,8 @@ class walisiswaController extends Controller
     public function sProfil($nis)
     {
         $walisiswa = wali_siswa::where('id_user', Auth::user()->id)->with('user')->first();
-        $siswa = siswa::with('user', 'kelas')->where('nik', $walisiswa->nik)->first();
         $user = siswa::with('user', 'kelas')->where('nis', $nis)->first();
 
-        return view('walisiswa.sProfil', compact('user', 'siswa'));
+        return view('walisiswa.sProfil', compact('user'));
     }
 }

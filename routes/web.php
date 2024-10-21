@@ -25,12 +25,12 @@ Auth::routes();
 
 //login page
 Route::group(['middleware' => 'guest'], function () {
-    Route::get('/login', [App\Http\Controllers\login::class, 'index'])->name('login');
+    Route::get('/', [App\Http\Controllers\login::class, 'index'])->name('login');
     Route::post('/postlogin', [App\Http\Controllers\login::class, 'postlogin'])->name('postlogin');
 });
 
 // Routing middleware
-Route::get('/', function () {
+Route::get('/login', function () {
     if (auth()->check()) {
         $role = auth()->user()->role;
 
@@ -47,7 +47,7 @@ Route::get('/', function () {
         }
     }
     return route('login');
-});
+})->name('redirect');
 
 //OPERATOR
 Route::group(['middleware' => ['auth', 'roles:operator']], function () {
