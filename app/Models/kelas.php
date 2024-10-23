@@ -10,12 +10,12 @@ class kelas extends Model
     use HasFactory;
 
     public $primaryKey  = 'id_kelas';
-    
+
     public $timestamps = false;
     protected $fillable = [
         'id_kelas',
         'id_jurusan',
-        'nuptk',
+        'nip',
         'nomor_kelas',
         'tingkat',
     ];
@@ -27,11 +27,11 @@ class kelas extends Model
 
     public function wali()
     {
-        return $this->hasOne(wali::class, 'nuptk', 'nuptk');
+        return $this->hasOne(wali::class, 'nip', 'nip');
     }
 
     public function user()
     {
-        return $this->hasOneThrough(user::class, wali::class, 'nuptk', 'id', 'nuptk', 'id_user');
+        return $this->hasOneThrough(user::class, wali::class, 'nip', 'id', 'nip', 'id_user');
     }
 }

@@ -274,7 +274,7 @@
                                         <h5 class="mt-2 mb-2">
                                             Uraian Per Siswa
                                         </h5>
-                                        @foreach ($siswa as $s)
+                                        @foreach ($sw as $s)
                                             <div class="row mb-2">
                                                 <div class="card">
                                                     <div class="card-body">

@@ -42,14 +42,14 @@ class login extends Controller
             }
         }
         // Mencari pengguna di tabel User berdasarkan NUPTK
-        elseif ($guru = wali::where('nuptk', $request->identifier)->first()) {
-            $user = User::find($guru->id_user); // Pastikan ada relasi antara walikelas dan User
+        elseif ($guru = wali::where('nip', $request->identifier)->first()) {
+            $user = User::find($guru->id_user); // Pastikan ada relasi antara guru(kesiswaan/walikelas/operator) dan User
             if ($user && Hash::check($request->password, $user->password)) {
                 Auth::login($user);
                 return redirect()->route('redirect');
             }
         }
-        
+
         return back()->withErrors([
             'identifier' => 'Data login tidak valid.',
         ]);

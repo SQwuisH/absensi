@@ -20,16 +20,17 @@ class absenSeed extends Seeder
         $siswa = siswa::all();
         $photo = "default.png";
 
-        $dateRange = new CarbonPeriod('2024-07-03', '1 days', Carbon::now()->format('Y-m-d'));
+        $dateRange = new CarbonPeriod('2024-07-03', '1 days', Carbon::yesterday()->format('Y-m-d'));
 
         $titikKoordinat = '-6.890622076541303, 107.55806983605572';
         foreach ($siswa as $s) {
             foreach ($dateRange as $date) {
-                if ($date = Carbon::createFromDate($date)->isWeekday())
+                if (Carbon::createFromDate($date)->isWeekday())
                 {
 
-                    $random = rand(0, 11);
+                    $random = rand(0, 14);
                     $status = [
+                        "hadir",
                         "terlambat",
                         "hadir",
                         "sakit",
@@ -41,6 +42,8 @@ class absenSeed extends Seeder
                         "terlambat",
                         "hadir",
                         "TAP",
+                        "hadir",
+                        "terlambat",
                         "hadir",
                     ];
                     if ($status[$random] == "sakit" || $status[$random] == "izin" || $status[$random] == "TAP") {

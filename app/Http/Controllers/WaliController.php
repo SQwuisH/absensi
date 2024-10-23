@@ -18,7 +18,7 @@ class WaliController extends Controller
     public function index()
     {
         $user = wali::where('id_user', auth::user()->id)->with('kelas', 'user')->first();
-        $kelas = kelas::where('nuptk', $user->nuptk)->first();
+        $kelas = kelas::where('nip', $user->nip)->first();
 
         $siswa = siswa::where('id_kelas', $kelas->id_kelas)->get('nis');
         $jumlahsiswa = $siswa->count();
@@ -46,7 +46,7 @@ class WaliController extends Controller
     public function laporan(Request $r)
     {
         $user = wali::where('id_user', Auth::user()->id)->with('kelas')->first();
-        $k = kelas::where('nuptk', $user->nuptk)->first();
+        $k = kelas::where('nip', $user->nip)->first();
 
         // Date
         $a = absensi::orderBy('date', 'asc')->get('date')->first();
@@ -60,8 +60,9 @@ class WaliController extends Controller
 
         $ab = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'users.id', '=', 'siswas.id_user')->whereBetween('date', [$start, $end])->where('kelas.id_kelas', $k->id_kelas);
         $absensi = $ab->get();
-        $siswa = siswa::where('id_kelas', $k->id_kelas)->with('user')->get();
-        $paginated = $ab->paginate(5);
+        $ss = siswa::where('id_kelas', $k->id_kelas)->with('user');
+        $siswa = $ss->get();
+        $paginated = $ss->paginate(5);
 
         $count = [
             'hadir' => $absensi->where('status', 'hadir')->count(),

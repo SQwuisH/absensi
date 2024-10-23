@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\jurusan;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Kelas;
 
@@ -25,7 +24,7 @@ class KelasSeeder extends Seeder
             foreach ($jurusan as $j) {
                 if (in_array($j->id_jurusan, $j1)) {
                     foreach ($nomor_kelas as $no) {
-                        Kelas::insert([
+                        Kelas::create([
                             'id_jurusan' => $j->id_jurusan,
                             'nomor_kelas' => $no,
                             'tingkat' => $t1,
@@ -39,7 +38,7 @@ class KelasSeeder extends Seeder
             foreach ($jurusan as $j) {
                 if (in_array($j->id_jurusan, $j2)) {
                     foreach ($nomor_kelas as $no) {
-                        Kelas::insert([
+                        Kelas::create([
                             'id_jurusan' => $j->id_jurusan,
                             'nomor_kelas' => $no,
                             'tingkat' => $t2,

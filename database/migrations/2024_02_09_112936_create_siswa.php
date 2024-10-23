@@ -19,13 +19,13 @@ return new class extends Migration
             $table->foreign('id_user')->references('id')->on('users');
 
             $table->string('nik_ayah')->nullable();
-            $table->foreign('nik_ayah')->references('nik')->on('wali_siswas');
+            $table->foreign('nik_ayah')->references('nik')->on('wali_siswas')->onDelete('set null');
 
             $table->string('nik_ibu')->nullable();
-            $table->foreign('nik_ibu')->references('nik')->on('wali_siswas');
+            $table->foreign('nik_ibu')->references('nik')->on('wali_siswas')->onDelete('set null');
 
             $table->string('nik_wali')->nullable();
-            $table->foreign('nik_wali')->references('nik')->on('wali_siswas');
+            $table->foreign('nik_wali')->references('nik')->on('wali_siswas')->onDelete('set null');
 
 
             $table->unsignedInteger('id_kelas')->nullable();

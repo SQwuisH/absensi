@@ -47,6 +47,6 @@ class siswa extends Model
 
     public function walisiswa()
     {
-        return $this->belongsTo(wali_siswa::class, 'nik', 'nik');
+        return $this->belongsTo(wali_siswa::class, 'nik', ['nik_ayah', 'nik_ibu', 'nik_wali']);
     }
 }

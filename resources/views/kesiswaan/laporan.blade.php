@@ -431,6 +431,11 @@
                                                 </div>
                                             </div>
                                         @endforeach
+
+                                         {{-- PAGINATION --}}
+                                         <div class="d-flex justify-content-center">
+                                            {{ $kelas->links('pagination::bootstrap-4') }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

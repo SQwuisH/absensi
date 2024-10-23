@@ -24,12 +24,12 @@ class wali extends Model
 
     public function kelas()
     {
-        return $this->hasOne(kelas::class, 'nuptk', 'nuptk');
+        return $this->hasOne(kelas::class, 'nip', 'nip');
     }
 
     public function jurusan()
     {
-        return $this->hasOneThrough(jurusan::class, kelas::class, 'nuptk', 'id_jurusan', 'nuptk', 'id_jurusan');
+        return $this->hasOneThrough(jurusan::class, kelas::class, 'nip', 'id_jurusan', 'nip', 'id_jurusan');
     }
 }
 

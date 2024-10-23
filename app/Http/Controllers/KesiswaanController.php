@@ -73,7 +73,7 @@ class KesiswaanController extends Controller
             $dailyStatusCounts[] = [
                 'hadir' =>  $fD->wherein('status', ['hadir', 'terlambat'])->count(),
                 'tidakHadir' =>  $fD->wherein('status', ['sakit', 'izin', 'alfa', 'TAP'])->count(),
-                'date' => $S,   
+                'date' => $S,
             ];
             $s = carbon::createFromDate($start)->addday()->translatedFormat('D, Y-m-d');
         }
@@ -145,8 +145,9 @@ class KesiswaanController extends Controller
 
         $ab = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'users.id', '=', 'siswas.id_user')->whereBetween('date', [$start, $end])->where('kelas.id_kelas', $kelas);
         $absensi = $ab->get();
-        $siswa = siswa::where('id_kelas', $kelas)->with('user')->get();
-        $sw = $ab->paginate(5);
+        $ss = siswa::where('id_kelas', $kelas)->with('user');
+        $siswa = $ss->get();
+        $sw = $ss->paginate(5);
 
         $count = [
             'hadir' => $absensi->where('status', 'hadir')->count(),

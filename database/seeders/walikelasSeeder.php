@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\kelas;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\wali;
+use App\Models\User;
 
 class WaliKelasSeeder extends Seeder
 {
@@ -13,22 +15,39 @@ class WaliKelasSeeder extends Seeder
      */
     public function run(): void
     {
-        wali::insert([
-            'nuptk' => '1234567890123456',
-            'id_user' => 5,
-            'nip' => '198005052022011001',
-        ]);
+        $kelas =  kelas::all();
+        $jk = ['laki laki', 'perempuan'];
 
-        wali::insert([
-            'nuptk' => '2345678901234567',
-            'id_user' => 6,
-            'nip' => '198107062022021002',
-        ]);
+        foreach ($kelas as $k) {
+            if ($k->id_kelas != [9, 23, 37]) {
+                $k->where('id_kelas', $k->id_kelas)->update([
+                    'nip' => 198005052022011001
+                ]);
+            } else {
+                $random = rand(0, 1);
+                $nip = rand(100000000000, 999999999999);
+                $nuptk = rand(100000000000, 999999999999);
 
-        wali::insert([
-            'nuptk' => '3456789012345678',
-            'id_user' => 7,
-            'nip' => '198209072022031003',
-        ]);
+                $user = user::create([
+                    'name' => fake()->name(),
+                    'email' => 'wali' . strtoupper("$k->tingkat$k->id_jurusan$k->nomor_kelas") . '@gmail.com',
+                    'password' => password_hash("12345678", PASSWORD_DEFAULT),
+                    'role' => 'wali',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                wali::insert([
+                    'nip' => $nip,
+                    'id_user' => $user->id,
+                    'jenis_kelamin' => $jk[$random],
+                    'nuptk' => $nuptk,
+                ]);
+
+                kelas::where('id_kelas', $k->id_kelas)->update([
+                    'nip' => $nip
+                ]);
+            }
+        }
     }
 }
