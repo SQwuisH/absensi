@@ -76,6 +76,9 @@
                                 <span class="text-secondary">Kesiswaan</span>
                             </div>
                         </div>
+                        <div class="container row">
+                            <a href="{{ route('kesiswaanProfil') }}" class="btn btn-absen"> Lihat Profil </a>
+                        </div>
                     </li>
 
                     <li class="menu-header small text-uppercase">
@@ -91,7 +94,7 @@
 
 
                     <li class="menu-item">
-                        <a href="{{route('kesiswaanLaporan')}}" class="menu-link">
+                        <a href="{{ route('kesiswaanLaporan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
                             <div data-i18n="Basic">Laporan Presensi</div>
                         </a>
@@ -163,12 +166,12 @@
                                         {{-- Name --}}
                                         <a href="#">
                                             <h5 class="card-title">
-                                                {{$sis->user->name}} <i class="bx bx-search"></i>
+                                                {{ $sis->user->name }} <i class="bx bx-search"></i>
                                             </h5>
                                         </a>
 
                                         {{-- Date Range --}}
-                                        <form action="{{ route('kesiswaanLaporanSiswa', '00'.$sis->nis) }}">
+                                        <form action="{{ route('kesiswaanLaporanSiswa', '00' . $sis->nis) }}">
                                             <div class="row">
                                                 <div class="col-9">
                                                     <input type="text" name="daterange" class="form-control">
@@ -189,16 +192,58 @@
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <div class="progress" style="height: 30px">
-                                                    @if ($persen == 0)
-                                                        <div class="progress-bar bg-white w-100 text-dark"
-                                                            aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
-                                                        </div>
-                                                    @else
+                                                    {{-- HADIR --}}
+                                                    @if ($persen['hadir'] != 0)
                                                         <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen }}%"
-                                                            aria-valuenow="{{ $persen }}%"
+                                                            style="width: {{ $persen['hadir'] }}%"
+                                                            aria-valuenow="{{ $persen['hadir'] }}%"
                                                             aria-valuemax="100%">
-                                                            {{ $persen }}% Kehadiran</div>
+                                                            {{ $persen['hadir'] }}% Kehadiran</div>
+                                                    @endif
+
+                                                    {{-- SAKIT --}}
+                                                    @if ($persen['sakit'] != 0)
+                                                        <div class="progress-bar bg-info"
+                                                            style="width: {{ $persen['sakit'] }}%"
+                                                            aria-valuenow="{{ $persen['sakit'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['sakit'] }}% sakit</div>
+                                                    @endif
+
+                                                    {{-- IZIN --}}
+                                                    @if ($persen['izin'] != 0)
+                                                        <div class="progress-bar bg-warning"
+                                                            style="width: {{ $persen['izin'] }}%"
+                                                            aria-valuenow="{{ $persen['izin'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['izin'] }}% izin</div>
+                                                    @endif
+
+                                                    {{-- ALFA --}}
+                                                    @if ($persen['alfa'] != 0)
+                                                        <div class="progress-bar bg-danger"
+                                                            style="width: {{ $persen['alfa'] }}%"
+                                                            aria-valuenow="{{ $persen['alfa'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['alfa'] }}% alfa</div>
+                                                    @endif
+
+                                                    {{-- TERLAMBAT --}}
+                                                    @if ($persen['terlambat'] != 0)
+                                                        <div class="progress-bar bg-secondary"
+                                                            style="width: {{ $persen['terlambat'] }}%"
+                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['terlambat'] }}% terlambat</div>
+                                                    @endif
+
+                                                    {{-- TAP --}}
+                                                    @if ($persen['tap'] != 0)
+                                                        <div class="progress-bar bg-black"
+                                                            style="width: {{ $persen['tap'] }}%"
+                                                            aria-valuenow="{{ $persen['tap'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['tap'] }}% TAP</div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -212,7 +257,7 @@
                                                 <div class="card bg-absen text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Hadir:</h6>
-                                                        {{ $count['hadir'] }} X
+                                                        {{ $count['hadir'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,7 +267,7 @@
                                                 <div class="card bg-info text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">sakit:</h6>
-                                                        {{ $count['sakit'] }} X
+                                                        {{ $count['sakit'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -232,7 +277,7 @@
                                                 <div class="card bg-warning text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Izin:</h6>
-                                                        {{ $count['izin'] }} X
+                                                        {{ $count['izin'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -243,7 +288,7 @@
                                                 <div class="card bg-danger text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Alfa:</h6>
-                                                        {{ $count['alfa'] }} X
+                                                        {{ $count['alfa'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -254,7 +299,7 @@
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Terlambat:
                                                         </h6>
-                                                        {{ $count['terlambat'] }} X
+                                                        {{ $count['terlambat'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,7 +315,7 @@
                                                             </h6>
                                                         </div>
 
-                                                        {{ $count['TAP'] }} X
+                                                        {{ $count['tap'] }}
                                                     </div>
 
                                                 </div>
@@ -278,9 +323,101 @@
                                         </div>
 
                                         {{-- Class List --}}
-                                        <h5 class="mt-2 mb-2">
-                                            Tabel Kehadiran
-                                        </h5>
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <h5 class="mt-2 mb-2">
+                                                    Tabel Kehadiran
+                                                </h5>
+                                            </div>
+                                            <div class="col-2">
+                                                <button class="btn btn-outline-secondary" data-bs-toggle="offcanvas"
+                                                    data-bs-target="#offcanvasScroll" aria-controls="offcanvasScroll">
+                                                    <i class='bx bxs-filter-alt'></i>
+                                                    Filter
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                        {{-- MODAL FILTER CHECKBOX --}}
+                                        <div class="col-lg-4 col-md-6">
+                                            <div class="offcanvas offcanvas-bottom border border-black"
+                                                data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                                                id="offcanvasScroll" aria-labelledby="offcanvasScrollLabel">
+                                                <div class="offcanvas-header">
+                                                    <h5 id="offcanvasScrollLabel" class="offcanvas-title">Filter
+                                                        Status Kehadiran
+                                                    </h5>
+                                                    <button type="button" class="btn-close text-reset"
+                                                        data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                                                </div>
+                                                <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+                                                    <div class="position">
+                                                        <form action={{ route('kesiswaanLaporanSiswa', "00$sis->nis") }}>
+                                                            <div class="row mb-0">
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="hadir" id="hadir"
+                                                                        name="category[0]" checked>
+                                                                    <label class="form-check-label"
+                                                                        for="hadir">Hadir</label>
+                                                                </div>
+
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="sakit" id="sakit"
+                                                                        name="category[1]" checked>
+                                                                    <label for="sakit"
+                                                                        class="form-check-label">Sakit</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="izin" id="izin"
+                                                                        name="category[2]" checked>
+                                                                    <label class="form-check-label"
+                                                                        for="izin">Izin</label>
+                                                                </div>
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="alfa" id="alfa"
+                                                                        name="category[3]" checked>
+                                                                    <label for="alfa"
+                                                                        class="form-check-label">Alfa</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row mb-2">
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="terlambat"
+                                                                        id="terlambat" name="category[4]" checked>
+                                                                    <label for="terlambat"
+                                                                        class="form-check-label">Terlambat</label>
+                                                                </div>
+                                                                <div class="col form-check">
+                                                                    <input class="form-check-input filter-checkbox"
+                                                                        type="checkbox" value="TAP" id="tap"
+                                                                        name="category[5]" checked>
+                                                                    <label for="tap"
+                                                                        class="form-check-label">TAP</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col modal-footer">
+                                                                    <button class="btn btn-absen"
+                                                                        type="submit">Apply</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                         <table class="table">
                                             <thead>
@@ -289,56 +426,58 @@
                                                 <td class="text-center">Detil</td>
                                             </thead>
                                             @foreach ($paginated as $a)
-                                            <tr>
-                                                <td>{{$a->date}}</td>
-                                                <td>
-                                                    @switch($a->status)
-                                                    @case('hadir')
-                                                        <span class="badge bg-absen">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                <tr>
+                                                    <td>{{ $a->date }}</td>
+                                                    <td>
+                                                        @switch($a->status)
+                                                            @case('hadir')
+                                                                <span class="badge bg-absen">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('sakit')
-                                                        <span class="badge bg-info">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('sakit')
+                                                                <span class="badge bg-info">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('izin')
-                                                        <span class="badge bg-warning">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('izin')
+                                                                <span class="badge bg-warning">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('alfa')
-                                                        <span class="badge bg-danger">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('alfa')
+                                                                <span class="badge bg-danger">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('terlambat')
-                                                        <span class="badge bg-secondary">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
+                                                            @case('terlambat')
+                                                                <span class="badge bg-secondary">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
 
-                                                    @case('TAP')
-                                                        <span class="badge bg-black">
-                                                            {{ $a->status }}
-                                                        </span>
-                                                    @break
-                                                @endswitch
-                                                </td>
-                                                <td class="text-center">
-                                                    <button data-bs-toggle="modal" data-bs-target="#modal{{ $a->id_absensi }}" class="btn btn-absen">
-                                                        <i class="bx bx-show"></i><span class="d-none d-md-block">Lihat</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                            @case('TAP')
+                                                                <span class="badge bg-black">
+                                                                    {{ $a->status }}
+                                                                </span>
+                                                            @break
+                                                        @endswitch
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal{{ $a->id_absensi }}"
+                                                            class="btn btn-absen">
+                                                            <i class="bx bx-show"></i><span
+                                                                class="d-none d-md-block">Lihat</span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
 
-                                            @include('siswa.modalLaporan')
-
+                                                @include('siswa.modalLaporan')
                                             @endforeach
                                         </table>
 

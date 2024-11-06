@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('nis');
             $table->foreign('nis')->references('nis')->on('siswas');
 
-            $table->enum('status', ['sakit', 'hadir', 'izin', 'alfa', 'terlambat', 'TAP'])->default('alfa');
+            $table->enum('status', ['sakit', 'hadir', 'izin', 'alfa'])->default('alfa');
             $table->string('foto_masuk')->nullable();
             $table->string('foto_pulang')->nullable();
             $table->string('keterangan')->nullable();
+            $table->time('menit_keterlambatan')->nullable();
+            $table->time('menit_TAP')->nullable();
             $table->date('date')->nullable();
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();

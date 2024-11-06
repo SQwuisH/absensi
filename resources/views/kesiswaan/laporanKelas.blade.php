@@ -76,6 +76,9 @@
                                 <span class="text-secondary">Kesiswaan</span>
                             </div>
                         </div>
+                        <div class="container row">
+                            <a href="{{ route('kesiswaanProfil') }}" class="btn btn-absen"> Lihat Profil </a>
+                        </div>
                     </li>
 
                     <li class="menu-header small text-uppercase">
@@ -91,7 +94,7 @@
 
 
                     <li class="menu-item">
-                        <a href="{{route('kesiswaanLaporan')}}" class="menu-link">
+                        <a href="{{ route('kesiswaanLaporan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
                             <div data-i18n="Basic">Laporan Presensi</div>
                         </a>
@@ -182,16 +185,58 @@
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <div class="progress" style="height: 30px">
-                                                    @if ($persen == 0)
-                                                        <div class="progress-bar bg-white w-100 text-dark"
-                                                            aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
-                                                        </div>
-                                                    @else
+                                                    {{-- HADIR --}}
+                                                    @if ($persen['hadir'] != 0)
                                                         <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen }}%"
-                                                            aria-valuenow="{{ $persen }}%"
+                                                            style="width: {{ $persen['hadir'] }}%"
+                                                            aria-valuenow="{{ $persen['hadir'] }}%"
                                                             aria-valuemax="100%">
-                                                            {{ $persen }}% Kehadiran</div>
+                                                            {{ $persen['hadir'] }}% Kehadiran</div>
+                                                    @endif
+
+                                                    {{-- SAKIT --}}
+                                                    @if ($persen['sakit'] != 0)
+                                                        <div class="progress-bar bg-info"
+                                                            style="width: {{ $persen['sakit'] }}%"
+                                                            aria-valuenow="{{ $persen['sakit'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['sakit'] }}% sakit</div>
+                                                    @endif
+
+                                                    {{-- IZIN --}}
+                                                    @if ($persen['izin'] != 0)
+                                                        <div class="progress-bar bg-warning"
+                                                            style="width: {{ $persen['izin'] }}%"
+                                                            aria-valuenow="{{ $persen['izin'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['izin'] }}% izin</div>
+                                                    @endif
+
+                                                    {{-- ALFA --}}
+                                                    @if ($persen['alfa'] != 0)
+                                                        <div class="progress-bar bg-danger"
+                                                            style="width: {{ $persen['alfa'] }}%"
+                                                            aria-valuenow="{{ $persen['alfa'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['alfa'] }}% alfa</div>
+                                                    @endif
+
+                                                    {{-- TERLAMBAT --}}
+                                                    @if ($persen['terlambat'] != 0)
+                                                        <div class="progress-bar bg-secondary"
+                                                            style="width: {{ $persen['terlambat'] }}%"
+                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['terlambat'] }}% terlambat</div>
+                                                    @endif
+
+                                                    {{-- TAP --}}
+                                                    @if ($persen['tap'] != 0)
+                                                        <div class="progress-bar bg-black"
+                                                            style="width: {{ $persen['tap'] }}%"
+                                                            aria-valuenow="{{ $persen['tap'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['tap'] }}% TAP</div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -205,7 +250,7 @@
                                                 <div class="card bg-absen text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Hadir:</h6>
-                                                        {{ $count['hadir'] }} X
+                                                        {{ $count['hadir'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,7 +260,7 @@
                                                 <div class="card bg-info text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">sakit:</h6>
-                                                        {{ $count['sakit'] }} X
+                                                        {{ $count['sakit'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -225,7 +270,7 @@
                                                 <div class="card bg-warning text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Izin:</h6>
-                                                        {{ $count['izin'] }} X
+                                                        {{ $count['izin'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,7 +281,7 @@
                                                 <div class="card bg-danger text-white mb-3">
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Alfa:</h6>
-                                                        {{ $count['alfa'] }} X
+                                                        {{ $count['alfa'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,7 +292,7 @@
                                                     <div class="card-header">
                                                         <h6 class="card-title text-white">Terlambat:
                                                         </h6>
-                                                        {{ $count['terlambat'] }} X
+                                                        {{ $count['terlambat'] }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,7 +308,7 @@
                                                             </h6>
                                                         </div>
 
-                                                        {{ $count['TAP'] }} X
+                                                        {{ $count['tap'] }}
                                                     </div>
 
                                                 </div>
@@ -271,9 +316,25 @@
                                         </div>
 
                                         {{-- Class List --}}
-                                        <h5 class="mt-2 mb-2">
-                                            Uraian Per Siswa
-                                        </h5>
+                                        <div class="row">
+                                            <h5 class="col mt-2 mb-2">
+                                                Uraian Per Siswa
+                                            </h5>
+                                            <form class="col"
+                                                action="{{ route('kesiswaanLaporanKelas', $kelas) }}" method="GET">
+                                                <div class="justify-end">
+                                                    <div class="nav-item d-flex align-items-center border rounded">
+                                                        <input type="text" name="search"
+                                                            class="form-control border-0 shadow-none ps-1 ps-sm-2"
+                                                            placeholder="cari NIS atau Nama Siswa..."
+                                                            value="{{request('search')}}">
+                                                        <i class="bx bx-search fs-4 lh-0"> </i>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+
                                         @foreach ($sw as $s)
                                             <div class="row mb-2">
                                                 <div class="card">
@@ -285,6 +346,7 @@
                                                                 <h5 class="card-title">
                                                                     {{ $s->user->name }}
                                                                 </h5>
+                                                                <p>NIS : 00{{ $s->nis }}</p>
                                                             </div>
                                                             <div class="col d-flex justify-content-end">
                                                                 <a href="{{ route('kesiswaanLaporanSiswa', '00' . $s->nis) }}"
@@ -300,15 +362,64 @@
                                                             {{-- Progress Bar --}}
                                                             <div class="col">
                                                                 <div class="progress" style="height: 30px">
-                                                                    @if ($persentase["00$s->nis"] == 0)
-                                                                        <div
-                                                                            class="progress-bar bg-white w-100 text-dark">
-                                                                            {{ $persentase["00$s->nis"] }}% Kehadiran
-                                                                        </div>
-                                                                    @else
+                                                                    @if ($persentase["00$s->nis"]['hadir'] != 0)
                                                                         <div class="progress-bar bg-absen }}"
-                                                                            style="width: {{ $persentase['00' . $s->nis] }}%">
-                                                                            {{ $persentase["00$s->nis"] }}% Kehadiran
+                                                                            style="width: {{ $persentase['00' . $s->nis]['hadir'] }}%">
+                                                                            {{ $persentase["00$s->nis"]['hadir'] }}%
+                                                                            Kehadiran
+                                                                        </div>
+                                                                    @endif
+
+                                                                    {{-- SAKIT --}}
+                                                                    @if ($persentase["00$s->nis"]['sakit'] != 0)
+                                                                        <div class="progress-bar bg-info"
+                                                                            style="width: {{ $persentase["00$s->nis"]['sakit'] }}%"
+                                                                            aria-valuenow="{{ $persentase["00$s->nis"]['sakit'] }}%"
+                                                                            aria-valuemax="100%">
+                                                                            {{ $persentase["00$s->nis"]['sakit'] }}%
+                                                                            sakit
+                                                                        </div>
+                                                                    @endif
+
+                                                                    {{-- IZIN --}}
+                                                                    @if ($persentase["00$s->nis"]['izin'] != 0)
+                                                                        <div class="progress-bar bg-warning"
+                                                                            style="width: {{ $persentase["00$s->nis"]['izin'] }}%"
+                                                                            aria-valuenow="{{ $persentase["00$s->nis"]['izin'] }}%"
+                                                                            aria-valuemax="100%">
+                                                                            {{ $persentase["00$s->nis"]['izin'] }}%
+                                                                            izin
+                                                                        </div>
+                                                                    @endif
+
+                                                                    {{-- ALFA --}}
+                                                                    @if ($persentase["00$s->nis"]['alfa'] != 0)
+                                                                        <div class="progress-bar bg-danger"
+                                                                            style="width: {{ $persentase["00$s->nis"]['alfa'] }}%"
+                                                                            aria-valuenow="{{ $persentase["00$s->nis"]['alfa'] }}%"
+                                                                            aria-valuemax="100%">
+                                                                            {{ $persentase["00$s->nis"]['alfa'] }}%
+                                                                            alfa
+                                                                        </div>
+                                                                    @endif
+
+                                                                    {{-- TERLAMBAT --}}
+                                                                    @if ($persentase["00$s->nis"]['terlambat'] != 0)
+                                                                        <div class="progress-bar bg-secondary"
+                                                                            style="width: {{ $persentase["00$s->nis"]['terlambat'] }}%"
+                                                                            aria-valuenow="{{ $persentase["00$s->nis"]['terlambat'] }}%"
+                                                                            aria-valuemax="100%">
+                                                                            {{ $persentase["00$s->nis"]['terlambat'] }}%
+                                                                            terlambat</div>
+                                                                    @endif
+
+                                                                    {{-- TAP --}}
+                                                                    @if ($persentase["00$s->nis"]['tap'] != 0)
+                                                                        <div class="progress-bar bg-black"
+                                                                            style="width: {{ $persentase["00$s->nis"]['tap'] }}%"
+                                                                            aria-valuenow="{{ $persentase["00$s->nis"]['tap'] }}%"
+                                                                            aria-valuemax="100%">
+                                                                            {{ $persentase["00$s->nis"]['tap'] }}% TAP
                                                                         </div>
                                                                     @endif
                                                                 </div>
@@ -337,7 +448,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Hadir:</h6>
-                                                                                {{ $hadir['00' . $s->nis] }} X
+                                                                                {{ $hadir['00' . $s->nis] }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -348,7 +459,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     sakit:</h6>
-                                                                                {{ $sakit['00' . $s->nis] }} X
+                                                                                {{ $sakit['00' . $s->nis] }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -359,7 +470,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Izin:</h6>
-                                                                                {{ $izin['00' . $s->nis] }} X
+                                                                                {{ $izin['00' . $s->nis] }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -370,7 +481,7 @@
                                                                             <div class="card-header">
                                                                                 <h6 class="card-title text-white">
                                                                                     Alfa:</h6>
-                                                                                {{ $alfa['00' . $s->nis] }} X
+                                                                                {{ $alfa['00' . $s->nis] }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -382,7 +493,7 @@
                                                                                 <h6 class="card-title text-white">
                                                                                     Terlambat:
                                                                                 </h6>
-                                                                                {{ $terlambat['00' . $s->nis] }} X
+                                                                                {{ $terlambat['00' . $s->nis] }}
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -398,7 +509,7 @@
                                                                                     </h6>
                                                                                 </div>
 
-                                                                                {{ $TAP['00' . $s->nis] }} X
+                                                                                {{ $TAP['00' . $s->nis] }}
                                                                             </div>
 
                                                                         </div>

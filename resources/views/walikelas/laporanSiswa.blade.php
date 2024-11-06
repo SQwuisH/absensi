@@ -77,7 +77,7 @@
                             </div>
                         </div>
                         <div class="container row">
-                            <button class="btn btn-absen"> Lihat Profil </button>
+                            <a href="{{route('waliProfil')}}" class="btn btn-absen"> Lihat Profil </a>
                         </div>
                     </li>
 
@@ -192,16 +192,58 @@
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <div class="progress" style="height: 30px">
-                                                    @if ($persen == 0)
-                                                        <div class="progress-bar bg-white w-100 text-dark"
-                                                            aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
-                                                        </div>
-                                                    @else
+                                                    {{-- HADIR --}}
+                                                    @if ($persen['hadir'] != 0)
                                                         <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen }}%"
-                                                            aria-valuenow="{{ $persen }}%"
+                                                            style="width: {{ $persen['hadir'] }}%"
+                                                            aria-valuenow="{{ $persen['hadir'] }}%"
                                                             aria-valuemax="100%">
-                                                            {{ $persen }}% Kehadiran</div>
+                                                            {{ $persen['hadir'] }}% Kehadiran</div>
+                                                    @endif
+
+                                                    {{-- SAKIT --}}
+                                                    @if ($persen['sakit'] != 0)
+                                                        <div class="progress-bar bg-info"
+                                                            style="width: {{ $persen['sakit'] }}%"
+                                                            aria-valuenow="{{ $persen['sakit'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['sakit'] }}% sakit</div>
+                                                    @endif
+
+                                                    {{-- IZIN --}}
+                                                    @if ($persen['izin'] != 0)
+                                                        <div class="progress-bar bg-warning"
+                                                            style="width: {{ $persen['izin'] }}%"
+                                                            aria-valuenow="{{ $persen['izin'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['izin'] }}% izin</div>
+                                                    @endif
+
+                                                    {{-- ALFA --}}
+                                                    @if ($persen['alfa'] != 0)
+                                                        <div class="progress-bar bg-danger"
+                                                            style="width: {{ $persen['alfa'] }}%"
+                                                            aria-valuenow="{{ $persen['alfa'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['alfa'] }}% alfa</div>
+                                                    @endif
+
+                                                    {{-- TERLAMBAT --}}
+                                                    @if ($persen['terlambat'] != 0)
+                                                        <div class="progress-bar bg-secondary"
+                                                            style="width: {{ $persen['terlambat'] }}%"
+                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['terlambat'] }}% terlambat</div>
+                                                    @endif
+
+                                                    {{-- TAP --}}
+                                                    @if ($persen['tap'] != 0)
+                                                        <div class="progress-bar bg-black"
+                                                            style="width: {{ $persen['tap'] }}%"
+                                                            aria-valuenow="{{ $persen['tap'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['tap'] }}% TAP</div>
                                                     @endif
                                                 </div>
                                             </div>
@@ -273,7 +315,7 @@
                                                             </h6>
                                                         </div>
 
-                                                        {{ $count['TAP'] }} Hari
+                                                        {{ $count['tap'] }} Hari
                                                     </div>
 
                                                 </div>

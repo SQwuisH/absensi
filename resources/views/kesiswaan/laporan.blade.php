@@ -76,6 +76,9 @@
                                 <span class="text-secondary">Kesiswaan</span>
                             </div>
                         </div>
+                        <div class="container row">
+                            <a href="{{ route('kesiswaanProfil') }}" class="btn btn-absen"> Lihat Profil </a>
+                        </div>
                     </li>
 
                     <li class="menu-header small text-uppercase">
@@ -176,17 +179,61 @@
                                         <div class="row mb-3">
                                             <div class="col-10">
                                                 <div class="progress" style="height: 30px">
-                                                    @if ($persen == 0)
-                                                        <div class="progress-bar bg-white w-100 text-dark"
-                                                            aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
-                                                        </div>
-                                                    @else
+
+                                                    {{-- HADIR --}}
+                                                    @if ($persen['hadir'] != 0)
                                                         <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen }}%"
-                                                            aria-valuenow="{{ $persen }}%"
+                                                            style="width: {{ $persen['hadir'] }}%"
+                                                            aria-valuenow="{{ $persen['hadir'] }}%"
                                                             aria-valuemax="100%">
-                                                            {{ $persen }}% Kehadiran</div>
+                                                            {{ $persen['hadir'] }}% Kehadiran</div>
                                                     @endif
+
+                                                    {{-- SAKIT --}}
+                                                    @if ($persen['sakit'] != 0)
+                                                        <div class="progress-bar bg-info"
+                                                            style="width: {{ $persen['sakit'] }}%"
+                                                            aria-valuenow="{{ $persen['sakit'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['sakit'] }}% sakit</div>
+                                                    @endif
+
+                                                    {{-- IZIN --}}
+                                                    @if ($persen['izin'] != 0)
+                                                        <div class="progress-bar bg-warning"
+                                                            style="width: {{ $persen['izin'] }}%"
+                                                            aria-valuenow="{{ $persen['izin'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['izin'] }}% izin</div>
+                                                    @endif
+
+                                                    {{-- ALFA --}}
+                                                    @if ($persen['alfa'] != 0)
+                                                        <div class="progress-bar bg-danger"
+                                                            style="width: {{ $persen['alfa'] }}%"
+                                                            aria-valuenow="{{ $persen['alfa'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['alfa'] }}% alfa</div>
+                                                    @endif
+
+                                                    {{-- TERLAMBAT --}}
+                                                    @if ($persen['terlambat'] != 0)
+                                                        <div class="progress-bar bg-secondary"
+                                                            style="width: {{ $persen['terlambat'] }}%"
+                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['terlambat'] }}% terlambat</div>
+                                                    @endif
+
+                                                    {{-- TAP --}}
+                                                    @if ($persen['tap'] != 0)
+                                                        <div class="progress-bar bg-black"
+                                                            style="width: {{ $persen['tap'] }}%"
+                                                            aria-valuenow="{{ $persen['tap'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['tap'] }}% TAP</div>
+                                                    @endif
+
                                                 </div>
                                             </div>
                                             {{-- Collapse Button --}}
@@ -214,7 +261,7 @@
                                                         <div class="card bg-absen text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Hadir:</h6>
-                                                                {{ $count['hadir'] }} X
+                                                                {{ $count['hadir'] }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -224,7 +271,7 @@
                                                         <div class="card bg-info text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">sakit:</h6>
-                                                                {{ $count['sakit'] }} X
+                                                                {{ $count['sakit'] }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -234,7 +281,7 @@
                                                         <div class="card bg-warning text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Izin:</h6>
-                                                                {{ $count['izin'] }} X
+                                                                {{ $count['izin'] }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -245,7 +292,7 @@
                                                         <div class="card bg-danger text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Alfa:</h6>
-                                                                {{ $count['alfa'] }} X
+                                                                {{ $count['alfa'] }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -256,7 +303,7 @@
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Terlambat:
                                                                 </h6>
-                                                                {{ $count['terlambat'] }} X
+                                                                {{ $count['terlambat'] }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -270,7 +317,7 @@
                                                                     </h6>
                                                                 </div>
 
-                                                                {{ $count['TAP'] }} X
+                                                                {{ $count['tap'] }}
                                                             </div>
 
                                                         </div>
@@ -285,6 +332,38 @@
                                         <h5 class="mt-2 mb-2">
                                             Uraian Per Kelas
                                         </h5>
+
+                                        <form action="{{ route('kesiswaanLaporan') }}" method="GET">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <label for="ting">Filter Tingkat :</label>
+                                                    <select name="ting" id="ting" class="form-control"
+                                                        onchange="this.form.submit()">
+                                                        @if (request('ting'))
+                                                            <option value="{{ request('ting') }}">
+                                                                {{ request('ting') }}</option>
+                                                        @endif
+                                                        <option value="">Pilih Tingkat</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="jur">Filter Jurusan :</label>
+                                                    <select name="jur" id="jur" class="form-control"
+                                                        onchange="this.form.submit()">
+                                                        <option value="">Pilih Jurusan</option>
+                                                        @foreach ($jurusan as $j)
+                                                            <option value="{{ $j->id_jurusan }}"
+                                                                {{ request('jur') == $j->id_jurusan ? 'selected' : '' }}>
+                                                                {{ $j->id_jurusan }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                         @foreach ($kelas as $k)
                                             @php
                                                 $class = $k->tingkat . $k->id_jurusan . $k->nomor_kelas;
@@ -316,15 +395,57 @@
                                                                 {{-- Progress Bar --}}
                                                                 <div class="col">
                                                                     <div class="progress" style="height: 30px">
-                                                                        @if ($persentase[$class] == 0)
-                                                                            <div
-                                                                                class="progress-bar bg-white w-100 text-dark">
-                                                                                {{ $persentase[$class] }}% Kehadiran
-                                                                            </div>
-                                                                        @else
+                                                                        {{-- HADIR --}}
+                                                                        @if ($persentase[$class]['hadir'] != 0)
                                                                             <div class="progress-bar bg-absen }}"
-                                                                                style="width: {{ $persentase[$class] }}%">
-                                                                                {{ $persentase[$class] }}% Kehadiran
+                                                                                style="width: {{ $persentase[$class]['hadir'] }}%">
+                                                                                {{ $persentase[$class]['hadir'] }}%
+                                                                                Kehadiran
+                                                                            </div>
+                                                                        @endif
+
+                                                                        {{-- SAKIT --}}
+                                                                        @if ($persentase[$class]['sakit'] != 0)
+                                                                            <div class="progress-bar bg-info }}"
+                                                                                style="width: {{ $persentase[$class]['sakit'] }}%">
+                                                                                {{ $persentase[$class]['sakit'] }}%
+                                                                                Sakit
+                                                                            </div>
+                                                                        @endif
+
+                                                                        {{-- IZIN --}}
+                                                                        @if ($persentase[$class]['izin'] != 0)
+                                                                            <div class="progress-bar bg-warning }}"
+                                                                                style="width: {{ $persentase[$class]['izin'] }}%">
+                                                                                {{ $persentase[$class]['izin'] }}%
+                                                                                Izin
+                                                                            </div>
+                                                                        @endif
+
+                                                                        {{-- ALFA --}}
+                                                                        @if ($persentase[$class]['alfa'] != 0)
+                                                                            <div class="progress-bar bg-danger }}"
+                                                                                style="width: {{ $persentase[$class]['alfa'] }}%">
+                                                                                {{ $persentase[$class]['alfa'] }}%
+                                                                                Alfa
+                                                                            </div>
+                                                                        @endif
+
+                                                                        {{-- TERLAMBAT --}}
+                                                                        @if ($persentase[$class]['terlambat'] != 0)
+                                                                            <div class="progress-bar bg-secondary }}"
+                                                                                style="width: {{ $persentase[$class]['terlambat'] }}%">
+                                                                                {{ $persentase[$class]['terlambat'] }}%
+                                                                                Terlambat
+                                                                            </div>
+                                                                        @endif
+
+                                                                        {{-- TAP --}}
+                                                                        @if ($persentase[$class]['tap'] != 0)
+                                                                            <div class="progress-bar bg-black }}"
+                                                                                style="width: {{ $persentase[$class]['tap'] }}%">
+                                                                                {{ $persentase[$class]['tap'] }}%
+                                                                                TAP
                                                                             </div>
                                                                         @endif
                                                                     </div>
@@ -354,7 +475,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Hadir:</h6>
-                                                                                    {{ $hadir[$class] }} X
+                                                                                    {{ $hadir[$class] }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -365,7 +486,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         sakit:</h6>
-                                                                                    {{ $sakit[$class] }} X
+                                                                                    {{ $sakit[$class] }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -377,7 +498,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Izin:</h6>
-                                                                                    {{ $izin[$class] }} X
+                                                                                    {{ $izin[$class] }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -389,7 +510,7 @@
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Alfa:</h6>
-                                                                                    {{ $alfa[$class] }} X
+                                                                                    {{ $alfa[$class] }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -402,7 +523,7 @@
                                                                                     <h6 class="card-title text-white">
                                                                                         Terlambat:
                                                                                     </h6>
-                                                                                    {{ $terlambat[$class] }} X
+                                                                                    {{ $terlambat[$class] }}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -418,7 +539,7 @@
                                                                                         </h6>
                                                                                     </div>
 
-                                                                                    {{ $TAP[$class] }} X
+                                                                                    {{ $TAP[$class] }}
                                                                                 </div>
 
                                                                             </div>
@@ -432,8 +553,8 @@
                                             </div>
                                         @endforeach
 
-                                         {{-- PAGINATION --}}
-                                         <div class="d-flex justify-content-center">
+                                        {{-- PAGINATION --}}
+                                        <div class="d-flex justify-content-center">
                                             {{ $kelas->links('pagination::bootstrap-4') }}
                                         </div>
                                     </div>

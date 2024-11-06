@@ -382,6 +382,8 @@
                                     <tr>
                                         <th>Tanggal</th>
                                         <th class="pl-5">Status</th>
+                                        <th class="text-center d-none d-md-table-cell">Jam Masuk</th>
+                                        <th class="text-center d-none d-md-table-cell">Jam Pulang</th>
                                         <th class="text-center">detil</th>
                                     </tr>
                                 </thead>
@@ -390,7 +392,7 @@
                                         @include('siswa.modalLaporan')
                                         <tr>
                                             <td>{{ $a->date }}</td>
-                                            <td>
+                                            <td >
                                                 @switch($a->status)
                                                     @case('hadir')
                                                         <span class="badge bg-absen">
@@ -428,6 +430,20 @@
                                                         </span>
                                                     @break
                                                 @endswitch
+                                            </td>
+                                            <td class="text-center d-none d-md-table-cell">
+                                                @if ($a->jam_masuk == null)
+                                                    -
+                                                @else
+                                                    {{ $a->jam_masuk }}
+                                                @endif
+                                            </td>
+                                            <td class="text-center d-none d-md-table-cell">
+                                                @if ($a->jam_pulang == null)
+                                                    -
+                                                @else
+                                                    {{ $a->jam_pulang }}
+                                                @endif
                                             </td>
                                             <td class="text-center">
                                                 <button class="btn btn-absen" data-bs-toggle="modal"

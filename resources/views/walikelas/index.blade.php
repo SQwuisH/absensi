@@ -1,3 +1,7 @@
+<script>
+    var dailyStatusCounts = @json($dailyStatusCounts);
+</script>
+
 <html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
     data-template="vertical-menu-template-free">
 
@@ -73,7 +77,7 @@
                             </div>
                         </div>
                         <div class="container row">
-                            <button class="btn btn-absen"> Lihat Profil </button>
+                            <a href="{{route('waliProfil')}}" class="btn btn-absen"> Lihat Profil </a>
                         </div>
                     </li>
 
@@ -89,7 +93,7 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{route('waliLaporan')}}" class="menu-link">
+                        <a href="{{ route('waliLaporan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book"></i>
                             <div data-i18n="Basic">Laporan</div>
                         </a>
@@ -154,14 +158,67 @@
                                 <div class="row mb-2">
                                     <div class="col">
                                         <div class="progress" style="height: 25px">
-                                            @if ($persentase == 0)
-                                                <div class="progress-bar bg-white w-100 text-dark" aria-valuenow="100%"
-                                                    aria-valuemax="100%">0% Kehadiran</div>
-                                            @else
-                                                <div class="progress-bar bg-absen w-{{ $persentase }}" aria-valuenow="{{ $persentase }}%"
-                                                    aria-valuemax="100%">{{$persentase}}% Kehadiran</div>
+                                            {{-- HADIR --}}
+                                            @if ($persentase['hadir'] != 0)
+                                                <div class="progress-bar border-end shadow-none" role="progressbar"
+                                                    style="width: {{ $persentase['hadir'] }}%; background-color: hsl(174, 63%, 40%)"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['hadir']) }}%</div>
+                                                </div>
+                                            @endif
+
+                                            {{-- SAKIT --}}
+                                            @if ($persentase['sakit'] != 0)
+                                                <div class="progress-bar bg-info border-end shadow-none text-center"
+                                                    role="progressbar" style="width: {{ $persentase['sakit'] }}%"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['sakit']) }}%</div>
+                                                </div>
+                                            @endif
+
+                                            {{-- IZIN --}}
+                                            @if ($persentase['izin'] != 0)
+                                                <div class="progress-bar bg-warning border-end shadow-none text-center"
+                                                    role="progressbar" style="width: {{ $persentase['izin'] }}%"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['izin']) }}%</div>
+                                                </div>
+                                            @endif
+
+                                            {{-- ALFA --}}
+                                            @if ($persentase['alfa'] != 0)
+                                                <div class="progress-bar bg-danger border-end shadow-none"
+                                                    role="progressbar" style="width: {{ $persentase['alfa'] }}%"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['alfa']) }}%</div>
+                                                </div>
+                                            @endif
+
+                                            {{-- TERLAMBAT --}}
+                                            @if ($persentase['terlambat'] != 0)
+                                                <div class="progress-bar bg-secondary border-end shadow-none"
+                                                    role="progressbar" style="width: {{ $persentase['terlambat'] }}%"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['terlambat']) }}%</div>
+                                                </div>
+                                            @endif
+
+                                            {{-- TAP --}}
+                                            @if ($persentase['tap'] != 0)
+                                                <div class="progress-bar bg-black border-end shadow-none"
+                                                    role="progressbar" style="width: {{ $persentase['tap'] }}%"
+                                                    aria-valuemin="0">
+                                                    <div>{{ round($persentase['tap']) }}%</div>
+                                                </div>
                                             @endif
                                         </div>
+                                    </div>
+                                </div>
+
+                                {{-- chart --}}
+                                <div id="chart" class="px-2">
+                                    <div id="apexchartsiya5zp5s"
+                                        class="apexcharts-canvas apexchartsiya5zp5s apexcharts-theme-light">
                                     </div>
                                 </div>
 
@@ -169,7 +226,7 @@
                                     <div class="col">
                                         <div class="card">
                                             <div class="card-header">
-                                                Kehadiran Siswa : {{ $hadir->count() }} / {{ $siswa->count() }}
+                                                Kehadiran Siswa : {{ $count['hadir'] }} / {{ $siswa->count() }}
                                             </div>
                                             <div class="card-body">
 
@@ -238,7 +295,7 @@
                                                                     <h6 class="col card-title text-white">TAP:</h6>
                                                                 </div>
 
-                                                                {{ $count['TAP'] }} Hari
+                                                                {{ $count['tap'] }} Hari
                                                             </div>
 
                                                         </div>
@@ -263,7 +320,8 @@
                                                 @foreach ($ab as $a)
                                                     @include('siswa.modalLaporan')
                                                     <tr>
-                                                        <td><a href="#" class="text-dark">{{ $a->name }} <i class="bx bx-search"></i></a></td>
+                                                        <td><a href="{{route("waliLaporanSiswa", $a->nis)}}" class="text-dark">{{ $a->name }}
+                                                                <i class="bx bx-search"></i></a></td>
                                                         <td>
                                                             @switch($a->status)
                                                                 @case('hadir')
@@ -306,7 +364,8 @@
                                                         <td class="text-center">
                                                             <button class="btn btn-absen" data-bs-toggle="modal"
                                                                 data-bs-target="#modal{{ $a->id_absensi }}"><i
-                                                                    class='bx bx-show-alt'></i><span class="d-none d-md-block">Lihat</span></button>
+                                                                    class='bx bx-show-alt'></i><span
+                                                                    class="d-none d-md-block">Lihat</span></button>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -381,6 +440,10 @@
 
     <!-- Main JS -->
     <script src={{ asset('assets/t1/js/main.js') }}></script>
+
+
+    <script src={{ asset('assets/t1/vendor/libs/apex-charts/apexcharts.js') }}></script>
+    <script src={{ asset('assets/app.js') }}></script>
 
     <!-- Page JS -->
 

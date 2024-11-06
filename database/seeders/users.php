@@ -18,7 +18,7 @@ class users extends Seeder
     {
         // OPERATOR
         User::create([
-            'name' => 'Operator',
+            'name' => 'Asep Juandi',
             'email' => 'operator@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'operator',
@@ -35,7 +35,7 @@ class users extends Seeder
 
         // KESISWAAN
         User::create([
-            'name' => 'Kesiswaan',
+            'name' => 'Maman Rochman Sugandi',
             'email' => 'kesiswaan@gmail.com',
             'password' => password_hash("12345678", PASSWORD_DEFAULT),
             'role' => 'kesiswaan',

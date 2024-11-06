@@ -143,8 +143,8 @@
                             </div>
                             <div class="card-body">
                                 <div class="d-flex align-item-start gap-4">
-                                    <img src="{{ asset('/storage/user_avatar/' . $walisiswa->user->foto) }}" alt=""
-                                        class="d-block rounded" height="100" width="100">
+                                    <img src="{{ asset('/storage/user_avatar/' . $walisiswa->user->foto) }}"
+                                        alt="" class="d-block rounded" height="100" width="100">
                                     <div class="button-wrapper">
                                         <label for="upload" class="btn btn-absen me-2 mb-4" tabindex="0">
                                             <span class="d-none d-sm-block">Upload new photo</span>
@@ -178,6 +178,12 @@
                                         <label for="Email" class="form-label">Email</label>
                                         <input class="form-control" type="Email" id="Email" name="email"
                                             value="{{ $walisiswa->user->email }}">
+                                    </div>
+
+                                    <div class="mb-3 col-md-6">
+                                        <label for="alamat" class="form-label">Alamat</label>
+                                        <input class="form-control" type="text" id="alamat" name="alamat"
+                                            value="{{ $walisiswa->alamat }}">
                                     </div>
                                 </div>
                                 <div class="row">

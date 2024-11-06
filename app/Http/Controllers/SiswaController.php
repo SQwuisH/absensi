@@ -36,40 +36,30 @@ class SiswaController extends Controller
 
         $daysNow = $dateNow->daysBetween(
             Carbon::createFromDate($startMonthNow),
-            Carbon::createFromDate( $endMonthNow)
+            Carbon::createFromDate($endMonthNow)
         );
 
         $daysBefore = $dateBefore->daysBetween(
             Carbon::createFromDate($startMonthBefore),
-            Carbon::createFromDate( $endMonthBefore)
+            Carbon::createFromDate($endMonthBefore)
         );
+
 
         // CEK ABSENSI
         $cekabsen = absensi::with('absensi')->where('date', date('Y-m-d'))->where('nis', $siswa->nis)->first();
         if ($cekabsen) {
-            if(date("H:i:s") < $waktu->mulai_absen)
-            {
+            if (date("H:i:s") < $waktu->mulai_absen) {
                 $statusAbsen = "belum waktu presen";
-            }
-            elseif($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang)
-            {
+            } elseif ($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang) {
                 $statusAbsen = "belum presen";
-            }
-            elseif(($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang)
-            {
-                $statusAbsen = "belum pulang";
-            }
-            elseif($cekabsen->foto_pulang)
-            {
+            } elseif ($cekabsen->foto_pulang != null) {
                 $statusAbsen = "sudah pulang";
-            }
-            else
-            {
+            } elseif (($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang) {
+                $statusAbsen = "belum pulang";
+            } else {
                 $statusAbsen = $cekabsen->status;
             }
-        }
-        else
-        {
+        } else {
             $statusAbsen = "libur";
         }
 
@@ -90,8 +80,8 @@ class SiswaController extends Controller
 
             // BULAN LALU
             'lalu' => $lalu->count(),
-            'hadirLalu' => $lalu->whereIn('status', "hadir")->count(),
-            'tidakHadirLalu' => $lalu->whereIn('status', "sakit")->count(),
+            'hadirLalu' => $lalu->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+            'tidakHadirLalu' => $lalu->whereIn('status', ["sakit", "izin", "alfa"])->count(),
         ];
 
         $persentase = [
@@ -99,13 +89,15 @@ class SiswaController extends Controller
             'lalu' => $jumlah['hadirLalu'] > 0 ? round(($jumlah['hadirLalu'] / $daysBefore) * 100, 1) : 0
         ];
 
+
         return view('siswa.index', [
             'waktu' => $waktu,
             'cekabsen' => $cekabsen,
             'statusabsen' => $statusAbsen,
             'lokasi' => $lokasi,
             'jumlah' => $jumlah,
-            'persentase' => $persentase
+            'persentase' => $persentase,
+            'absen' => $cekabsen
         ]);
     }
 
@@ -114,11 +106,14 @@ class SiswaController extends Controller
 
         $user = Auth::user();
 
+        $siswa = siswa::where('id_user', $user->id)->first();
+
         $date = date("Y-m-d");
-        $cek = absensi::where('date', $date)->where('nis', $user->nis)->count();
+        $cek = absensi::where('date', $date)->where('nis', "00$siswa->nis")->first();
 
         $lokasi = koordinat_sekolah::first();
         $waktu = waktu_absen::first();
+
 
         return view('siswa.absen', compact('cek', 'lokasi', 'waktu'));
     }
@@ -134,7 +129,7 @@ class SiswaController extends Controller
         $jam = date("H:i:s");
 
 
-        if (date('H:i:s') > $waktu->batas_masuk) {
+        if (date('H:i:s') > $waktu->batas_absen) {
             $status = 'terlambat';
         }
 
@@ -229,42 +224,39 @@ class SiswaController extends Controller
     public function krmizinSakit(Request $r)
     {
         $r->validate([
-            'foto_masuk' => 'required|mimes:jpeg,png,jpg,pdf|max:10000',
-            'keterangan' => 'required|string|max:255',
-            'opt' => 'required|string',
+            'photo_webcam' => 'required|string', // Field untuk gambar dari webcam
+            'status' => 'required|string',
+            'keterangan' => 'nullable|string',
         ]);
 
-        if ($r->hasFile('foto_masuk')) {
-            $siswa = siswa::where('id_user', auth::user()->id)->first();
-            $date =  date("Y-m-d");
-            $nis = "00$siswa->nis";
-            $status = $r->opt;
-
-            $foto = $r->file('foto_masuk');
-
-            $folderPath = "public/uploads/absensi/";
-
-            $extension = $foto->getClientOriginalExtension();
-            $fileName = $nis . "-" . $date . "-" . $status . "." . $extension;
-            $file = $folderPath . $fileName;
+        $siswa = siswa::where('id_user', auth::user()->id)->first();
+        $date =  date("Y-m-d");
+        $nis = "00$siswa->nis";
 
 
-            $update = absensi::where('nis', $nis)->where('date', $date);
+        $image = $r->photo_webcam;
+        $folderPath = "public/uploads/absensi/";
+        $image_parts = explode(";base64", $image);
+        $image_base64 = base64_decode($image_parts[1]);
 
-            $simpan = $update->update([
-                'nis' => $nis,
-                'status' => $r->opt,
-                'foto_masuk' => $fileName,
-                'keterangan' => $r->keterangan,
-                'date' => $date
-            ]);
+        $fileName = $nis . "-" . $date . "-" . $r->status . ".png";
+        $file = $folderPath . $fileName;
 
-            if ($simpan) {
-                Storage::put($file, file_get_contents($foto));
-                return redirect()->route('siswa')->with('success', 'Pengajuan ' . $status . ' Berhasil Disimpan');
-            } else {
-                return redirect()->back()->with('error');
-            }
+
+        $update = absensi::where('nis', $nis)->where('date', $date);
+
+        $simpan = $update->update([
+            'nis' => $nis,
+            'status' => $r->status,
+            'foto_masuk' => $fileName,
+            'keterangan' => $r->keterangan,
+        ]);
+
+        if ($simpan) {
+            Storage::put($file, $image_base64);
+            return redirect()->route('siswa')->with('success', 'Pengajuan ' . $r->status . ' Berhasil Disimpan');
+        } else {
+            return redirect()->back()->with('error');
         }
     }
 

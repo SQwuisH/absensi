@@ -16,7 +16,7 @@ class OperatorSiswa extends Controller
     //SISWA
     public function index()
     {
-        $siswa = siswa::with('user', 'kelas')->paginate(10);
+        $siswa = siswa::with('user', 'kelas')->orderby('nis', 'asc')->paginate(15);
         $kelas = kelas::with('jurusan', 'wali')->get();
 
         return view('operator.siswa.index', compact('siswa', 'kelas'));
@@ -26,7 +26,7 @@ class OperatorSiswa extends Controller
     {
         $request->validate([
             'jenis_kelamin' => 'Required',
-            'kelas' => 'required'
+            'kelas' => 'required',
             ]
         );
 
@@ -45,6 +45,9 @@ class OperatorSiswa extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'id_kelas' => $request->kelas,
                 'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah ? $request->nik_ayah :null ,
+                'nik_ibu' => $request->nik_ibu ? $request->nik_ibu :null,
+                'nik_wali' => $request->nik_wali ? $request->nik_wali :null
             ]);
         } else {
             $user = User::create([
@@ -59,6 +62,9 @@ class OperatorSiswa extends Controller
                 'jenis_kelamin' => $request->jenis_kelamin,
                 'id_kelas' => $request->kelas,
                 'nisn' => $request->nisn,
+                'nik_ayah' => $request->nik_ayah ? $request->nik_ayah :null ,
+                'nik_ibu' => $request->nik_ibu ? $request->nik_ibu :null,
+                'nik_wali' => $request->nik_wali ? $request->nik_wali :null
             ]);
         }
 
@@ -95,20 +101,35 @@ class OperatorSiswa extends Controller
             'nis' => $r->nis,
             'jenis_kelamin' => $r->jenis_kelamin,
             'nisn' => $r->nisn,
-            'id_kelas' => $r->kelas
+            'id_kelas' => $r->kelas,
+            'nik_ayah' => $r->nik_ayah ? $r->nik_ayah : null,
+            'nik_ibu' => $r->nik_ibu ? $r->nik_ibu : null,
+            'nik_wali' => $r->nik_wali ? $r->nik_wali :null
         ]);
 
 
         //DB user
         $user = user::where('id', $r->id)->first();
 
-        $user->update([
-            'name' => $r->name,
-            'email' => $r->email,
-            'password' => password_hash($r->password, PASSWORD_DEFAULT),
-        ]);
+        $count = strlen($r->password);
+        if ($count > 0) {
+            $user->update([
+                'name' => $r->name,
+                'email' => $r->email,
+                'password' => password_hash($r->password, PASSWORD_DEFAULT),
+            ]);
+        }
+        else
+        {
+            $user->update([
+                'name' => $r->name,
+                'email' => $r->email,
+            ]);
+        }
 
-        if($user && $siswa)
+
+
+        if($user || $siswa)
         {
             return redirect()->back()->with('success', 'Berhasil');
         }

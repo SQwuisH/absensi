@@ -19,7 +19,7 @@ class waktu_koodinatSeeder extends Seeder
             'mulai_absen' => '06:00:00',
             'batas_absen' => '07:00:00',
             'mulai_pulang' => '15:00:00',
-            'batas_pulang' => '17:00:00',
+            'batas_pulang' => '16:00:00',
             'toleransi' => '00:10:00'
         ]);
 

@@ -194,7 +194,7 @@
                         <div class="card-body">
                             @php
                                 echo $waktu->mulai_absen;
-                                echo ' - ';
+                                echo '-';
                                 echo $waktu->batas_absen;
                             @endphp
                         </div>
@@ -210,7 +210,7 @@
                         <div class="card-body">
                             @php
                                 echo $waktu->mulai_pulang;
-                                echo ' - ';
+                                echo '-';
                                 echo $waktu->batas_pulang;
                             @endphp
                         </div>
@@ -222,8 +222,7 @@
                     <div class="card mb-4" style="max-height: 125px">
                         <div class="card-header">
                             <h6 class="card-title">
-                                Jarak
-                            </h6>
+                                Jarak (< {{ $lokasi->radius }} m) </h6>
                         </div>
                         <div class="card-body">
                             <p id="distance"></p>
@@ -299,6 +298,41 @@
                 @include('siswa.keteranganstatus')
 
             </div>
+
+            @if ($statusabsen != 'libur')
+                <div class="p-3 card mb-4">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card bg-absen">
+                                <div class="card-header text-center">
+                                    <h5 class="card-title text-white">Jam Masuk</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    @if ($absen->jam_masuk == null)
+                                        <h2 class="text-white">-</h2>
+                                    @else
+                                        <h2 class="text-white">{{ $absen->jam_masuk }}</h2>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card bg-warning">
+                                <div class="card-header text-center">
+                                    <h5 class="card-title text-white">Jam Pulang</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    @if ($absen->jam_pulang == null)
+                                        <h2 class="text-white">-</h2>
+                                    @else
+                                        <h2 class="text-white">{{ $absen->jam_pulang }}</h2>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             {{-- BUTTON --}}
             <div class="container mb-2">

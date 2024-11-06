@@ -66,6 +66,12 @@
 
                 <ul class="menu-inner py-1">
 
+                    <div class="menu-item">
+                        <div class="container row">
+                            <a href="{{ route('operatorProfil') }}" class="btn btn-absen"> Kelola Akun </a>
+                        </div>
+                    </div>
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Pengaturan Presensi</span>
                     </li>
@@ -230,7 +236,7 @@
                                                                 Ini</u></i></a> Untuk Impor Data!</p>
                                             </div>
 
-                                            <form action= "{{route('importsiswa')}}" method="POST"
+                                            <form action= "{{ route('importsiswa') }}" method="POST"
                                                 enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="row">
@@ -315,6 +321,26 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col mb-3">
+                                                        <label for="nik_ayah" class="form-label">NIK AYAH</label>
+                                                        <input name="nik_ayah" type="text" id="nik_ayah"
+                                                            class="form-control" type="number"
+                                                            placeholder="Tidak ada">
+                                                    </div>
+                                                    <div class="col mb-3">
+                                                        <label for="nik_ibu" class="form-label">NIK Ibu</label>
+                                                        <input name="nik_ibu" type="text" id="nik_ibu"
+                                                            class="form-control" type="number"
+                                                            placeholder="Tidak ada">
+                                                    </div>
+                                                    <div class="col mb-3">
+                                                        <label for="nik_wali" class="form-label">NIK Wali</label>
+                                                        <input name="nik_wali" type="text" id="nik_wali"
+                                                            class="form-control" type="number"
+                                                            placeholder="Tidak ada">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
                                                         <label for="emailBasic" class="form-label">Email</label>
                                                         <input name="email" type="email" id="emailBasic"
                                                             class="form-control" placeholder="xxxx@xxx.xx" required>
@@ -389,6 +415,10 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                <div class="d-flex justify-content-center">
+                                    {{ $siswa->links('pagination::bootstrap-4') }}
+                                </div>
                             </div>
                         </div>
                     </div>

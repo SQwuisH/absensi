@@ -69,6 +69,12 @@
 
                     <ul class="menu-inner py-1">
 
+                        <div class="menu-item">
+                            <div class="container row">
+                                <a href="{{ route('operatorProfil') }}" class="btn btn-absen"> Kelola Akun </a>
+                            </div>
+                        </div>
+
                         <li class="menu-header small text-uppercase">
                             <span class="menu-header-text">Pengaturan Presensi</span>
                         </li>
@@ -323,6 +329,9 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-center">
+                                        {{ $kelas->links('pagination::bootstrap-4') }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

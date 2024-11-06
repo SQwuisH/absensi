@@ -42,7 +42,8 @@ class OperatorWaliSiswa extends Controller
         $w = wali_siswa::insert([
             'nik' => $r->nik,
             'id_user' => $u->id,
-            'jenis_kelamin' => $r->jenis_kelamin
+            'jenis_kelamin' => $r->jenis_kelamin,
+            'alamat' => $r->alamat
         ]);
 
         if ($u && $w)
@@ -59,6 +60,7 @@ class OperatorWaliSiswa extends Controller
         wali_siswa::where('id_user', $r->id)->update([
             'nik' => $r->nik,
             'jenis_kelamin' => $r->jenis_kelamin,
+            'alamat' => $r->alamat
         ]);
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\absensi;
+use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,4 +16,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 
+
+    public function test()
+    {
+        $items = kelas::all(); // Adjust as necessary for your data source
+        return view('test', compact('items'));
+    }
 }

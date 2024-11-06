@@ -53,8 +53,13 @@ Route::get('/login', function () {
 Route::group(['middleware' => ['auth', 'roles:operator']], function () {
     //LANDING PAGE
     Route::get('/operator', [App\Http\Controllers\OperatorController::class, 'index'])->name('operator');
+
     Route::post('/editkoordinat', [App\Http\Controllers\OperatorController::class, 'editkoordinat'])->name('editkoordinat');
     route::post('/editwaktuabsen', [App\Http\Controllers\OperatorController::class, 'editwaktu'])->name('editabsen');
+
+    // PROFIL
+    Route::get('/operator/profil', [App\Http\Controllers\OperatorController::class, 'profil'])->name('operatorProfil');
+    Route::get('/operator/profilUpdate', [App\Http\Controllers\OperatorController::class, 'profilUpdate'])->name('operatorProfilUpdate');
 
     //KESISWAAN
     Route::get('/kelolakesiswaan', [App\Http\Controllers\OperatorController::class, 'kesiswaan'])->name('OPkesiswaan');
@@ -104,6 +109,9 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function () {
 //KESISWAAN
 Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function () {
     Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
+
+    Route::get('/kesiswaan/profil', [App\Http\Controllers\KesiswaanController::class, 'profil'])->name('kesiswaanProfil');
+    Route::post('/kesiswaan/profil/edit', [App\Http\Controllers\KesiswaanController::class, 'editProfil'])->name('kesiswaanEditProfil');
 
     // Laporan Kelas
     Route::get('/kesiswaan/laporan', [App\Http\Controllers\KesiswaanController::class, 'laporan'])->name('kesiswaanLaporan');

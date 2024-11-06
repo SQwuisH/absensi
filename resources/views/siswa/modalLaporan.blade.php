@@ -9,25 +9,49 @@
             <div class="modal-body">
                 @if ($a->status == 'hadir' || $a->status == 'terlambat' || $a->status == 'TAP')
                     <div class="row g-2 mb-2">
-                        <div class="col mb-0">
-                            <label for="masuk" class="form-label">Foto Masuk</label>
-                            <div id="masuk">
-                                <img
-                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
-                            </div>
-                        </div>
-                        <div class="col mb-0">
-                            <label for="pulang" class="form-label">Foto Pulang</label>
-                            <div id="pulang">
-                                @if ($a->foto_pulang)
+                        <div class="col mb-2">
+                            <label for="masuk" class="form-label">Foto Masuk
+                                <div id="masuk">
                                     <img
-                                        style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
-                                @elseif($a->status == 'TAP')
-                                    <p>Tidak Absen Pulang</p>
-                                @else
-                                    <p>Belum Absen Pulang</p>
-                                @endif
-                            </div>
+                                        style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
+                                </div>
+                        </div>
+                        <div class="row">
+                            @switch($a->status)
+                                @case('hadir')
+                                    <div class="col mb-2">
+                                        <label for="pulang" class="form-label">Foto Pulang
+                                        </label>
+                                        <div id="pulang">
+                                            @if ($a->foto_pulang)
+                                                <img
+                                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
+                                            @elseif($a->status == 'TAP')
+                                                <p>Tidak Absen Pulang</p>
+                                            @else
+                                                <p>Belum Absen Pulang</p>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @break
+
+                                @case('terlambat')
+                                    <div class="col mb-2">
+                                        <label for="pulang" class="form-label">Foto Pulang
+                                        </label>
+                                        <div id="pulang">
+                                            @if ($a->foto_pulang)
+                                                <img
+                                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @break
+
+                                @case('TAP')
+                                    <p class="mt-1">Tanpa Absen Pulang</p>
+                                @break
+                            @endswitch
                         </div>
                     </div>
                 @elseif ($a->status == 'izin' || $a->status == 'sakit')
@@ -48,10 +72,12 @@
                         </div>
                     </div>
                 @endif
+
                 <div class="row">
                     @switch($a->status)
                         @case('hadir')
-                            <div class="col mb-3 badge bg-absen">{{ $a->status }}
+                            <div class="col mb-3 badge bg-absen">
+                                {{ $a->status }}
                             </div>
                         @break
 
@@ -71,17 +97,20 @@
                         @break
 
                         @case('terlambat')
-                            <div class="col mb-3 badge bg-secondary">{{ $a->status }}
+                            <div class="col mb-3 badge bg-secondary">
+                                {{ $a->status }}
                             </div>
                         @break
 
                         @case('TAP')
-                            <div class="col mb-3 badge bg-black">{{ $a->status }}
+                            <div class="col mb-3 badge bg-black">
+                                {{ $a->status }}
                             </div>
                         @break
                     @endswitch
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                     Close

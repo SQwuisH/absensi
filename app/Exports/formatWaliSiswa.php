@@ -11,6 +11,6 @@ class formatWaliSiswa implements FromArray
      */
     public function array(): array
     {
-        return ([ 'nik', 'email', 'nama', 'jenis_kelamin']);
+        return ([[ 'nik', 'email', 'nama', 'jenis_kelamin', 'alamat']]);
     }
 }

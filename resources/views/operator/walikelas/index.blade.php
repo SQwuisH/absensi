@@ -66,6 +66,12 @@
 
                 <ul class="menu-inner py-1">
 
+                    <div class="menu-item">
+                        <div class="container row">
+                            <a href="{{ route('operatorProfil') }}" class="btn btn-absen"> Kelola Akun </a>
+                        </div>
+                    </div>
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Pengaturan Presensi</span>
                     </li>
@@ -316,7 +322,7 @@
                                 <table class="table " id="tabel">
                                     <thead>
                                         <tr>
-                                            <th>NUPTK</th>
+                                            <th>NIP</th>
                                             <th>Nama</th>
                                             <th>Kelas</th>
                                             <th>Aksi</th>
@@ -327,7 +333,7 @@
                                         @foreach ($walikelas as $w)
                                             <tr>
                                                 <td>
-                                                    <span class="fw-medium">@php echo($w->nuptk); @endphp</span>
+                                                    <span class="fw-medium">@php echo($w->nip); @endphp</span>
                                                 </td>
                                                 <td>@php echo($w->user->name); @endphp</td>
                                                 <td>
@@ -337,7 +343,7 @@
                                                             echo ' ';
                                                             echo $w->jurusan->id_jurusan;
                                                             echo ' ';
-                                                            echo $w->nomor_kelas;
+                                                            echo $w->kelas->nomor_kelas;
                                                         @endphp
                                                     @else
                                                         Tanpa Kelas
@@ -356,7 +362,7 @@
                                                                 data-bs-target="#edit{{ $w->id_user }}"><i
                                                                     class="bx bx-edit-alt me-2"></i> Edit</button>
                                                             <button class="dropdown-item" data-bs-toggle="modal"
-                                                                data-bs-target="#   hapus{{ $w->id_user }}"><i
+                                                                data-bs-target="#hapus{{ $w->id_user }}"><i
                                                                     class="bx bx-trash me-2"></i> Hapus</button>
                                                         </div>
                                                     </div>
@@ -366,6 +372,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <div class="d-flex justify-content-center">
+                                    {{ $walikelas->links('pagination::bootstrap-4') }}
+                                </div>
                             </div>
                         </div>
                     </div>

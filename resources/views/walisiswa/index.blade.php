@@ -220,17 +220,9 @@ $info = null;
                                     </div>
                                 </div>
                                 <ul class="nav nav-tabs nav-fill" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link active" role="tab"
-                                            data-bs-toggle="tab" data-bs-target="#sepanjangWaktu{{ $s['nis'] }}"
-                                            aria-controls="sepanjangWaktu{{ $s['nis'] }}" aria-selected="false"
-                                            tabindex="-1">
-                                            Sepanjang Waktu
 
-                                        </button>
-                                    </li>
                                     <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                                        <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
                                             data-bs-target="#bulanIni{{ $s['nis'] }}"
                                             aria-controls="bulanIni{{ $s['nis'] }}" aria-selected="false"
                                             tabindex="-1">
@@ -248,62 +240,12 @@ $info = null;
 
                                 {{-- CONTENT --}}
                                 <div class="tab-content">
-                                    {{-- ALL TIME --}}
-                                    <div class="tab-pane fade active show" id="sepanjangWaktu{{ $s['nis'] }}"
-                                        role="tabpanel">
-                                        {{-- PERSENTASE KEHADIRAN --}}
-                                        <p class="text-mute">Persentase Kehadiran :</p>
-                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
-                                            @if ($persentase[$int]['semua'] == 0)
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:100%; background-color: rgba(67, 89, 113, 0.1); color:black"
-                                                    aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    {{ $persentase[$int]['semua'] }}%
-                                                </div>
-                                            @else
-                                                <div class="progress-bar" role="progressbar"
-                                                    style="width:{{ $persentase[$int]['semua'] }}%; background-color: hsl(174, 63%, 40%)"
-                                                    aria-valuenow={{ $persentase[$int]['semua'] }} aria-valuemin="0"
-                                                    aria-valuemax="100">
-                                                    {{ $persentase[$int]['semua'] }}%
-                                                </div>
-                                            @endif
-                                        </div>
 
-                                        {{-- INFO --}}
-                                        <div>
-                                            <div class="row">
-
-                                                {{-- hadir --}}
-                                                <div class="col">
-                                                    <div class="card bg-absen text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Hadir:</h6>
-                                                            {{ $jumlah[$int]['hadirSemua'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- sakit --}}
-                                                <div class="col">
-                                                    <div class="card bg-secondary text-white mb-3">
-                                                        <div class="card-header">
-                                                            <h6 class="card-title text-white">Tidak Hadir:</h6>
-                                                            {{ $jumlah[$int]['tidakHadirSemua'] }} Hari
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     {{-- BULAN INI --}}
-                                    <div class="tab-pane fade" id="bulanIni{{ $s['nis'] }}" role="tabpanel">
+                                    <div class="tab-pane fade active show" id="bulanIni{{ $s['nis'] }}" role="tabpanel">
                                         {{-- PERSENTASE KEHADIRAN --}}
-                                        <p class="text-mute">Persentase Kehadiran :</p>
+                                        <p class="text-mute">Kehadiran : {{$jumlah[$int]['hadirIni'] .  "/" . $daysNow}}</p>
                                         <div class="progress mb-5" style="height: 35px; font-size:13px;">
                                             @if ($persentase[$int]['ini'] == 0)
                                                 <div class="progress-bar" role="progressbar"
@@ -354,7 +296,7 @@ $info = null;
                                     {{-- BULAN LALU --}}
                                     <div class="tab-pane fade" id="bulanLalu{{ $s['nis'] }}" role="tabpanel">
                                         {{-- PERSENTASE KEHADIRAN --}}
-                                        <p class="text-mute">Persentase Kehadiran :</p>
+                                        <p class="text-mute">Kehadiran : {{$jumlah[$int]['hadirLalu'] .  "/" . $daysBefore}}</p>
                                         <div class="progress mb-5" style="height: 35px; font-size:13px;">
                                             @if ($persentase[$int]['lalu'] == 0)
                                                 <div class="progress-bar" role="progressbar"

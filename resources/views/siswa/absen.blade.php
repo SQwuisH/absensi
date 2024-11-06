@@ -135,31 +135,23 @@
                     <div class="card mb-4">
                         <h5 class="card-header">Foto</h5>
                         <div class="card-body">
-
                             {{-- Photo --}}
-                            <div class="row d-flex justify-content-center">
-                                <div style="overflow: hidden; position: relative;"
-                                    class="mb-3">
+                            <div class="row">
+                                <div style="overflow: hidden; position: relative;" class="mb-3">
                                     <div style="width: 450px; height: 300px; overflow:hidden">
-                                        <div style="width: 100%; height: 100%;" id="webcamCapture">
+                                        <div id="webcamCapture"
+                                            style="border: 2px solid #ddd; border-radius: 10px; width: 320px; height: 240px;">
                                         </div>
-                                        <img id="result" style="width: 100%; height: 100%;">
+                                        <img id="result" style="display:none; margin-top: 10px;">
                                         <canvas id="faceCanvas" style="position: absolute; top: 0; left: 0;">
                                         </canvas>
+                                        <button type="button" id="takeSnapshot" class="btn btn-absen"><i
+                                                class='bx bx-fullscreen'></i>&nbsp;Ambil Foto</button>
+                                        <button type="button" id="resetCamera" class="btn btn-warning"><i
+                                                class='bx bx-repeat'></i>&nbsp;Ulang</button>
                                     </div>
                                 </div>
                             </div>
-
-                            {{-- Button Photo --}}
-                            <div class="d-flex justify-content-center">
-                                <button type="button" id="takeSnapshot" class="btn btn-absen"><i
-                                        class='bx bx-fullscreen'></i>&nbsp;Ambil Foto</button>
-                                <div class="m-3"></div>
-                                <button type="button" id="resetCamera" class="btn btn-warning"><i
-                                        class='bx bx-repeat'></i>&nbsp;Ulang</button>
-
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -180,8 +172,8 @@
 
 
                 {{-- Button Absen --}}
-                @if ($cek > 0)
-                    <button type="button" class="btn-absen btn-danger btn-block" id="absen"
+                @if ($cek->foto_masuk != null)
+                    <button type="button" class="btn-absen btn-absen btn-block" id="absen"
                         style="border-radius: 10px; padding:7px; font-size: 20px">
                         <i class="ik ik-maximize"></i>&nbsp;Absen Pulang
                     </button>

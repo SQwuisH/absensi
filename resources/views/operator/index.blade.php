@@ -65,6 +65,13 @@
 
                 <ul class="menu-inner py-1">
 
+                    <div class="menu-item">
+                        <div class="container row">
+                            <a href="{{ route('operatorProfil') }}" class="btn btn-absen"> Kelola Akun </a>
+                        </div>
+                    </div>
+
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Pengaturan Presensi</span>
                     </li>
@@ -89,22 +96,22 @@
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item ">
-                                <a href="{{route('OPsiswa')}}" class="menu-link">
+                                <a href="{{ route('OPsiswa') }}" class="menu-link">
                                     <div data-i18n="Basic">Siswa</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="{{route('OPwalikelas')}}" class="menu-link">
+                                <a href="{{ route('OPwalikelas') }}" class="menu-link">
                                     <div data-i18n="Basic">Wali Kelas</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="{{route('OPwalisiswa')}}" class="menu-link">
+                                <a href="{{ route('OPwalisiswa') }}" class="menu-link">
                                     <div data-i18n="Basic">Wali Siswa</div>
                                 </a>
                             </li>
                             <li class="menu-item ">
-                                <a href="{{route('OPkesiswaan')}}" class="menu-link">
+                                <a href="{{ route('OPkesiswaan') }}" class="menu-link">
                                     <div data-i18n="Basic">Kesiswaan</div>
                                 </a>
                             </li>
@@ -112,14 +119,14 @@
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{route('OPkelas')}}" class="menu-link">
+                        <a href="{{ route('OPkelas') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-alt-2"></i>
                             <div data-i18n="Basic">Kelas</div>
                         </a>
                     </li>
 
                     <li class="menu-item">
-                        <a href="{{route('OPjurusan')}}" class="menu-link">
+                        <a href="{{ route('OPjurusan') }}" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-book-bookmark"></i>
                             <i class='book-bookmark'></i>
                             <div data-i18n="laporan">Jurusan</div>
@@ -219,7 +226,8 @@
                                     <div class="card-body">
                                         <form method="post" action={{ route('editabsen') }}>
                                             @csrf
-                                            <div class="row">
+                                            <div class="row mb-3">
+                                                <h5 class="mb-1">Jadwal Masuk</h5>
                                                 <div class="col">
                                                     <label for="mulaiMasuk" class="col-form-label">Mulai Presensi
                                                         Masuk</label>
@@ -237,6 +245,7 @@
                                             </div>
 
                                             <div class="row">
+                                                <h5 class="mb-1">Jadwal Pulang</h5>
                                                 <div class="col">
                                                     <label for="mulaiPulang" class="col-form-label">Mulai Presensi
                                                         Pulang</label>

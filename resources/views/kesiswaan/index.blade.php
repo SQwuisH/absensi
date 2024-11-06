@@ -77,6 +77,9 @@
                                 <span class="text-secondary">Kesiswaan</span>
                             </div>
                         </div>
+                        <div class="container row">
+                            <a href="{{route('kesiswaanProfil')}}" class="btn btn-absen"> Lihat Profil </a>
+                        </div>
                     </li>
 
                     <li class="menu-header small text-uppercase">
@@ -148,14 +151,6 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container container-p-y">
-                        {{-- chart --}}
-                        <div id="chart" class="px-2" style="min-height: 315px;">
-                            <div id="apexchartsiya5zp5s"
-                                class="apexcharts-canvas apexchartsiya5zp5s apexcharts-theme-light"
-                                style="width: 515px; height: 300px;">
-
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col">
                                 <div class="card">
@@ -171,22 +166,67 @@
                                         <div class="row mb-3">
                                             <div class="col">
                                                 <div class="progress" style="height: 30px">
+                                                    {{-- HADIR --}}
                                                     @if ($persen['hadir'] != 0)
                                                         <div class="progress-bar bg-absen"
-                                                            style="width: {{ $persen['hadir'] }}%">
+                                                            style="width: {{ $persen['hadir'] }}%"
+                                                            aria-valuenow="{{ $persen['hadir'] }}%"
+                                                            aria-valuemax="100%">
                                                             {{ $persen['hadir'] }}% Kehadiran</div>
                                                     @endif
+
+                                                    {{-- SAKIT --}}
+                                                    @if ($persen['sakit'] != 0)
+                                                        <div class="progress-bar bg-info"
+                                                            style="width: {{ $persen['sakit'] }}%"
+                                                            aria-valuenow="{{ $persen['sakit'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['sakit'] }}% sakit</div>
+                                                    @endif
+
+                                                    {{-- IZIN --}}
+                                                    @if ($persen['izin'] != 0)
+                                                        <div class="progress-bar bg-warning"
+                                                            style="width: {{ $persen['izin'] }}%"
+                                                            aria-valuenow="{{ $persen['izin'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['izin'] }}% izin</div>
+                                                    @endif
+
+                                                    {{-- ALFA --}}
+                                                    @if ($persen['alfa'] != 0)
+                                                        <div class="progress-bar bg-danger"
+                                                            style="width: {{ $persen['alfa'] }}%"
+                                                            aria-valuenow="{{ $persen['alfa'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['alfa'] }}% alfa</div>
+                                                    @endif
+
+                                                    {{-- TERLAMBAT --}}
                                                     @if ($persen['terlambat'] != 0)
                                                         <div class="progress-bar bg-secondary"
-                                                            style="width: {{ $persen['terlambat'] }}%">
-                                                            {{ $persen['terlambat'] }}% Terlambat</div>
+                                                            style="width: {{ $persen['terlambat'] }}%"
+                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['terlambat'] }}% terlambat</div>
                                                     @endif
-                                                    @if ($persen['hadir'] == 0 && $persen['terlambat'] == 0)
-                                                        <div class="progress-bar bg-white w-100 text-dark"
-                                                            aria-valuenow="100%" aria-valuemax="100%">0% Kehadiran
-                                                        </div>
+
+                                                    {{-- TAP --}}
+                                                    @if ($persen['tap'] != 0)
+                                                        <div class="progress-bar bg-black"
+                                                            style="width: {{ $persen['tap'] }}%"
+                                                            aria-valuenow="{{ $persen['tap'] }}%"
+                                                            aria-valuemax="100%">
+                                                            {{ $persen['tap'] }}% TAP</div>
                                                     @endif
                                                 </div>
+                                            </div>
+                                        </div>
+                                        {{-- chart --}}
+                                        <div id="chart" class="px-2">
+                                            <div id="apexchartsiya5zp5s"
+                                                class="apexcharts-canvas apexchartsiya5zp5s apexcharts-theme-light">
+
                                             </div>
                                         </div>
 
@@ -292,6 +332,38 @@
                                         <h5 class="mt-2 mb-2">
                                             Uraian Per Kelas
                                         </h5>
+
+                                        <form action="{{ route('kesiswaan') }}" method="GET">
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <label for="ting">Filter Tingkat :</label>
+                                                    <select name="ting" id="ting" class="form-control"
+                                                        onchange="this.form.submit()">
+                                                        @if (request('ting'))
+                                                            <option value="{{ request('ting') }}">
+                                                                {{ request('ting') }}</option>
+                                                        @endif
+                                                        <option value="">Pilih Tingkat</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="jur">Filter Jurusan :</label>
+                                                    <select name="jur" id="jur" class="form-control"
+                                                        onchange="this.form.submit()">
+                                                        <option value="">Pilih Jurusan</option>
+                                                        @foreach ($jurusan as $j)
+                                                            <option value="{{ $j->id_jurusan }}"
+                                                                {{ request('jur') == $j->id_jurusan ? 'selected' : '' }}>
+                                                                {{ $j->id_jurusan }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </form>
+
                                         @foreach ($kelas as $k)
                                             @php
                                                 $class = $k->tingkat . $k->id_jurusan . $k->nomor_kelas;

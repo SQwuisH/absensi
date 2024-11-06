@@ -4,8 +4,8 @@ let isCameraOn = true;
 let faceConfidence = 0;
 
 Webcam.set({
-    height: 300,
-    width: 450,
+    height: 240,
+    width: 320,
     image_format: 'jpeg',
     jpeg_quality: 90,
     flip_horiz: true

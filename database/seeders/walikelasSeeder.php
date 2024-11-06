@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\kelas;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\wali;
 use App\Models\User;
@@ -19,11 +18,24 @@ class WaliKelasSeeder extends Seeder
         $jk = ['laki laki', 'perempuan'];
 
         foreach ($kelas as $k) {
-            if ($k->id_kelas != [9, 23, 37]) {
+            if ($k->id_kelas == 9) {
                 $k->where('id_kelas', $k->id_kelas)->update([
                     'nip' => 198005052022011001
                 ]);
-            } else {
+            }
+            else if($k->id_kelas ==  23)
+            {
+                $k->where('id_kelas', $k->id_kelas)->update([
+                    'nip' => 198107062022021002
+                ]);
+            }
+            else if($k->id_kelas ==  37)
+            {
+                $k->where('id_kelas', $k->id_kelas)->update([
+                    'nip' => 198209072022031003
+                ]);
+            }
+            else {
                 $random = rand(0, 1);
                 $nip = rand(100000000000, 999999999999);
                 $nuptk = rand(100000000000, 999999999999);

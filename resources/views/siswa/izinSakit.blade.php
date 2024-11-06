@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    @laravelPWA
-
     <!--=============== BOXICONS ===============-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
 
@@ -34,6 +32,8 @@
     <link rel="stylesheet" href={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }} />
 
     <!-- Page CSS -->
+    Pengajuan izin
+
     <!-- Page -->
     <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/pages/page-auth.css') }} />
 
@@ -46,7 +46,16 @@
     <!-- icon -->
     <link rel="icon" type="image/x-icon" href={{ asset('assets/t2/img/6.png') }} />
 
-    <script></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+    <script src="{{ asset('assets/face-api.js/dist/face-api.min.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="src/js/vendor/jquery-3.3.1.min.js"><\/script>')
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+
 
     <title>Siswa | Aplikasi Absensi Sebelas</title>
 </head>
@@ -125,50 +134,73 @@
             <div class="d-none d-lg-block d-xl-none" style="min-height: 60px"></div>
             <div class="d-none d-xl-block" style="min-height: 60px"></div>
 
-            <form action="{{ route('krmizinSakit') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" name="opt" value="{{ $opt }}">
-                <div class="row">
-                    <div class="card">
-                        {{-- Title --}}
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h4>
-                                    <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
-                                            class='bx bx-chevron-left'></i></a>
-                                    Pengajuan {{ $opt }}
-                                </h4>
-                            </div>
+            <input type="hidden" name="opt" value="{{ $opt }}">
+            <div class="row">
+                <div class="card">
+                    {{-- Title --}}
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h4>
+                                <a href={{ route('siswa') }} class="btn rounded btn-outline-danger"><i
+                                        class='bx bx-chevron-left'></i></a>
+                                Pengajuan {{ $opt }}
+                            </h4>
                         </div>
+                    </div>
 
-                        {{-- Form --}}
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="foto" class="form-label">Pilih Foto</label>
-                                <input required id="foto" class="form-control" type="file" name="foto_masuk" accept="image/png, image/jpeg, image/jpg">
+
+                    <form action="{{ route('krmizinSakit') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" value="{{$opt}}" name="status">
+                        <div class="card-body row">
+
+                            <div class="col">
+                                {{-- Photo --}}
+                                <div class="row d-flex justify-content-center">
+                                    <div style="overflow: hidden; position: relative;" class="mb-3">
+                                        <div id="my_camera"
+                                            style="border: 2px solid #ddd; border-radius: 10px; width: 320px; height: 240px;">
+                                        </div>
+                                        <img id="result" style="display:none; margin-top: 10px;" />
+                                        <button type="button" class="btn btn-absen mt-2"
+                                            onclick="ambilFoto()">Ambil
+                                            Foto</button>
+                                        <button type="button" class="btn btn-warning mt-2"
+                                            onclick="ambilUlang()">Ambil
+                                            Ulang</button>
+                                        <input type="hidden" id="photo_webcam" name="photo_webcam">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>
-                                <textarea required class="form-control" id="exampleFormControlTextarea1" name="keterangan" rows="3"
-                                    style="height: 75px;"></textarea>
+
+
+                            <div class="col">
+
+                                <div class="mb-3">
+                                    <label for="exampleFormControlTextarea1" class="form-label">Keterangan</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" name="keterangan" rows="3"
+                                        style="height: 300px;" placeholder="Tuliskan Keterangan {{ $opt }} (Tidak Wajib)"></textarea>
+                                </div>
                             </div>
 
                             {{-- Button --}}
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Kirim</button>
+                                <button type="submit" class="btn btn-absen">Kirim</button>
                             </div>
                         </div>
+                    </form>
 
-                    </div>
                 </div>
+            </div>
 
-            </form>
         </div>
     </div>
 
 
-    <!--=============== MAIN JS ===============-->
+    <script src="{{ asset('assets/izinSakit.js') }}"></script>
 
+
+    <!--=============== MAIN JS ===============-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
     </script>
@@ -188,9 +220,6 @@
     <script src={{ asset('assets/t1/js/main.js') }}></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
-        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
     </script>
 </body>
 

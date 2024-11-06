@@ -55,7 +55,7 @@
                     endingShape: 'rounded'
                 }
             },
-            colors: [config.colors.primary, config.colors.info],
+            colors: ['hsl(174, 63%, 40%)', config.colors.danger],
             dataLabels: {
                 enabled: false
             },

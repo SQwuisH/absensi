@@ -17,6 +17,8 @@ use App\Models\wali_siswa;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OperatorController extends Controller
@@ -55,12 +57,13 @@ class OperatorController extends Controller
     //KELAS
     public function kelas()
     {
-        $kelas = kelas::with('wali', 'user', 'jurusan')->get();
+        $kelas = kelas::with('wali', 'user', 'jurusan')->paginate(15);
 
         $jurusan = jurusan::get();
 
-        $nuptk = db::table('kelas')->select('nuptk')->where('nuptk', '!=', 'null')->get();
-        $kosong = wali::with('user', 'kelas', 'jurusan')->whereNotIn('nuptk', json_decode(json_encode($nuptk), true))->get();
+        $nip = db::table('kelas')->select('nip')->where('nip', '!=', 'null')->get();
+        $kosong = wali::with('user', 'kelas', 'jurusan')->whereNotIn('nip', json_decode(json_encode($nip), true))->whereNotIn('nip', ['11111111111', '22222222222'])->get();
+
 
         return view('operator.kelas.kelas', compact('kelas', 'kosong', 'jurusan'));
     }
@@ -118,7 +121,7 @@ class OperatorController extends Controller
     //JURUSAN
     public function jurusan()
     {
-        $jurusan = jurusan::paginate(7);
+        $jurusan = jurusan::paginate(15);
         return view('operator.jurusan.jurusan', compact('jurusan'));
     }
 
@@ -197,5 +200,67 @@ class OperatorController extends Controller
         User::find($id)->delete();
 
         return redirect()->back();
+    }
+
+    // PROFIL
+
+    public function profil()
+    {
+        $user = wali::where('id_user', Auth::user()->id)->first();
+
+        return view('operator.profil', compact('user'));
+    }
+
+    public function profilUpdate(request $r)
+    {
+        $f = false;
+        $p = false;
+
+        //password
+        $count = strlen($r->password);
+        if ($count > 0) {
+            if ($r->password != $r->kPassword) {
+                return redirect()->back()->with('failed', 'Password Berbeda');
+            }
+            else
+            {
+                $p = User::where('id', $r->id)->update([
+                    'password' => password_hash($r->password, PASSWORD_DEFAULT)
+                ]);
+            }
+        }
+
+
+        //foto
+        if ($r->hasFile('foto')) {
+            $foto = $r->file('foto');
+
+            $folderPath = "public/user_avatar/";
+
+            $extension = $foto->getClientOriginalExtension();
+            $fileName = $r->nis . '.' . $extension;
+            $file = $folderPath . $fileName;
+
+            Storage::put($file, file_get_contents($foto));
+
+            $f = User::where('id', $r->id)->update([
+                'foto' => $fileName
+            ]);
+        }
+
+        // email
+        $u = User::where('id', $r->id)->update([
+            'email' => $r->email,
+        ]);
+
+        //alamat
+
+
+        //redirecting
+        if ($u || $f || $p) {
+            return redirect()->back()->with('success', "Data Berhasil di Update");
+        } else {
+            return redirect()->back()->with('failed', "Data Gagal di Update");
+        }
     }
 }

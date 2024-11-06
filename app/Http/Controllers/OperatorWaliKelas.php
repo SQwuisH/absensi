@@ -7,6 +7,7 @@ use App\Imports\waliSiswaImpor;
 use App\Models\User;
 use App\Models\wali;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class OperatorWaliKelas extends Controller
@@ -14,7 +15,7 @@ class OperatorWaliKelas extends Controller
     //WALI KELAS
     public function index()
     {
-        $walikelas = wali::with('user', 'kelas', 'jurusan')->get();
+        $walikelas = wali::with('user', 'kelas', 'jurusan')->orderby('nip', 'asc')->paginate(15);
 
         return view('operator.walikelas.index', compact('walikelas'));
     }
@@ -105,4 +106,6 @@ class OperatorWaliKelas extends Controller
 
         Excel::import(new waliSiswaImpor, $r->file('file'));
     }
+
+    
 }

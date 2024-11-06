@@ -66,6 +66,12 @@
 
                 <ul class="menu-inner py-1">
 
+                    <div class="menu-item">
+                        <div class="container row">
+                            <a href="{{ route('operatorProfil') }}" class="btn btn-absen"> Kelola Akun </a>
+                        </div>
+                    </div>
+
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text">Pengaturan Presensi</span>
                     </li>
@@ -266,14 +272,20 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col mb-3">
-                                                        <label for="nameBasic" class="form-label">password</label>
-                                                        <input name="password" type="text" id="nameBasic"
+                                                        <label for="password" class="form-label">password</label>
+                                                        <input name="password" type="text" id="password"
                                                             class="form-control"
                                                             placeholder="Default Password '12345678'">
                                                     </div>
                                                     <div class="col mb-3">
-                                                        <label for="nameBasic" class="form-label">NIK</label>
-                                                        <input name="nik" type="text" id="nameBasic" class="form-control" placeholder="Masukkan NIK Wali Siswa" required>
+                                                        <label for="nik" class="form-label">NIK</label>
+                                                        <input name="nik" type="text" id="nik" class="form-control" placeholder="Masukkan NIK Wali Siswa" required>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <label for="alamat" class="form-label">Alamat</label>
+                                                        <input name="alamat" type="text" id="alamat" class="form-control" placeholder="Masukkan Alamat Wali Siswa" required>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -309,6 +321,7 @@
                                         <tr>
                                             <th>NIK</th>
                                             <th>Nama</th>
+                                            <th>Alamat</th>
                                             <th class="text-center">Aksi</th>
                                         </tr>
                                     </thead>
@@ -320,6 +333,7 @@
                                                     <span class="fw-medium">@php echo($w->nik); @endphp</span>
                                                 </td>
                                                 <td>@php echo($w->user->name); @endphp</td>
+                                                <td>{{$w->alamat}}</td>
                                                 <td>
                                                     <div class="dropdown text-center">
                                                         <button type="button"
