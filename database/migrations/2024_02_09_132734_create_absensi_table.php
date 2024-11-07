@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('foto_masuk')->nullable();
             $table->string('foto_pulang')->nullable();
             $table->string('keterangan')->nullable();
-            $table->time('menit_keterlambatan')->nullable();
-            $table->time('menit_TAP')->nullable();
+            $table->integer('menit_keterlambatan')->nullable();
+            $table->integer('menit_TAP')->nullable();
             $table->date('date')->nullable();
             $table->time('jam_masuk')->nullable();
             $table->time('jam_pulang')->nullable();

@@ -587,7 +587,7 @@
 
     <script src={{ asset('assets/t1/vendor/libs/apex-charts/apexcharts.js') }}></script>
 
-    <script src={{ asset('assets/app.js') }}></script>
+    <script src={{ asset('assets/chartKesiswaan.js') }}></script>
 
     <script src={{ asset('assets/t1/js/main.js') }}></script>
 </body>

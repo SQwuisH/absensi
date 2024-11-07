@@ -8,108 +8,36 @@
             </div>
             <div class="modal-body">
                 @if ($a->status == 'hadir' || $a->status == 'terlambat' || $a->status == 'TAP')
-                    <div class="row g-2 mb-2">
-                        <div class="col mb-2">
-                            <label for="masuk" class="form-label">Foto Masuk
-                                <div id="masuk">
-                                    <img
-                                        style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
-                                </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center">
+                            <h6>Foto Masuk : </h6>
+                            <img src="{{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}" alt="Foto_Masuk" class="mb-3">
+                            <div class="mb-3 badge bg-absen d-block d-md-none">
+                                {{ $a->jam_masuk ? $a->jam_masuk : ' - ' }}
+                            </div>
                         </div>
-                        <div class="row">
-                            @switch($a->status)
-                                @case('hadir')
-                                    <div class="col mb-2">
-                                        <label for="pulang" class="form-label">Foto Pulang
-                                        </label>
-                                        <div id="pulang">
-                                            @if ($a->foto_pulang)
-                                                <img
-                                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
-                                            @elseif($a->status == 'TAP')
-                                                <p>Tidak Absen Pulang</p>
-                                            @else
-                                                <p>Belum Absen Pulang</p>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @break
-
-                                @case('terlambat')
-                                    <div class="col mb-2">
-                                        <label for="pulang" class="form-label">Foto Pulang
-                                        </label>
-                                        <div id="pulang">
-                                            @if ($a->foto_pulang)
-                                                <img
-                                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @break
-
-                                @case('TAP')
-                                    <p class="mt-1">Tanpa Absen Pulang</p>
-                                @break
-                            @endswitch
-                        </div>
-                    </div>
-                @elseif ($a->status == 'izin' || $a->status == 'sakit')
-                    <div class="row mb-2">
-
-                        <label for="masuk" class="form-label">Foto :</label>
-                        <div class="col mb-0 text-center">
-                            <div id="masuk">
-                                <img
-                                    style="max-height: 300px"src={{ asset('storage/uploads/absensi/' . $a->foto_masuk) }}>
+                        <div class="col-12 col-sm-6 text-center">
+                            <h6>Foto Pulang : </h6>
+                            <img src="{{ asset('storage/uploads/absensi/' . $a->foto_pulang) }}" alt="Foto_Pulang" class="mb-3">
+                            <div class="mb-3 badge bg-absen d-block d-md-none">
+                                {{ $a->jam_pulang ? $a->jam_pulang : ' - ' }}
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-2">
-                        <div class="col">
-                            <label for="keterangan">Keterangan :</label>
-                            <textarea class="form-control" id="keterangan" rows="3" disabled>{{ $a->keterangan }}</textarea>
-                        </div>
+                @elseif ($a->status == 'izin')
+                    <div class="mb-3 badge bg-warning">{{ $a->status }}
+                    </div>
+                @elseif ($a->status == 'sakit')
+                    <div class="mb-3 badge bg-info">{{ $a->status }}
+                    </div>
+                @else
+                    <div class="row">
                     </div>
                 @endif
 
-                <div class="row">
-                    @switch($a->status)
-                        @case('hadir')
-                            <div class="col mb-3 badge bg-absen">
-                                {{ $a->status }}
-                            </div>
-                        @break
-
-                        @case('sakit')
-                            <div class="col mb-3 badge bg-info">{{ $a->status }}
-                            </div>
-                        @break
-
-                        @case('izin')
-                            <div class="col mb-3 badge bg-warning">{{ $a->status }}
-                            </div>
-                        @break
-
-                        @case('alfa')
-                            <div class="col mb-3 badge bg-danger">{{ $a->status }}
-                            </div>
-                        @break
-
-                        @case('terlambat')
-                            <div class="col mb-3 badge bg-secondary">
-                                {{ $a->status }}
-                            </div>
-                        @break
-
-                        @case('TAP')
-                            <div class="col mb-3 badge bg-black">
-                                {{ $a->status }}
-                            </div>
-                        @break
-                    @endswitch
-                </div>
             </div>
+
+
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

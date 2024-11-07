@@ -52,10 +52,17 @@ class SiswaController extends Controller
                 $statusAbsen = "belum waktu presen";
             } elseif ($cekabsen->status == "alfa" && date("H:i:s") < $waktu->mulai_pulang) {
                 $statusAbsen = "belum presen";
-            } elseif ($cekabsen->foto_pulang != null) {
-                $statusAbsen = "sudah pulang";
-            } elseif (($cekabsen->status == 'hadir' || $cekabsen->status == 'terlambat') && date("H:i:s") > $waktu->mulai_pulang) {
-                $statusAbsen = "belum pulang";
+            } elseif ($cekabsen->status == 'hadir') {
+                if ($cekabsen->jam_masuk > $waktu->batas_masuk) {
+                    $statusAbsen = "terlambat";
+                }
+                if (date("H:i:s") > $waktu->mulai_pulang && $cekabsen->jam_pulang == null) {
+                    $statusAbsen = "belum pulang";
+                } elseif ($cekabsen->jam_pulang > $waktu->batas_pulang) {
+                    $statusAbsen = "telat pulang";
+                } else {
+                    $statusAbsen = "sudah pulang";
+                }
             } else {
                 $statusAbsen = $cekabsen->status;
             }
@@ -75,13 +82,21 @@ class SiswaController extends Controller
         $jumlah = [
             // BULAN INI
             'ini' => $ini->count(),
-            'hadirIni' => $ini->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+            'hadirIni' => $ini->where('status', "hadir")->count(),
             'tidakHadirIni' => $ini->whereIn('status', ["sakit", "izin", "alfa"])->count(),
+            'menitIni' => [
+                'terlambat' => $ini->sum('menit_keterlambatan'),
+                'TAP' => $ini->sum('menit_TAP'),
+            ],
 
             // BULAN LALU
             'lalu' => $lalu->count(),
-            'hadirLalu' => $lalu->whereIn('status', ["hadir", "terlambat", "TAP"])->count(),
+            'hadirLalu' => $lalu->where('status', "hadir")->count(),
             'tidakHadirLalu' => $lalu->whereIn('status', ["sakit", "izin", "alfa"])->count(),
+            'menitLalu' => [
+                'terlambat' => $lalu->sum('menit_keterlambatan'),
+                'TAP' => $lalu->sum('menit_TAP'),
+            ],
         ];
 
         $persentase = [
@@ -97,7 +112,9 @@ class SiswaController extends Controller
             'lokasi' => $lokasi,
             'jumlah' => $jumlah,
             'persentase' => $persentase,
-            'absen' => $cekabsen
+            'absen' => $cekabsen,
+            'daysnow' => $daysNow,
+            'daysbefore' => $daysBefore
         ]);
     }
 
@@ -129,8 +146,12 @@ class SiswaController extends Controller
         $jam = date("H:i:s");
 
 
-        if (date('H:i:s') > $waktu->batas_absen) {
-            $status = 'terlambat';
+        if ($jam > $waktu->batas_absen) {
+            $menit_keterlambatan = carbon::createFromTimeString($jam)->diffInMinutes(carbon::createFromTimeString("$waktu->batas_absen"));
+        }
+
+        if ($jam > $waktu->batas_pulang) {
+            $menit_TAP = carbon::createFromTimeString($jam)->diffInMinutes(carbon::createFromTimeString("$waktu->batas_pulang"));
         }
 
         $lokasiSiswa = $request->lokasi;
@@ -160,13 +181,14 @@ class SiswaController extends Controller
         } elseif ($faceConfidence < 0.90) { // Confidence threshold
             echo "error|Wajah Tidak Terdeteksi dengan Kepastian 90%|";
         } else {
-            if ($cek->count() > 0 && $cek->status != "alfa") {
+            if ($cek->status != "alfa") {
                 $formatName = $siswa->nis . "-" . $date . "-pulang";
                 $fileName = $formatName . ".png";
                 $file = $folderPath . $fileName;
                 $data_pulang = [
                     'jam_pulang' => $jam,
                     'titik_koordinat_pulang' => $lokasiSiswa,
+                    'menit_TAP' => $menit_TAP ? $menit_TAP : null,
                     'foto_pulang' => $fileName
                 ];
                 $update = absensi::where('date', $date)->where('nis', "00$siswa->nis")->update($data_pulang);
@@ -186,6 +208,7 @@ class SiswaController extends Controller
                     'date' => $date,
                     'keterangan' => $ket,
                     'jam_masuk' => $jam,
+                    'menit_keterlambatan' => $menit_keterlambatan ? $menit_keterlambatan : null,
                     'titik_koordinat_masuk' => $lokasiSiswa,
                     'foto_masuk' => $fileName,
                 ];
@@ -344,17 +367,15 @@ class SiswaController extends Controller
             'hadir' => $ab->where('status', 'hadir')->count(),
             'sakit' => $ab->where('status', 'sakit')->count(),
             'izin' => $ab->where('status', 'izin')->count(),
-            'terlambat' => $ab->where('status', 'terlambat')->count(),
             'alfa' => $ab->where('status', 'alfa')->count(),
-            'tap' => $ab->where('status', 'TAP')->count(),
+            'terlambat' => $ab->sum('menit_keterlambatan'),
+            'tap' => $ab->sum('menit_TAP'),
         ];
         $persentase = [
             'hadir' => $totalAbsensi > 0 ? round(($jumlah['hadir'] / $totalAbsensi) * 100, 1) : 0,
             'sakit' => $totalAbsensi > 0 ? round(($jumlah['sakit'] / $totalAbsensi) * 100, 1) : 0,
             'izin' => $totalAbsensi > 0 ? round(($jumlah['izin'] / $totalAbsensi) * 100, 1) : 0,
-            'terlambat' => $totalAbsensi > 0 ? round(($jumlah['terlambat'] / $totalAbsensi) * 100, 1) : 0,
             'alfa' => $totalAbsensi > 0 ? round(($jumlah['alfa'] / $totalAbsensi) * 100, 1) : 0,
-            'tap' => $totalAbsensi > 0 ? round(($jumlah['tap'] / $totalAbsensi) * 100, 1) : 0,
         ];
 
         return view('siswa.laporan', compact('absensi', 'ab', 'siswa', 'totalAbsensi', 'totalKeterlambatan', 'jumlah', 'persentase', 'start', 'end'));

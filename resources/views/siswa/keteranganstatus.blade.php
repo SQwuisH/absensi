@@ -55,7 +55,7 @@
 @endif
 
 {{-- Black --}}
-@if ($statusabsen == 'TAP')
+@if ($statusabsen == 'telat pulang')
     <div class="col">
         <div class="card mb-4 border border-dark">
             <div class="card-header">

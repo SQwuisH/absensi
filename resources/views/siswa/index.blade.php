@@ -374,7 +374,8 @@
                                     {{-- BULAN INI --}}
                                     <div class="tab-pane fade active show" id="navs-justified-profile"
                                         role="tabpanel">
-                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                        <p><b>Total Kehadiran : </b>{{$jumlah['hadirIni'] . " / " . $daysnow}}</p>
+                                        <div class="progress mb-3" style="height: 35px; font-size:13px;">
                                             @if ($persentase['ini'] == 0)
                                                 <div class="progress-bar" role="progressbar"
                                                     style="width:100%; background-color:white; color:black"
@@ -421,7 +422,8 @@
 
                                     {{-- BULAN LALU --}}
                                     <div class="tab-pane fade" id="navs-justified-messages">
-                                        <div class="progress mb-5" style="height: 35px; font-size:13px;">
+                                        <p><b>Total Kehadiran</b>{{$jumlah['hadirLalu'] . " / " . $daysbefore}}</p>
+                                        <div class="progress mb-3" style="height: 35px; font-size:13px;">
                                             @if ($persentase['lalu'] == 0)
                                                 <div class="progress-bar" role="progressbar"
                                                     style="width:100%;  height: 35px; font-size:13px; background-color:white; color:black"

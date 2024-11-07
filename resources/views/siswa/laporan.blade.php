@@ -195,22 +195,6 @@
                                     </div>
                                 @endif
 
-                                {{-- TERLAMBAT --}}
-                                @if ($persentase['terlambat'] != 0)
-                                    <div class="progress-bar bg-secondary border-end shadow-none" role="progressbar"
-                                        style="width: {{ $persentase['terlambat'] }}%" aria-valuemin="0">
-                                        <div>{{ round($persentase['terlambat']) }}%</div>
-                                    </div>
-                                @endif
-
-                                {{-- TAP --}}
-                                @if ($persentase['tap'] != 0)
-                                    <div class="progress-bar bg-black border-end shadow-none" role="progressbar"
-                                        style="width: {{ $persentase['tap'] }}%" aria-valuemin="0">
-                                        <div>{{ round($persentase['tap']) }}%</div>
-                                    </div>
-                                @endif
-
                             </div>
 
                             {{-- INFO --}}
@@ -222,7 +206,7 @@
                                         <div class="card bg-absen text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">Hadir:</h6>
-                                                {{ $jumlah['hadir'] }} Hari
+                                                {{ $jumlah['hadir'] }}
                                             </div>
                                         </div>
                                     </div>
@@ -232,7 +216,7 @@
                                         <div class="card bg-info text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">sakit:</h6>
-                                                {{ $jumlah['sakit'] }} Hari
+                                                {{ $jumlah['sakit'] }}
                                             </div>
                                         </div>
                                     </div>
@@ -242,44 +226,43 @@
                                         <div class="card bg-warning text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">Izin:</h6>
-                                                {{ $jumlah['izin'] }} Hari
+                                                {{ $jumlah['izin'] }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- ALFA --}}
+                                    <div class="col">
+                                        <div class="card bg-danger text-white mb-3">
+                                            <div class="card-header">
+                                                <h6 class="card-title text-white">Alfa:</h6>
+                                                {{ $jumlah['alfa'] }}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    {{-- ALFA --}}
-                                    <div class="col">
-                                        <div class="card bg-danger text-white mb-3">
-                                            <div class="card-header">
-                                                <h6 class="card-title text-white">Alfa:</h6>
-                                                {{ $jumlah['alfa'] }} Hari
-                                            </div>
-                                        </div>
-                                    </div>
+
 
                                     {{-- TERLAMBAT --}}
                                     <div class="col">
                                         <div class="card bg-secondary text-white mb-3">
                                             <div class="card-header">
-                                                <h6 class="card-title text-white">Terlambat:</h6>
-                                                {{ $jumlah['terlambat'] }} Hari
+                                                <h6 class="card-title text-white">Menit Terlambat:</h6>
+                                                <p>Total : {{ $jumlah['terlambat'] }} menit</p>
+                                                <p>Rata-Rata : {{ round($jumlah['terlambat'] / $totalAbsensi) }} Menit</p>
                                             </div>
                                         </div>
                                     </div>
 
                                     {{-- TAP --}}
                                     <div class="col">
-                                        <div class="card bg-black text-white mb-3" data-bs-toggle="tooltip"
-                                            data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true"
-                                            data-bs-original-title="<span>Tanpa Absen Pulang</span>">
+                                        <div class="card bg-black text-white mb-3">
                                             <div class="card-header">
-                                                <div class="row">
-                                                    <h6 class="col card-title text-white">TAP:</h6>
-                                                </div>
-
-                                                {{ $jumlah['tap'] }} Hari
+                                                <h6 class="col card-title text-white">Menit TAP:</h6>
+                                                <p>Total : {{ $jumlah['tap'] }} menit</p>
+                                                <p>Rata-Rata : {{ round($jumlah['tap'] / $totalAbsensi) }} Menit</p>
                                             </div>
 
                                         </div>
@@ -348,22 +331,6 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row mb-2">
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="terlambat" id="terlambat"
-                                                            name="category[4]" checked>
-                                                        <label for="terlambat"
-                                                            class="form-check-label">Terlambat</label>
-                                                    </div>
-                                                    <div class="col form-check">
-                                                        <input class="form-check-input filter-checkbox"
-                                                            type="checkbox" value="TAP" id="tap"
-                                                            name="category[5]" checked>
-                                                        <label for="tap" class="form-check-label">TAP</label>
-                                                    </div>
-                                                </div>
-
                                                 <div class="row">
                                                     <div class="col modal-footer">
                                                         <button class="btn btn-absen" type="submit">Apply</button>
@@ -392,7 +359,7 @@
                                         @include('siswa.modalLaporan')
                                         <tr>
                                             <td>{{ $a->date }}</td>
-                                            <td >
+                                            <td>
                                                 @switch($a->status)
                                                     @case('hadir')
                                                         <span class="badge bg-absen">

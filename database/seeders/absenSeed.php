@@ -94,11 +94,11 @@ class absenSeed extends Seeder
                         $pulang = rand(0, 6);
 
                         if ($masuk == 1 || $masuk == 2) {
-                            $menit_keterlambatan = Carbon::createFromTimeString("$jam_masuk[$masuk]")->diff($batas_absen)->format('%H:%I:%S');
+                            $menit_keterlambatan = Carbon::createFromTimeString("$jam_masuk[$masuk]")->diffInMinutes($batas_absen);
                         }
 
                         if ($pulang == 1 || $pulang ==  4) {
-                            $menit_TAP = Carbon::createFromTimeString("$jam_pulang[$pulang]")->diff($batas_pulang)->format('%H:%I:%S');
+                            $menit_TAP = Carbon::createFromTimeString("$jam_pulang[$pulang]")->diffInMinutes($batas_pulang);
                         }
 
                         absensi::create([
