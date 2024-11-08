@@ -177,6 +177,11 @@
                                         <input class="form-control" type="Email" id="Email" name="email"
                                             value="{{ $user->user->email }}">
                                     </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label for="kelas">Kelas</label>
+                                        <input class="form-control" type="text" disabled id="Kelas" value="{{$nama_kelas}}">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-md-6">

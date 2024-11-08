@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
 use App\Models\absensi;
+use App\Models\kelas;
 use App\Models\koordinat_sekolah;
 use App\Models\siswa;
 use App\Models\User;
@@ -286,8 +287,11 @@ class SiswaController extends Controller
     public function profil()
     {
         $user = siswa::where("id_user", auth::user()->id)->with('user', 'kelas')->first();
+        $kelas = kelas::where('id_kelas', $user->id_kelas)->first();
 
-        return view('siswa.profil', compact('user'));
+        $nama_kelas = "$kelas->tingkat $kelas->id_jurusan $kelas->nomor_kelas";
+
+        return view('siswa.profil', compact('user', 'nama_kelas'));
     }
 
     public function editprofil(Request $r)

@@ -14,7 +14,7 @@
 
     dailyStatusCounts.forEach(function (d) {
         hadirCount.push(d.hadir);
-        tidakHadirCount.push(-d.tidakHadir);
+        tidakHadirCount.push(d.tidakHadir);
         date.push(d.date);
         i++;
     });

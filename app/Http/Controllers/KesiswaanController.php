@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\kesiswaanChart;
+use ArielMejiaDev\LarapexCharts\LarapexChart;
 use App\Models\absensi;
 use App\Models\jurusan;
 use App\Models\kelas;
 use App\Models\siswa;
 use App\Models\User;
 use App\Models\wali;
-use App\Models\wali_siswa;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use Code16\CarbonBusiness\BusinessDays;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
 
 class KesiswaanController extends Controller
 {
     public function index(Request $r)
     {
+
         $query = kelas::with('jurusan');
         $jurusan = jurusan::all();
         $user = Auth::user();
@@ -34,20 +35,25 @@ class KesiswaanController extends Controller
             'hadir' => $absensi->where('status', 'hadir')->count(),
             'sakit' => $absensi->where('status', 'sakit')->count(),
             'izin' => $absensi->where('status', 'izin')->count(),
-            'terlambat' => $absensi->where('status', 'terlambat')->count(),
             'alfa' => $absensi->where('status', 'alfa')->count(),
-            'TAP' => $absensi->where('status', 'TAP')->count()
+            'menitTerlambat' => $absensi->sum('menit_terlambat'),
+            'menitTAP' => $absensi->sum('menit_TAP'),
+        ];
+
+        $list = [
+            'hadir' => $absensi->where('status', 'hadir'),
+            'sakit' => $absensi->where('status', 'sakit'),
+            'izin' => $absensi->where('status', 'izin'),
+            'alfa' => $absensi->where('status', 'alfa'),
         ];
 
         $jur = $r->input('jur');
         $ting = $r->input('ting');
 
-        if($jur)
-        {
+        if ($jur) {
             $kelas = $query->where('id_jurusan', $jur)->paginate(5);
         }
-        if($ting)
-        {
+        if ($ting) {
             $kelas = $query->where('tingkat', $ting)->paginate(5);
         }
 
@@ -56,15 +62,25 @@ class KesiswaanController extends Controller
             $class = $k->tingkat . $k->id_jurusan . $k->nomor_kelas;
             $absenkelas[$class] = $absensi->where('id_kelas', $int);
             $siswaKelas[$class] = $siswa->where('id_kelas', $int);
-            $hadir[$class] = $absenkelas[$class]->where('status', 'hadir')->count();
-            $sakit[$class] = $absenkelas[$class]->where('status', 'sakit')->count();
-            $izin[$class] = $absenkelas[$class]->where('status', 'izin')->count();
-            $terlambat[$class] = $absenkelas[$class]->where('status', 'terlambat')->count();
-            $alfa[$class] = $absenkelas[$class]->where('status', 'alfa')->count();
-            $TAP[$class] = $absenkelas[$class]->where('status', 'TAP')->count();
+
+            // GET FILTERED DATA
+            $hadir = $absenkelas[$class]->where('status', 'hadir');
+            $sakit = $absenkelas[$class]->where('status', 'sakit');
+            $izin = $absenkelas[$class]->where('status', 'izin');
+            $alfa = $absenkelas[$class]->where('status', 'alfa');
+
+            // GET COUNT OF STATUS
+            $counthadir[$class] = $hadir->count();
+            $countsakit[$class] = $sakit->count();
+            $countizin[$class] = $izin->count();
+            $countalfa[$class] = $alfa->count();
+
+            // GET SUM OF TERLAMBAT & TAP
+            $menitTerlambat[$class] = $absenkelas[$class]->sum('menit_keterlambatan');
+            $menitTAP[$class] = $absenkelas[$class]->sum('menit_TAP');
+
             $persentase[$class] = [
-                "hadir" => $hadir[$class] > 0 ? round(($hadir[$class] / $siswaKelas[$class]->count()) * 100) : 0,
-                "terlambat" => $terlambat[$class] > 0 ? round(($terlambat[$class] / $siswaKelas[$class]->count()) * 100) : 0
+                "hadir" => $counthadir[$class] > 0 ? round(($counthadir[$class] / $siswaKelas[$class]->count()) * 100) : 0,
             ];
 
             $int++;
@@ -74,9 +90,7 @@ class KesiswaanController extends Controller
             'hadir' => $count['hadir'] > 0 ? round(($count['hadir'] / $jumlahsiswa) * 100, 1) : 0,
             'sakit' => $count['sakit'] > 0 ? round(($count['sakit'] / $jumlahsiswa) * 100, 1) : 0,
             'izin' => $count['izin'] > 0 ? round(($count['izin'] / $jumlahsiswa) * 100, 1) : 0,
-            'terlambat' => $count['terlambat'] > 0 ? round(($count['terlambat'] / $jumlahsiswa) * 100, 1) : 0,
             'alfa' => $count['alfa'] > 0 ? round(($count['alfa'] / $jumlahsiswa) * 100, 1) : 0,
-            'tap' => $count['TAP'] > 0 ? round(($count['TAP'] / $jumlahsiswa) * 100, 1) : 0,
         ];
 
         $S = carbon::now()->startOfWeek();
@@ -90,18 +104,49 @@ class KesiswaanController extends Controller
 
         foreach ($filteredData as $fD) {
             $dailyStatusCounts[] = [
-                'hadir' =>  $fD->wherein('status', ['hadir', 'terlambat', 'TAP'])->count(),
+                'hadir' =>  $fD->where('status', 'hadir')->count(),
                 'tidakHadir' =>  $fD->wherein('status', ['sakit', 'izin', 'alfa'])->count(),
                 'date' => $S->translatedFormat('D, Y-m-d'),
             ];
             $S = $S->addDay();
         }
 
+        $larapexChart = new LarapexChart();
+        $chart = (new kesiswaanChart($larapexChart))->build();
+
         if (carbon::today()->isWeekend()) {
             return view('kesiswaan.indexLibur', compact('user', 'dailyStatusCounts'));
         }
 
-        return view('kesiswaan.index', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absenkelas', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'dailyStatusCounts', 'jurusan'));
+        return view('kesiswaan.index', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absenkelas', 'kelas', 'siswaKelas', 'counthadir', 'countsakit', 'countizin', 'countalfa', 'dailyStatusCounts', 'jurusan', 'menitTerlambat', 'menitTAP', 'chart'));
+    }
+
+    public function dataHadir()
+    {
+        $absensi = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'siswas.id_user', '=', 'users.id')->where('status', 'hadir')->where('date', date('Y-m-d'))->get();
+
+        return DataTables::of($absensi)->make(true);
+    }
+
+    public function dataSakit()
+    {
+        $absensi = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'siswas.id_user', '=', 'users.id')->where('status', 'sakit')->where('date', date('Y-m-d'))->get();
+
+        return DataTables::of($absensi)->make(true);
+    }
+
+    public function dataIzin()
+    {
+        $absensi = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'siswas.id_user', '=', 'users.id')->where('status', 'izin')->where('date', date('Y-m-d'))->get();
+
+        return DataTables::of($absensi)->make(true);
+    }
+
+    public function dataAlfa()
+    {
+        $absensi = DB::table('kelas')->join('siswas', 'kelas.id_kelas', '=', 'siswas.id_kelas')->join('absensis', 'siswas.nis', '=', 'absensis.nis')->join('users', 'siswas.id_user', '=', 'users.id')->where('status', 'alfa')->where('date', date('Y-m-d'))->get();
+
+        return DataTables::of($absensi)->make(true);
     }
 
     public function laporan(Request $r)
@@ -166,12 +211,10 @@ class KesiswaanController extends Controller
         $jur = $r->input('jur');
         $ting = $r->input('ting');
 
-        if($jur)
-        {
+        if ($jur) {
             $kelas = $query->where('id_jurusan', $jur)->paginate(5);
         }
-        if($ting)
-        {
+        if ($ting) {
             $kelas = $query->where('tingkat', $ting)->paginate(5);
         }
 
@@ -201,11 +244,10 @@ class KesiswaanController extends Controller
 
         $search = $r->input('search');
 
-        if($search)
-        {
-            $sw = $ss->wherehas('user', function($q) use ($search) {
+        if ($search) {
+            $sw = $ss->wherehas('user', function ($q) use ($search) {
                 $q->where('nis', 'like', '%' . $search . '%')
-                ->orWhere('name', 'like', '%' . $search . '%');
+                    ->orWhere('name', 'like', '%' . $search . '%');
             })->paginate(5);
         }
 
@@ -314,9 +356,7 @@ class KesiswaanController extends Controller
         if ($count > 0) {
             if ($r->password != $r->kPassword) {
                 return redirect()->back()->with('failed', 'Password Berbeda');
-            }
-            else
-            {
+            } else {
                 $p = User::where('id', $r->id)->update([
                     'password' => password_hash($r->password, PASSWORD_DEFAULT)
                 ]);

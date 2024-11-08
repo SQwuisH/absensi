@@ -1,8 +1,3 @@
-<script>
-    var dailyStatusCounts = @json($dailyStatusCounts);
-</script>
-
-
 <html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
     data-template="vertical-menu-template-free">
 
@@ -34,10 +29,6 @@
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href={{ asset('assets/t1/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }} />
-
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href={{ asset('assets/t1/vendor/css/pages/page-auth.css') }} />
 
     <!-- Helpers -->
     <script src={{ asset('assets/t1/vendor/js/helpers.js') }}></script>
@@ -78,7 +69,7 @@
                             </div>
                         </div>
                         <div class="container row">
-                            <a href="{{route('kesiswaanProfil')}}" class="btn btn-absen"> Lihat Profil </a>
+                            <a href="{{ route('kesiswaanProfil') }}" class="btn btn-absen"> Lihat Profil </a>
                         </div>
                     </li>
 
@@ -201,24 +192,6 @@
                                                             aria-valuemax="100%">
                                                             {{ $persen['alfa'] }}% alfa</div>
                                                     @endif
-
-                                                    {{-- TERLAMBAT --}}
-                                                    @if ($persen['terlambat'] != 0)
-                                                        <div class="progress-bar bg-secondary"
-                                                            style="width: {{ $persen['terlambat'] }}%"
-                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
-                                                            aria-valuemax="100%">
-                                                            {{ $persen['terlambat'] }}% terlambat</div>
-                                                    @endif
-
-                                                    {{-- TAP --}}
-                                                    @if ($persen['tap'] != 0)
-                                                        <div class="progress-bar bg-black"
-                                                            style="width: {{ $persen['tap'] }}%"
-                                                            aria-valuenow="{{ $persen['tap'] }}%"
-                                                            aria-valuemax="100%">
-                                                            {{ $persen['tap'] }}% TAP</div>
-                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -226,14 +199,15 @@
                                         <div id="chart" class="px-2">
                                             <div id="apexchartsiya5zp5s"
                                                 class="apexcharts-canvas apexchartsiya5zp5s apexcharts-theme-light">
-
                                             </div>
                                         </div>
+
+                                        {!! $chart->container() !!}
 
                                         {{-- Collapse --}}
                                         <div class="row">
                                             <div class="col">
-                                                Kehadiran Siswa : {{ $count['hadir'] + $count['terlambat'] }} /
+                                                Kehadiran Siswa : {{ $count['hadir'] }} /
                                                 {{ $jumlahsiswa }}
                                             </div>
                                             {{-- Button --}}
@@ -253,71 +227,107 @@
                                             <div class="justify-content-center">
                                                 <div class="row mb-2">
                                                     {{-- hadir --}}
-                                                    <div class="col-4">
-                                                        <div class="card bg-absen text-white mb-3">
-                                                            <div class="card-header">
-                                                                <h6 class="card-title text-white">Hadir:</h6>
-                                                                {{ $count['hadir'] }} Siswa
+                                                    <div class="col-3">
+                                                        <div class="card bg-absen text-white mb-3 p-3">
+                                                            <div class="modal-header">
+                                                                <h6 class="card-title text-white">
+                                                                    Hadir:
+                                                                </h6>
+                                                                <button class="btn btn-absen" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalHadir"><i
+                                                                        class='bx bx-show'></i></button>
                                                             </div>
+                                                            <div class="modal-body">
+                                                                {{ $count['hadir'] }} Siswa</div>
                                                         </div>
                                                     </div>
 
                                                     {{-- sakit --}}
-                                                    <div class="col-4">
-                                                        <div class="card bg-info text-white mb-3">
-                                                            <div class="card-header">
+                                                    <div class="col-3">
+                                                        <div class="card bg-info text-white mb-3 p-3">
+                                                            <div class="modal-header">
                                                                 <h6 class="card-title text-white">sakit:</h6>
-                                                                {{ $count['sakit'] }} Siswa
+                                                                <button class="btn btn-info" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalSakit"><i
+                                                                        class='bx bx-show'></i></button>
                                                             </div>
+                                                            <div class="modal-body">
+                                                                {{ $count['sakit'] }} Siswa</div>
                                                         </div>
                                                     </div>
 
                                                     {{-- izin --}}
-                                                    <div class="col-4">
-                                                        <div class="card bg-warning text-white mb-3">
-                                                            <div class="card-header">
+                                                    <div class="col-3">
+                                                        <div class="card bg-warning text-white mb-3 p-3">
+                                                            <div class="modal-header">
                                                                 <h6 class="card-title text-white">Izin:</h6>
+                                                                <button class="btn btn-warning" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalIzin"><i
+                                                                        class='bx bx-show'></i></button>
+                                                            </div>
+                                                            <div class="modal-body">
                                                                 {{ $count['izin'] }} Siswa
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {{-- ALFA --}}
+                                                    <div class="col-3">
+                                                        <div class="card bg-danger text-white mb-3 p-3">
+                                                            <div class="modal-header">
+                                                                <h6 class="card-title text-white">Alfa:</h6>
+                                                                <button class="btn btn-danger" data-bs-toggle="modal"
+                                                                    data-bs-target="#modalAlfa"><i
+                                                                        class='bx bx-show'></i></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                {{ $count['alfa'] }} Siswa
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="row mb-2">
-                                                    {{-- ALFA --}}
-                                                    <div class="col-4">
-                                                        <div class="card bg-danger text-white mb-3">
-                                                            <div class="card-header">
-                                                                <h6 class="card-title text-white">Alfa:</h6>
-                                                                {{ $count['alfa'] }} Siswa
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
+                                                <div class="row">
                                                     {{-- TERLAMBAT --}}
-                                                    <div class="col-4">
+                                                    <div class="col">
                                                         <div class="card bg-secondary text-white mb-3">
                                                             <div class="card-header">
-                                                                <h6 class="card-title text-white">Terlambat:
+                                                                <h6 class="card-title text-white">Menit Terlambat:
                                                                 </h6>
-                                                                {{ $count['terlambat'] }} Siswa
+                                                                <p>Total Menit Terlambat :
+                                                                    {{ $count['menitTerlambat'] }}</p>
+                                                                <p>Rata-rata Persiswa :
+                                                                    @if ($count['menitTerlambat'] != 0)
+                                                                        {{ $count['menitTerlambat'] / $jumlahSiswa }}
+                                                                    @else
+                                                                        0
+                                                                    @endif
+                                                                </p>
+
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     {{-- TAP --}}
-                                                    <div class="col-4">
+                                                    <div class="col">
                                                         <div class="card bg-black text-white mb-3"
                                                             data-bs-toggle="tooltip" data-bs-offset="0,4"
                                                             data-bs-placement="top" data-bs-html="true"
                                                             data-bs-original-title="<span>Tanpa Absen Pulang</span>">
                                                             <div class="card-header">
                                                                 <div class="row">
-                                                                    <h6 class="col card-title text-white">TAP:
+                                                                    <h6 class="col card-title text-white">Menit TAP:
                                                                     </h6>
                                                                 </div>
-
-                                                                {{ $count['TAP'] }} Siswa
+                                                                <p>Total Menit TAP : {{ $count['menitTAP'] }}
+                                                                </p>
+                                                                <p>Rata-rata Persiswa :
+                                                                    @if ($count['menitTAP'] != 0)
+                                                                        {{ $count['menitTAP'] / $jumlahSiswa }}
+                                                                    @else
+                                                                        0
+                                                                    @endif
+                                                                </p>
                                                             </div>
 
                                                         </div>
@@ -394,7 +404,7 @@
                                                             <div class="row">
                                                                 <div class="col-3">
                                                                     Kehadiran Siswa :
-                                                                    {{ $hadir[$class] + $terlambat[$class] . ' / ' . $siswaKelas[$class]->count() }}
+                                                                    {{ $counthadir[$class] . ' / ' . $siswaKelas[$class]->count() }}
                                                                 </div>
 
                                                                 {{-- Progress Bar --}}
@@ -405,13 +415,6 @@
                                                                                 style="width: {{ $persentase[$class]['hadir'] }}%">
                                                                                 {{ $persentase[$class]['hadir'] }}%
                                                                                 Kehadiran</div>
-                                                                        @endif
-                                                                        @if ($persentase[$class]['terlambat'] != 0)
-                                                                            <div class="progress-bar bg-secondary"
-                                                                                style="width: {{ $persentase[$class]['terlambat'] }}%">
-                                                                                {{ $persentase[$class]['terlambat'] }}%
-                                                                                Terlambat
-                                                                            </div>
                                                                         @endif
                                                                     </div>
                                                                 </div>
@@ -436,66 +439,77 @@
                                                                     <div class="row">
 
                                                                         {{-- hadir --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div class="card bg-absen text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Hadir:</h6>
-                                                                                    {{ $hadir[$class] }} Siswa
+                                                                                    {{ $counthadir[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         {{-- sakit --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div class="card bg-info text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         sakit:</h6>
-                                                                                    {{ $sakit[$class] }} Siswa
+                                                                                    {{ $countsakit[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         {{-- izin --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div
                                                                                 class="card bg-warning text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Izin:</h6>
-                                                                                    {{ $izin[$class] }} Siswa
+                                                                                    {{ $countizin[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         {{-- ALFA --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div
                                                                                 class="card bg-danger text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Alfa:</h6>
-                                                                                    {{ $alfa[$class] }} Siswa
+                                                                                    {{ $countalfa[$class] }} Siswa
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
 
+                                                                    <div class="row">
                                                                         {{-- TERLAMBAT --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col">
                                                                             <div
                                                                                 class="card bg-secondary text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Terlambat:
                                                                                     </h6>
-                                                                                    {{ $terlambat[$class] }} Siswa
+                                                                                    <p><b>Total Menit Terlambat :</b>
+                                                                                        {{ $menitTerlambat[$class] }}
+                                                                                    </p>
+                                                                                    <p><b>Rata-rata Persiswa :</b>
+                                                                                        @if ($menitTerlambat[$class] != 0)
+                                                                                            {{ $menitTerlambat[$class] / $siswaKelas[$class]->count() }}
+                                                                                        @else
+                                                                                            0
+                                                                                        @endif
+                                                                                    </p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         {{-- TAP --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col">
                                                                             <div class="card bg-black text-white mb-3"
                                                                                 data-bs-toggle="tooltip"
                                                                                 data-bs-offset="0,4"
@@ -508,9 +522,17 @@
                                                                                             class="col card-title text-white">
                                                                                             TAP:
                                                                                         </h6>
+                                                                                        <p>Total Menit TAP :
+                                                                                            {{ $menitTAP[$class] }}
+                                                                                        </p>
+                                                                                        <p>Rata-rata Persiswa :
+                                                                                            @if ($menitTAP[$class] != 0)
+                                                                                                {{ $menitTAP[$class] / $siswaKelas[$class]->count() }}
+                                                                                            @else
+                                                                                                0
+                                                                                            @endif
+                                                                                        </p>
                                                                                     </div>
-
-                                                                                    {{ $TAP[$class] }} Siswa
                                                                                 </div>
 
                                                                             </div>
@@ -563,6 +585,8 @@
                     </footer>
                     <!-- / Footer -->
 
+                    @include('kesiswaan.indexModal')
+
                     <div class="content-backdrop fade"></div>
                 </div>
                 <!-- Content wrapper -->
@@ -576,6 +600,10 @@
     <!-- / Layout wrapper -->
 
 
+    <script src="{{ $chart->cdn() }}"></script>
+
+    {{ $chart->script() }}
+
     <script src={{ asset('assets/t1/vendor/libs/jquery/jquery.js') }}></script>
     <script src={{ asset('assets/t1/vendor/libs/popper/popper.js') }}></script>
     <script src={{ asset('assets/t1/vendor/js/bootstrap.js') }}></script>
@@ -585,11 +613,8 @@
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-    <script src={{ asset('assets/t1/vendor/libs/apex-charts/apexcharts.js') }}></script>
-
-    <script src={{ asset('assets/chartKesiswaan.js') }}></script>
-
     <script src={{ asset('assets/t1/js/main.js') }}></script>
+
 </body>
 
 </html>

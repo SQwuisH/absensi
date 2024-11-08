@@ -1,12 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\KesiswaanController;
-use App\Http\Controllers\OperatorController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\WaliController;
-use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -109,6 +102,10 @@ Route::group(['middleware' => ['auth', 'roles:operator']], function () {
 //KESISWAAN
 Route::group(['middleware' => ['auth', 'roles:kesiswaan']], function () {
     Route::get('/kesiswaan', [App\Http\Controllers\KesiswaanController::class, 'index'])->name('kesiswaan');
+    Route::get('/kesiswaan/dataHadir', [App\Http\Controllers\KesiswaanController::class, 'dataHadir'])->name('dataHadir');
+    Route::get('/kesiswaan/dataSakit', [App\Http\Controllers\KesiswaanController::class, 'dataSakit'])->name('dataSakit');
+    Route::get('/kesiswaan/dataIzin', [App\Http\Controllers\KesiswaanController::class, 'dataIzin'])->name('dataIzin');
+    Route::get('/kesiswaan/dataAlfa', [App\Http\Controllers\KesiswaanController::class, 'dataAlfa'])->name('dataAlfa');
 
     Route::get('/kesiswaan/profil', [App\Http\Controllers\KesiswaanController::class, 'profil'])->name('kesiswaanProfil');
     Route::post('/kesiswaan/profil/edit', [App\Http\Controllers\KesiswaanController::class, 'editProfil'])->name('kesiswaanEditProfil');
