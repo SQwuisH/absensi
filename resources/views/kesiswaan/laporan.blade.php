@@ -215,25 +215,6 @@
                                                             aria-valuemax="100%">
                                                             {{ $persen['alfa'] }}% alfa</div>
                                                     @endif
-
-                                                    {{-- TERLAMBAT --}}
-                                                    @if ($persen['terlambat'] != 0)
-                                                        <div class="progress-bar bg-secondary"
-                                                            style="width: {{ $persen['terlambat'] }}%"
-                                                            aria-valuenow="{{ $persen['terlambat'] }}%"
-                                                            aria-valuemax="100%">
-                                                            {{ $persen['terlambat'] }}% terlambat</div>
-                                                    @endif
-
-                                                    {{-- TAP --}}
-                                                    @if ($persen['tap'] != 0)
-                                                        <div class="progress-bar bg-black"
-                                                            style="width: {{ $persen['tap'] }}%"
-                                                            aria-valuenow="{{ $persen['tap'] }}%"
-                                                            aria-valuemax="100%">
-                                                            {{ $persen['tap'] }}% TAP</div>
-                                                    @endif
-
                                                 </div>
                                             </div>
                                             {{-- Collapse Button --}}
@@ -257,7 +238,7 @@
                                                 <div class="row">
 
                                                     {{-- hadir --}}
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="card bg-absen text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Hadir:</h6>
@@ -267,7 +248,7 @@
                                                     </div>
 
                                                     {{-- sakit --}}
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="card bg-info text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">sakit:</h6>
@@ -277,7 +258,7 @@
                                                     </div>
 
                                                     {{-- izin --}}
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="card bg-warning text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Izin:</h6>
@@ -285,10 +266,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row mb-2">
+
                                                     {{-- ALFA --}}
-                                                    <div class="col-4">
+                                                    <div class="col-3">
                                                         <div class="card bg-danger text-white mb-3">
                                                             <div class="card-header">
                                                                 <h6 class="card-title text-white">Alfa:</h6>
@@ -296,28 +276,45 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
 
+                                                <div class="row mb-2">
                                                     {{-- TERLAMBAT --}}
-                                                    <div class="col-4">
+                                                    <div class="col">
                                                         <div class="card bg-secondary text-white mb-3">
                                                             <div class="card-header">
-                                                                <h6 class="card-title text-white">Terlambat:
+                                                                <h6 class="card-title text-white">Menit Terlambat:
                                                                 </h6>
-                                                                {{ $count['terlambat'] }}
+                                                                <p>Total Menit :
+                                                                    {{ $count['menitTerlambat'] }}</p>
+                                                                <p>Rata-rata Persiswa :
+                                                                    @if ($count['menitTerlambat'] != 0)
+                                                                        {{ round($count['menitTerlambat'] / $jumlahsiswa) }}
+                                                                    @else
+                                                                        0
+                                                                    @endif
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     {{-- TAP --}}
-                                                    <div class="col-4">
+                                                    <div class="col">
                                                         <div class="card bg-black text-white mb-3">
                                                             <div class="card-header">
                                                                 <div class="row">
                                                                     <h6 class="col card-title text-white">TAP:
                                                                     </h6>
                                                                 </div>
-
-                                                                {{ $count['tap'] }}
+                                                                <p>Total Menit :
+                                                                    {{ $count['menitTAP'] }}</p>
+                                                                <p>Rata-rata Persiswa :
+                                                                    @if ($count['menitTAP'] != 0)
+                                                                        {{ round($count['menitTAP'] / $jumlahsiswa) }}
+                                                                    @else
+                                                                        0
+                                                                    @endif
+                                                                </p>
                                                             </div>
 
                                                         </div>
@@ -430,24 +427,6 @@
                                                                                 Alfa
                                                                             </div>
                                                                         @endif
-
-                                                                        {{-- TERLAMBAT --}}
-                                                                        @if ($persentase[$class]['terlambat'] != 0)
-                                                                            <div class="progress-bar bg-secondary }}"
-                                                                                style="width: {{ $persentase[$class]['terlambat'] }}%">
-                                                                                {{ $persentase[$class]['terlambat'] }}%
-                                                                                Terlambat
-                                                                            </div>
-                                                                        @endif
-
-                                                                        {{-- TAP --}}
-                                                                        @if ($persentase[$class]['tap'] != 0)
-                                                                            <div class="progress-bar bg-black }}"
-                                                                                style="width: {{ $persentase[$class]['tap'] }}%">
-                                                                                {{ $persentase[$class]['tap'] }}%
-                                                                                TAP
-                                                                            </div>
-                                                                        @endif
                                                                     </div>
                                                                 </div>
 
@@ -470,7 +449,7 @@
                                                                     <div class="row">
 
                                                                         {{-- hadir --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div class="card bg-absen text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
@@ -481,7 +460,7 @@
                                                                         </div>
 
                                                                         {{-- sakit --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div class="card bg-info text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
@@ -492,7 +471,7 @@
                                                                         </div>
 
                                                                         {{-- izin --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div
                                                                                 class="card bg-warning text-white mb-3">
                                                                                 <div class="card-header">
@@ -504,7 +483,7 @@
                                                                         </div>
 
                                                                         {{-- ALFA --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col-3">
                                                                             <div
                                                                                 class="card bg-danger text-white mb-3">
                                                                                 <div class="card-header">
@@ -514,22 +493,33 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+
+                                                                    <div class="row">
 
                                                                         {{-- TERLAMBAT --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col">
                                                                             <div
                                                                                 class="card bg-secondary text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <h6 class="card-title text-white">
                                                                                         Terlambat:
                                                                                     </h6>
-                                                                                    {{ $terlambat[$class] }}
+                                                                                    <p>Total Menit :
+                                                                                        {{ $terlambat[$class] }}</p>
+                                                                                    <p>Rata-rata Persiswa :
+                                                                                        @if ($terlambat[$class] != 0)
+                                                                                            {{ round($terlambat[$class] / $siswaKelas[$class]->count()) }}
+                                                                                        @else
+                                                                                            0
+                                                                                        @endif
+                                                                                    </p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
 
                                                                         {{-- TAP --}}
-                                                                        <div class="col-2">
+                                                                        <div class="col">
                                                                             <div class="card bg-black text-white mb-3">
                                                                                 <div class="card-header">
                                                                                     <div class="row">
@@ -538,13 +528,21 @@
                                                                                             TAP:
                                                                                         </h6>
                                                                                     </div>
-
-                                                                                    {{ $TAP[$class] }}
+                                                                                    <p>Total Menit :
+                                                                                        {{ $terlambat[$class] }}</p>
+                                                                                    <p>Rata-rata Persiswa :
+                                                                                        @if ($terlambat[$class] != 0)
+                                                                                            {{ round($terlambat[$class] / $siswaKelas[$class]->count()) }}
+                                                                                        @else
+                                                                                            0
+                                                                                        @endif
+                                                                                    </p>
                                                                                 </div>
 
                                                                             </div>
                                                                         </div>
                                                                     </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>

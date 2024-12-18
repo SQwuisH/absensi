@@ -29,6 +29,8 @@ class SiswaController extends Controller
         $startMonthNow = carbon::now()->startOfMonth();
         $endMonthNow = carbon::now()->endOfMonth();
 
+        $date = carbon::now()->format('l, j F Y');
+
         $startMonthBefore = new Carbon('first day of last month');
         $endMonthBefore = new Carbon('last day of last month');
 
@@ -115,7 +117,8 @@ class SiswaController extends Controller
             'persentase' => $persentase,
             'absen' => $cekabsen,
             'daysnow' => $daysNow,
-            'daysbefore' => $daysBefore
+            'daysbefore' => $daysBefore,
+            'date' => $date
         ]);
     }
 

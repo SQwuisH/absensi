@@ -202,7 +202,7 @@
                                 <div class="row">
 
                                     {{-- hadir --}}
-                                    <div class="col">
+                                    <div class="col-6 col-lg-3">
                                         <div class="card bg-absen text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">Hadir:</h6>
@@ -212,7 +212,7 @@
                                     </div>
 
                                     {{-- sakit --}}
-                                    <div class="col">
+                                    <div class="col-6 col-lg-3">
                                         <div class="card bg-info text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">sakit:</h6>
@@ -222,7 +222,7 @@
                                     </div>
 
                                     {{-- izin --}}
-                                    <div class="col">
+                                    <div class="col-6 col-lg-3">
                                         <div class="card bg-warning text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">Izin:</h6>
@@ -232,7 +232,7 @@
                                     </div>
 
                                     {{-- ALFA --}}
-                                    <div class="col">
+                                    <div class="col-6 col-lg-3">
                                         <div class="card bg-danger text-white mb-3">
                                             <div class="card-header">
                                                 <h6 class="card-title text-white">Alfa:</h6>

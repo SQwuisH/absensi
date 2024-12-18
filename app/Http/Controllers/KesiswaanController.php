@@ -36,7 +36,7 @@ class KesiswaanController extends Controller
             'sakit' => $absensi->where('status', 'sakit')->count(),
             'izin' => $absensi->where('status', 'izin')->count(),
             'alfa' => $absensi->where('status', 'alfa')->count(),
-            'menitTerlambat' => $absensi->sum('menit_terlambat'),
+            'menitTerlambat' => $absensi->sum('menit_keterlambatan'),
             'menitTAP' => $absensi->sum('menit_TAP'),
         ];
 
@@ -170,9 +170,10 @@ class KesiswaanController extends Controller
             'hadir' => $absensi->where('status', 'hadir')->count(),
             'sakit' => $absensi->where('status', 'sakit')->count(),
             'izin' => $absensi->where('status', 'izin')->count(),
-            'terlambat' => $absensi->where('status', 'terlambat')->count(),
             'alfa' => $absensi->where('status', 'alfa')->count(),
-            'tap' => $absensi->where('status', 'TAP')->count()
+
+            'menitTerlambat' => $absensi->sum('menit_keterlambatan'),
+            'menitTAP' => $absensi->sum('menit_TAP')
         ];
 
         $int = 1;
@@ -183,17 +184,16 @@ class KesiswaanController extends Controller
             $hadir[$class] = $absen[$class]->where('status', 'hadir')->count();
             $sakit[$class] = $absen[$class]->where('status', 'sakit')->count();
             $izin[$class] = $absen[$class]->where('status', 'izin')->count();
-            $terlambat[$class] = $absen[$class]->where('status', 'terlambat')->count();
             $alfa[$class] = $absen[$class]->where('status', 'alfa')->count();
-            $TAP[$class] = $absen[$class]->where('status', 'TAP')->count();
+
+            $terlambat[$class] = $absen[$class]->sum('menit_keterlambatan');
+            $TAP[$class] = $absen[$class]->sum('menit_TAP');
 
             $persentase[$class] = [
                 'hadir' => $absen[$class]->count() > 0 ? round(($hadir[$class] / $absen[$class]->count()) * 100, 1) : 0,
                 'sakit' => $absen[$class]->count() > 0 ? round(($sakit[$class] / $absen[$class]->count()) * 100, 1) : 0,
                 'izin' => $absen[$class]->count() > 0 ? round(($izin[$class] / $absen[$class]->count()) * 100, 1) : 0,
-                'terlambat' => $absen[$class]->count() > 0 ? round(($terlambat[$class] / $absen[$class]->count()) * 100, 1) : 0,
                 'alfa' => $absen[$class]->count() > 0 ? round(($alfa[$class] / $absen[$class]->count()) * 100, 1) : 0,
-                'tap' => $absen[$class]->count() > 0 ? round(($TAP[$class] / $absen[$class]->count()) * 100, 1) : 0,
             ];
 
             $int++;
@@ -203,9 +203,7 @@ class KesiswaanController extends Controller
             'hadir' => $count['hadir'] > 0 ? round(($count['hadir'] / $absensi->count()) * 100, 1) : 0,
             'sakit' => $count['sakit'] > 0 ? round(($count['sakit'] / $absensi->count()) * 100, 1) : 0,
             'izin' => $count['izin'] > 0 ? round(($count['izin'] / $absensi->count()) * 100, 1) : 0,
-            'terlambat' => $count['terlambat'] > 0 ? round(($count['terlambat'] / $absensi->count()) * 100, 1) : 0,
             'alfa' => $count['alfa'] > 0 ? round(($count['alfa'] / $absensi->count()) * 100, 1) : 0,
-            'tap' => $count['tap'] > 0 ? round(($count['tap'] / $absensi->count()) * 100, 1) : 0,
         ];
 
         $jur = $r->input('jur');
@@ -217,6 +215,7 @@ class KesiswaanController extends Controller
         if ($ting) {
             $kelas = $query->where('tingkat', $ting)->paginate(5);
         }
+
 
         return view('kesiswaan.laporan', compact('user', 'absensi', 'count', 'persen', 'persentase', 'jumlahsiswa', 'absen', 'kelas', 'siswaKelas', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'start', 'end', 'jurusan'));
     }
@@ -255,9 +254,10 @@ class KesiswaanController extends Controller
             'hadir' => $absensi->where('status', 'hadir')->count(),
             'sakit' => $absensi->where('status', 'sakit')->count(),
             'izin' => $absensi->where('status', 'izin')->count(),
-            'terlambat' => $absensi->where('status', 'terlambat')->count(),
             'alfa' => $absensi->where('status', 'alfa')->count(),
-            'tap' => $absensi->where('status', 'TAP')->count()
+
+            'terlambat' => $absensi->sum('menit_keterlambatan'),
+            'tap' => $absensi->sum('menit_TAP')
         ];
 
         foreach ($siswa as $s) {
@@ -266,17 +266,16 @@ class KesiswaanController extends Controller
             $hadir[$nis] = $absen[$nis]->where('status', 'hadir')->count();
             $sakit[$nis] = $absen[$nis]->where('status', 'sakit')->count();
             $izin[$nis] = $absen[$nis]->where('status', 'izin')->count();
-            $terlambat[$nis] = $absen[$nis]->where('status', 'terlambat')->count();
             $alfa[$nis] = $absen[$nis]->where('status', 'alfa')->count();
-            $TAP[$nis] = $absen[$nis]->where('status', 'TAP')->count();
+
+            $terlambat[$nis] = $absen[$nis]->sum('menit_keterlambatan');
+            $TAP[$nis] = $absen[$nis]->sum('menit_TAP');
 
             $persentase[$nis] = [
                 'hadir' => $absen[$nis]->count() > 0 ? round(($hadir[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
                 'sakit' => $absen[$nis]->count() > 0 ? round(($sakit[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
                 'izin' => $absen[$nis]->count() > 0 ? round(($izin[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
-                'terlambat' => $absen[$nis]->count() > 0 ? round(($terlambat[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
                 'alfa' => $absen[$nis]->count() > 0 ? round(($alfa[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
-                'tap' => $absen[$nis]->count() > 0 ? round(($TAP[$nis] / $absen[$nis]->count()) * 100, 1) : 0,
             ];
         }
 
@@ -284,13 +283,11 @@ class KesiswaanController extends Controller
             'hadir' => $count['hadir'] > 0 ? round(($count['hadir'] / $absensi->count()) * 100, 1) : 0,
             'sakit' => $count['sakit'] > 0 ? round(($count['sakit'] / $absensi->count()) * 100, 1) : 0,
             'izin' => $count['izin'] > 0 ? round(($count['izin'] / $absensi->count()) * 100, 1) : 0,
-            'terlambat' => $count['terlambat'] > 0 ? round(($count['terlambat'] / $absensi->count()) * 100, 1) : 0,
             'alfa' => $count['alfa'] > 0 ? round(($count['alfa'] / $absensi->count()) * 100, 1) : 0,
-            'tap' => $count['tap'] > 0 ? round(($count['tap'] / $absensi->count()) * 100, 1) : 0,
         ];
 
 
-        return view('kesiswaan.laporanKelas', compact('user', 'absensi', 'count', 'persen', 'start', 'end', 'sw', 'k', 'hadir', 'sakit', 'izin', 'terlambat', 'alfa', 'TAP', 'persentase', 'siswa', 'nis', 'kelas'));
+        return view('kesiswaan.laporanKelas', compact('user', 'absensi', 'count', 'persen', 'start', 'end', 'sw', 'k', 'hadir', 'sakit', 'izin', 'alfa', 'terlambat', 'TAP', 'persentase', 'siswa', 'nis', 'kelas'));
     }
 
     public function laporanSiswa(Request $r, $siswa)

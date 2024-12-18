@@ -238,20 +238,14 @@
                                 Tanggal
                             </h6>
                             <div class="text-center d-lg-none">
-                                @php
-                                    setlocale(LC_ALL, 'IND');
-                                    echo strftime('%A, %e %B %G');
-                                @endphp
+                                {{ $date }}
                             </div>
 
                         </div>
 
                         <div class="card-body">
                             <div class="text-center d-none d-lg-block">
-                                @php
-                                    setlocale(LC_ALL, 'IND');
-                                    echo strftime('%A, %e %B %G');
-                                @endphp
+                                {{ $date }}
                             </div>
                             <div class="card-title d-flex justify-content-center text-center d-lg-none">
                                 <div class="row" style="width: 200px">
