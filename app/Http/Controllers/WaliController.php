@@ -19,6 +19,7 @@ class WaliController extends Controller
 {
     public function index()
     {
+        $dailyStatusCounts = [];
         $user = wali::where('id_user', auth::user()->id)->with('kelas', 'user')->first();
         $kelas = kelas::where('nip', $user->nip)->first();
 

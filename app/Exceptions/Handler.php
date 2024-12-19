@@ -27,4 +27,13 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    
+    public function render($request, Throwable $exception)
+    {
+        if (config('app.debug') === false) {
+            return response()->view('errors.custom', [], 500);
+        }
+
+        return parent::render($request, $exception);
+    }
 }

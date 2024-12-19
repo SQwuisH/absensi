@@ -23,7 +23,7 @@ class KesiswaanController extends Controller
 {
     public function index(Request $r)
     {
-
+        $dailyStatusCounts = [];
         $query = kelas::with('jurusan');
         $jurusan = jurusan::all();
         $user = Auth::user();
